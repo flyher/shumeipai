@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content=mNote Mac 2.4.10"/><meta name="created" content="2013-07-29T14:02:38Z"/><meta name="updated" content="2013-07-29T14:02:38Z"/><title>树莓派最简便的系统安装方法BerryBoot（一）安装debian</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;"><div>
+
+Berry Boot应该是当前最为简便的系统安装方法了，简约而不简单，支持U盘启动，支持添加自定义系统。<br>
+确保SD卡是FAT格式：<br>
+<br>
+然后下载Berry Boot的zip包：<br>
+<a href="http://178.63.95.79/dl/berryboot-20121126.zip" target="_blank" style="border: 0px none rgb(51, 102, 153); color: rgb(51, 102, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Tahoma, Helvetica, SimSun, sans-serif; margin: 0px; outline: rgb(51, 102, 153) none 0px; padding: 0px; text-decoration: underline; word-wrap: break-word;">berryboot-20121126.zip</a><br>
+<a href="http://178.63.95.79/dl/berryboot-20121126.zip" target="_blank" style="border: 0px none rgb(51, 102, 153); color: rgb(51, 102, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Tahoma, Helvetica, SimSun, sans-serif; margin: 0px; outline: rgb(51, 102, 153) none 0px; padding: 0px; text-decoration: underline; word-wrap: break-word;">http://178.63.95.79/dl/berryboot-20121126.zip</a> <br>
+<br>
+拷贝解压缩到文件到SD卡的根目录，关闭SD卡目录，安全弹出SD卡。<br>
+<br>
+把SD卡插入树莓派，开机，会看到如下欢迎界面<br>
+<br>
+<br>
+可以设置overscan、网络以及时区等，点击OK<br>
+<br>
+这时候出现了目标驱动器界面，没有插入USB闪盘之前，能看到如下两个选项。<br>
+mmcblk0就是引导用的SD卡，第二个选项是网盘。<br>
+<br>
+<br>
+<br>
+如果想把系统安装在SD卡上，选择默认的第一个选项，文件系统也是默认的ext4，选择Format<br>
+<br>
+如果想把系统安装在USB闪盘，而不是引导的SD卡的话，在这个界面插入USB闪盘，会多出一个驱动器选项：<br>
+<br>
+<br>
+<br>
+sda:USB 3.0 Cable 是我用Seagate USB 3.0 to SATA转接头接的一块SSD固态硬盘<br>
+选中多出来的U盘作为目标驱动器，点击Format<br>
+<br>
+这时候Berryboot 会开始格式化目标驱动器：<br>
+<br>
+<br>
+<br>
+<br>
+格式化成功之后，会自动Mount ext4格式的目标驱动器：<br>
+<br>
+<br>
+<br>
+<br>
+稍后会出现系统选项，可以选装心仪的操作系统，我这里先选的debian<br>
+<br>
+<br>
+<br>
+<br>
+berryboot自动下载最新版本的操作系统，430兆的debian：<br>
+<br>
+<br>
+<br>
+<br>
+系统安装完毕重启以后，就会出现操作系统选择界面：<br>
+<br>
+因为我们只安装了一个系统，所以也没啥好选的，直接点击boot启动。<br>
+这里要注意，如果用U盘启动的话，SD卡作为引导盘还是要插在树莓派里。<br>
+<br>
+第一次进入debian的设置菜单：<br>
+<img id="aimg_bAoY7" onclick="zoom(this, this.src, 0, 0, 0)" class="zoom" src="http://files.note.sdo.com/M5cEN~kg2vuwLX0Cg00dBb" onmouseover="img_onmouseoverfunc(this)" onload="thumbImg(this)" border="0" alt="" style="cursor: pointer; width: 600px; height: 327px; float: none; background-image: none; background-attachment: scroll; background-origin: padding-box; background-clip: border-box; background-color: rgba(0, 0, 0, 0); background-size: auto; background-position: 0% 0%; background-repeat: repeat repeat;" width="600" height="327"><br>
+<br>
+<br>
+注意这里locale不要选中文，进入系统装完中文字库以后，再改。<br>
+timezone是时区设置，boot_behavior 可以调成自动进入图形界面。<br>
+<br>
+然后就可以用了：<br>
+<img id="aimg_VX5uK" onclick="zoom(this, this.src, 0, 0, 0)" class="zoom" src="http://files.note.sdo.com/M5cEN~kg2vuMLX0Cg00dBe" onmouseover="img_onmouseoverfunc(this)" onload="thumbImg(this)" border="0" alt="" style="cursor: pointer; width: 600px; height: 450px; float: none; background-image: none; background-attachment: scroll; background-origin: padding-box; background-clip: border-box; background-color: rgba(0, 0, 0, 0); background-size: auto; background-position: 0% 0%; background-repeat: repeat repeat;" width="600" height="450"><br>
+<br>
+<br>
+默认的用户是pi<br>
+密码是raspberry<br>
+如果默认进命令行模式，输入：<br>
+startx<br>
+进入图形用户界面。<br>
+如果想要切换root权限，输入命令: sudo su</div></body></html>
