@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content=mNote Mac 2.4.10"/><meta name="created" content="2013-07-29T14:13:26Z"/><meta name="updated" content="2013-07-29T14:13:26Z"/><title>Raspberry Pi基本设定、编译核心，上网</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;"><div><font face="Tahoma, Helvetica, SimSun, sans-serif" style="border: 0px none rgb(68, 68, 68); color: rgb(68, 68, 68); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Tahoma, Helvetica, SimSun, sans-serif; outline: rgb(68, 68, 68) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;"><font face="Georgia, serif" style="border: 0px none rgb(68, 68, 68); color: rgb(68, 68, 68); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(68, 68, 68) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;"><br>
+我並不打算將Raspberry Pi（簡稱為rpi）當做獨立的電腦使用，不會接螢幕鍵盤滑鼠，只接電源、網路線、SD記憶卡，目標是讓它成為連上網路的伺服器，可以SSH登入，然後再做其他打算。<br>
+<br>
+我不是linux專家，這篇也不是什麼教學文，只是把我作過的步驟記下來，如此而已，將會很簡略。如果有說錯缺漏的地方，還請留言指教。<br>
+<br>
+首先是一些基本的設定，除了一定要接的SD記憶卡、網路線與電源外，此時還需要把螢幕與鍵盤接上，我不使用X Window，所以不接滑鼠。<br>
+<br>
+開機登入後，會看到如下圖的訊息，建議我們設定日期時間，這是因為rpi沒有即時時鐘，所以斷電重開機後，日期時間的紀錄就會不正確了。可以下指令：<br>
+<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ sudo date --set="2012-06-07 14:00"</font><br>
+來設定日期時間，不過每次都要手動設定很煩。之後有網路連線後，可以自動到網路上查詢並設定。 <br>
+<br>
+<br>
+對了，記得執行指令<br>
+<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ passwd</font><br>
+將預設密碼改掉。<br>
+<br>
+接下來要設定locale，出廠預設為GB英國，所以需要修改。下指令<br>
+<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ sudo dpkg-reconfigure locales</font><br>
+後，會出現下圖。請不要選All locales，那將耗去很漫長的時間。我選了en_US與zh_TW，UTF-8編碼最好一定要選，其他編碼就看你了。<br>
+注意，以"空白鍵"進行選取的動作，而不是以Enter鍵。<br>
+<br>
+<br>
+然後會要我們選擇系統預設的locale，我選了en_US.UTF-8。<br>
+<br>
+<br>
+當你在打字時，會發現有些鍵打出的字元怪怪的（譬如說打"出現@，打@出現"），這是因為出廠預設的鍵盤對應表為英國用的。請下指令<br>
+<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ sudo dpkg-reconfigure keyboard-configuration</font><br>
+並選取適當的鍵盤配置。<br>
+<br>
+我選了Generic 105 key。<br>
+<br>
+<br>
+Keyboard layout部分，先選Other。<br>
+<br>
+<br>
+然後選USA。<br>
+<br>
+<br>
+然後選USA。<br>
+<br>
+<br>
+然後繼續進行鍵盤的設定。<br>
+AltGr？這什麼啊，我選No AltGr key。<br>
+<br>
+<br>
+啥？Comose Key？我選了No compose key。<br>
+<br>
+<br>
+要不要以Ctrl+Alt+Backspace代表終止X server。我選No。<br>
+<br>
+<br>
+接下來設定時區，指令為：<br>
+<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ sudo dpkg-reconfigure tzdata</font><br>
+我住在亞洲Asia。 <br>
+<br>
+<br>
+我住在台北。<br>
+<br>
+<br>
+然後，我想要新增使用者帳號，並且讓他能使用sudo。以指令<br>
+<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ sudo adduser yehnan</font><br>
+新增使用者。（注意：請把yehnan換成你的名字。）<br>
+<br>
+然後執行<br>
+<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ sudo visudo</font><br>
+出現如下畫面，將<br>
+<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">yehnan&nbsp; &nbsp; ALL=(ALL) ALL</font><br>
+放到相似的那幾行底下，將權限賦予此帳號。<br>
+<br>
+<br>
+以上為一些基本設定，參考資料為<br>
+<font color="#999999" style="border: 0px none rgb(153, 153, 153); color: rgb(153, 153, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(153, 153, 153) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">RPi Beginners</font>：講解rpi初次開機後需要進行的一些設定，包括locale、鍵盤、時區、新增能sudo的使用者、等等。<br>
+<font color="#999999" style="border: 0px none rgb(153, 153, 153); color: rgb(153, 153, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(153, 153, 153) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">我的 Raspberry Pi 系统配置实战</font>：在命令列下聽音樂、安裝輸入法、掛載USB隨身碟、等等。<br>
+<font color="#999999" style="border: 0px none rgb(153, 153, 153); color: rgb(153, 153, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(153, 153, 153) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">Andy Bold的First steps with Raspberry Pi</font>。 <br>
+接下來是讓rpi連上區域網路，這樣我就能拔掉螢幕與鍵盤，透過SSH登入。</font><font face="Georgia, serif" style="border: 0px none rgb(68, 68, 68); color: rgb(68, 68, 68); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(68, 68, 68) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">首先，我想將出廠預設的主機名稱（raspberry）改掉，以<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$sudo nano /etc/hostname</font>改掉裡面的名稱，然後以<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$sudo nano /etc/hosts</font>改掉裡面相關的部份，最後以<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$sudo /etc/init.d/hostname.sh star</font>t更新主機名稱（或是重開機）。<br>
+<br>
+以<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ dmesg | grep net</font>檢查網路卡驅動程式是否存在，已經內建了，還好，我就不需要操心了。<br>
+<br>
+為了讓rpi加入我的區域網路（我的區域網路裡有一台Windows與一台Mac），以<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$sudo nano /etc/network/interfaces</font>編輯網路設定，加入如下內容：<br>
+<font color="#ff0ff" style="border: 0px none rgb(255, 15, 240); color: rgb(255, 15, 240); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 15, 240) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">auto eth0</font><br>
+<font color="#ff0ff" style="border: 0px none rgb(255, 15, 240); color: rgb(255, 15, 240); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 15, 240) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">iface eth0 inet static</font><br>
+<font color="#ff0ff" style="border: 0px none rgb(255, 15, 240); color: rgb(255, 15, 240); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 15, 240) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">address 192.168.2.8</font><br>
+<font color="#ff0ff" style="border: 0px none rgb(255, 15, 240); color: rgb(255, 15, 240); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 15, 240) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">netmask 255.255.255.0</font><br>
+<br>
+其中192.168.2.8是我指定給rpi的內部IP。<br>
+<br>
+然後以<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ sudo /etc/init.d/networking restart</font>重新啟動網路。<br>
+<br>
+然後可以指令<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ sudo /etc/init.d/ssh start</font>將ssh server啟動，但我還希望每次重開機後ssh server都能自動啟動，作法如下（<font color="#999999" style="border: 0px none rgb(153, 153, 153); color: rgb(153, 153, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(153, 153, 153) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">參考資料</font>）：<br>
+（我使用的映像檔是debian squeeze那個）<br>
+將/boot下的boot_enable_ssh.rc改名為boot.rc。 <br>
+<br>
+如此即可。<br>
+<br>
+成功後，就能在區域網路內從別台機器以SSH登入rpi了。耶，可以拔掉螢幕與鍵盤囉。<br>
+<br>
+下圖是我在Windows上以Cygwin的ssh指令登入rpi的樣子。只要做好設定（公鑰、私鑰），就能直接登入無需輸入密碼。 <br>
+<br>
+接下來要讓rpi上網，最終目標是安裝PPPoE，輸入帳號密碼上網。<br>
+<br>
+我是HiNet的用戶，原本有8個浮動IP，所以我先到http://service.hinet.net/2004/adslstaticip.php申請，改成1個固定IP加8個浮動IP。<br>
+<br>
+首先要編譯Linux核心，主要參考文件為<font color="#999999" style="border: 0px none rgb(153, 153, 153); color: rgb(153, 153, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(153, 153, 153) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">RPi Kernel Compilation</font>，另外，有人也在PPPoE的部份遇到問題，相關討論在<font color="#999999" style="border: 0px none rgb(153, 153, 153); color: rgb(153, 153, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(153, 153, 153) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">這裡</font>與<font color="#999999" style="border: 0px none rgb(153, 153, 153); color: rgb(153, 153, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(153, 153, 153) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">這裡</font>。<br>
+<br>
+（我本來是在Mac OS X裡安裝VirtualBox，然後再安裝Ubuntu，以此環境編譯核心，但後來發現我不知道該如何把檔案傳到rpi上，所以放棄。）<br>
+<br>
+我是在Mac OS X 10.6.8上編譯核心。<br>
+<br>
+取得rpi修改過的Linux核心原始碼：<br>
+$ git clone git://github.com/raspberrypi/linux.git<br>
+或 <br>
+$ git clone https://github.com/raspberrypi/linux.git<br>
+<br>
+然後要取得.config檔，根據參考文件，可複製arch/arm/configs/bcmrpi_cutdown_defconfig當範本，另一種方式則為取得目前rpi裡使用的.config，啟動rpi後，以指令<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ zcat /proc/config.gz &gt; .config</font>可取得，然後再複製到Linux核心原始碼目錄的最上層。<br>
+<br>
+修改.config，加入對PPPoE的支援<br>
+<font color="#ff0ff" style="border: 0px none rgb(255, 15, 240); color: rgb(255, 15, 240); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 15, 240) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">CONFIG_PPP_FILTER=y</font><br>
+<font color="#ff0ff" style="border: 0px none rgb(255, 15, 240); color: rgb(255, 15, 240); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 15, 240) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">CONFIG_PPPOE=y</font><br>
+（也可以用m）。 <br>
+<br>
+接下來要安裝編譯工具組，首先安裝Xcode，然後要安裝一套GNU ARM toolchain，根據參考文件所說，可用<font color="#999999" style="border: 0px none rgb(153, 153, 153); color: rgb(153, 153, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(153, 153, 153) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">yagarto</font>，但不知為何我裝不起來，另一種方式為安裝MacPorts裡的arm-none-eabi-binutils與arm-none-eabi-gcc。<br>
+<br>
+首先到MacPorts網站， 下載安裝MacPorts本身。然後以底下指令安裝：<br>
+<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ sudo port install arm-none-eabi-binutils</font><br>
+<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ sudo port install arm-none-eabi-gcc</font><br>
+這些是GNU ARM toolchain。<br>
+<br>
+參考文件說若發生"找不到elf.h"的錯誤訊息，就需要進行底下步驟：<br>
+<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ sudo port install libelf</font><br>
+<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ sudo ln -s /opt/local/include/libelf /usr/include/libelf</font><br>
+<br>
+然後到<font color="#999999" style="border: 0px none rgb(153, 153, 153); color: rgb(153, 153, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(153, 153, 153) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">這裡</font>下載elf.h，到<font color="#999999" style="border: 0px none rgb(153, 153, 153); color: rgb(153, 153, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(153, 153, 153) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">這裡</font>下載elftypes.h，將這兩支檔案放進/usr/include，編輯elf.h檔加入如下內容：<br>
+<font color="#ff0ff" style="border: 0px none rgb(255, 15, 240); color: rgb(255, 15, 240); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 15, 240) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">#define R_386_NONE&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;0</font><br>
+<font color="#ff0ff" style="border: 0px none rgb(255, 15, 240); color: rgb(255, 15, 240); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 15, 240) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">#define R_386_32&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; 1</font><br>
+<font color="#ff0ff" style="border: 0px none rgb(255, 15, 240); color: rgb(255, 15, 240); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 15, 240) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">#define R_386_PC32&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;2</font><br>
+<font color="#ff0ff" style="border: 0px none rgb(255, 15, 240); color: rgb(255, 15, 240); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 15, 240) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">#define R_ARM_NONE&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;0</font><br>
+<font color="#ff0ff" style="border: 0px none rgb(255, 15, 240); color: rgb(255, 15, 240); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 15, 240) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">#define R_ARM_PC24&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;1</font><br>
+<font color="#ff0ff" style="border: 0px none rgb(255, 15, 240); color: rgb(255, 15, 240); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 15, 240) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">#define R_ARM_ABS32&nbsp; &nbsp;&nbsp; &nbsp; 2</font><br>
+<font color="#ff0ff" style="border: 0px none rgb(255, 15, 240); color: rgb(255, 15, 240); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 15, 240) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">#define R_MIPS_NONE&nbsp; &nbsp;&nbsp; &nbsp; 0</font><br>
+<font color="#ff0ff" style="border: 0px none rgb(255, 15, 240); color: rgb(255, 15, 240); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 15, 240) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">#define R_MIPS_16&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;1</font><br>
+<font color="#ff0ff" style="border: 0px none rgb(255, 15, 240); color: rgb(255, 15, 240); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 15, 240) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">#define R_MIPS_32&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;2</font><br>
+<font color="#ff0ff" style="border: 0px none rgb(255, 15, 240); color: rgb(255, 15, 240); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 15, 240) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">#define R_MIPS_REL32&nbsp; &nbsp;&nbsp; &nbsp;3</font><br>
+<font color="#ff0ff" style="border: 0px none rgb(255, 15, 240); color: rgb(255, 15, 240); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 15, 240) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">#define R_MIPS_26&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;4</font><br>
+<font color="#ff0ff" style="border: 0px none rgb(255, 15, 240); color: rgb(255, 15, 240); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 15, 240) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">#define R_MIPS_HI16&nbsp; &nbsp;&nbsp; &nbsp; 5</font><br>
+<font color="#ff0ff" style="border: 0px none rgb(255, 15, 240); color: rgb(255, 15, 240); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 15, 240) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">#define R_MIPS_LO16&nbsp; &nbsp;&nbsp; &nbsp; 6</font><br>
+<br>
+如此一來，核心原始碼ok了，工具部分也ok了。接下來要進行編譯了。<br>
+<br>
+下指令讀取.config組態設定。<br>
+<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ make ARCH=arm CROSS_COMPILE=/opt/local/bin/arm-none-eabi- oldconfig</font><br>
+<br>
+下指令進行建置（編譯、連結、等等）。<br>
+<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ make ARCH=arm CROSS_COMPILE=/opt/local/bin/arm-none-eabi-</font><br>
+<br>
+成功後在arch/arm/boot裡會出現Image。 <br>
+<br>
+然後下指令產生出模組。<br>
+<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ mkdir /tmp/modules</font><br>
+<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ make ARCH=arm modules_install INSTALL_MOD_PATH=/tmp/modules</font><br>
+<br>
+參考文件說rpi新版韌體可以直接吃Image，我不知道我的rpi的韌體部分是新的還是舊的，所以採用比較保險的方式。<br>
+<br>
+下載轉檔工具：<br>
+<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ git clone git://github.com/raspberrypi/tools</font><br>
+or<br>
+<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ git clone https://github.com/raspberrypi/tools</font><br>
+<br>
+在裡頭的mkimage子目錄下有支工具imagetool-uncompressed.py（python腳本檔），以底下指令把Image轉成rpi可用的kernel.img。<br>
+<br>
+<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$ python imagetool-uncompressed.py path/to/linux/arch/arm/boot/Image</font><br>
+<br>
+完成了，接下來就是把kernel.img放到記憶卡/boot（第一分割區）裡，把模組部分放到記憶卡根目錄（第二分割區）的/lib/modules裡，如此即可。<br>
+<br>
+（其實這部份我搞了好久，參考文件使用sshfs的方式，於是我為了在rpi上安裝<font color="#999999" style="border: 0px none rgb(153, 153, 153); color: rgb(153, 153, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(153, 153, 153) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">sshfs</font>，於是需要安裝<font color="#999999" style="border: 0px none rgb(153, 153, 153); color: rgb(153, 153, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(153, 153, 153) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">FUSE</font>，連帶地還要安裝<font color="#999999" style="border: 0px none rgb(153, 153, 153); color: rgb(153, 153, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(153, 153, 153) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">pkg-config</font>，而且太新的0.26還不行，必須裝0.25，然後還要安裝<font color="#999999" style="border: 0px none rgb(153, 153, 153); color: rgb(153, 153, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(153, 153, 153) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">glib</font>，最後終於有了sshfs後，用起來怪怪的，雖可掛載，但卻不能進入目錄裡，哇哩咧。最後以scp複製檔案的方式完成。）<br>
+<br>
+重新開機確定核心支援PPPoE後，安裝底下兩支軟體，<br>
+<font color="#999999" style="border: 0px none rgb(153, 153, 153); color: rgb(153, 153, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(153, 153, 153) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">pppd</font>與<font color="#999999" style="border: 0px none rgb(153, 153, 153); color: rgb(153, 153, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(153, 153, 153) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">rp-pppoe</font>，作了些設定，將帳號密碼填入後，耶，可以上網囉。 <br>
+<br>
+下圖是從Windows的Cygwin以ssh指令登入rpi後，再以telnet指令上ptt.cc，嗯，亂碼。<br>
+<br>
+<br>
+還好，若以<font color="#999999" style="border: 0px none rgb(153, 153, 153); color: rgb(153, 153, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(153, 153, 153) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">PieTTY</font>登入rpi，然後再以telnet上ptt.cc，哇，中文正常顯示囉。<br>
+<br>
+<br>
+有網路連線後，我用的映像檔（debian6-19-04-2012.img）預設會啟動NTP daemon，它會自動去網路上抓日期時間，太好囉。<br>
+<br>
+PS：rp-pppoe詢問我DNS伺服器的IP address，覆寫了/etc/resolv.conf。我以<font color="red" style="border: 0px none rgb(255, 0, 0); color: rgb(255, 0, 0); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Georgia, serif; margin: 0px; outline: rgb(255, 0, 0) none 0px; padding: 0px; text-align: -webkit-left; text-decoration: initial; word-wrap: break-word;">$sudo nano /etc/resolv.conf</font>編輯，把我想要的設定寫回去，各家ISP的DNS伺服器的IP address，到網路上找一找就有，譬如說，HiNet的為168.95.192.1與168.95.1.1，或是也可使用OpenDNS的208.67.222.222與208.67.220.220。</font></font></div><div><a href="thread-4490-1-1.html" style="border: 0px none rgb(51, 51, 51); color: rgb(51, 51, 51); display: inline; font-style: normal; font-variant: normal; font-weight: bold; font-size: 16px; line-height: normal; font-family: 'Microsoft Yahei', Hei, Tahoma, SimHei, sans-serif; outline: rgb(51, 51, 51) none 0px; padding: 0px; text-decoration: initial; word-wrap: break-word;">【分享】Raspberry Pi</a></div></body></html>
