@@ -6,9 +6,9 @@
 
 你可以使用你的浏览器访问
 
-本资源主页:http://flyher.github.io/shumeipai/
+本资源主页:http://flyher.github.io/shumeipai/index2.html
 
-MrakDown版本索引页面:http://flyher.github.io/shumeipai/index2.html
+MrakDown版本索引页面:http://flyher.github.io/shumeipai/
 
 由于引用的js中包含引用google font，测试发现谷歌浏览器可能因为此而丢失样式。
 
@@ -18,7 +18,7 @@ MrakDown版本索引页面:http://flyher.github.io/shumeipai/index2.html
 
 更新栏目:
 
-http://flyher.github.io/shumeipai/index2.html
+http://flyher.github.io/shumeipai/index.html
 
 ===
 
