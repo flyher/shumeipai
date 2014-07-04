@@ -10,9 +10,6 @@
 
 MrakDown版本索引页面:http://flyher.github.io/shumeipai/
 
-由于引用的js中包含引用google font，测试发现谷歌浏览器可能因为此而丢失样式。
-
-
 ===
 更新时间：2014-07-04
 
