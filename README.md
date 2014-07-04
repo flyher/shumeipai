@@ -8,7 +8,7 @@
 
 本资源主页:http://flyher.github.io/shumeipai/index2.html
 
-MrakDown版本索引页面:http://flyher.github.io/shumeipai/
+MrakDown版本索引页面:http://flyher.github.io/shumeipai/ [未完成]
 
 ===
 更新时间：2014-07-04
