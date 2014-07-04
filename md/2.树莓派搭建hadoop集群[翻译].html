@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html>
+<title>树莓派搭建hadoop集群[翻译]</title>
+<xmp theme="united" style="display:none;">
+[返回首页](../index2.html)
+
+##树莓派搭建hadoop集群[翻译]
+######Hadoop是由Java实现的, 所以在树莓派上运行就和在其他x86平台上运行一样简单. 首先, 我们需要安装支持树莓派的JVM. 可以选用OpenJDK或者Oracle的JDK 8. 我个人推荐JDK8, 其速度稍微快些, 但是OpenJDK安装更容易些. 
+1. 安装Java
+
+安装OpenJDK十分简单, 只要执行以下命令 
+
+```shell
+pi@raspberrypi ~ $ sudo apt-get install openjdk-7-jdk
+pi@raspberrypi ~ $ java -version
+java version "1.7.0_07"
+OpenJDK Runtime Environment (IcedTea7 2.3.2) (7u7-2.3.2a-1+rpi1)
+OpenJDK Zero VM (build 22.0-b10, mixed mode)
+```
+ 另外, 我们可以选择安装Oracle的JDK 8.可以从这获得: https://jdk8.java.net/fxarmpreview/index.html 
+```shell
+pi@raspberrypi ~ $sudo tar zxvf jdk-8-ea-b36e-linux-arm-hflt-*.tar.gz -C /opt
+pi@raspberrypi ~ $sudo update-alternatives --install "/usr/bin/java" 
+"java" "/opt/jdk1.8.0/bin/java" 1 
+pi@raspberrypi ~ $ java -version
+java version "1.8.0-ea"
+Java(TM) SE Runtime Environment (build 1.8.0-ea-b36e)
+Java HotSpot(TM) Client VM (build 25.0-b04, mixed mode)
+```
+如果你两个都装了, 用以下命令来切换即可: 
+```shell
+sudo update-alternatives --config java
+```
+2. 新增一个hadoop系统用户 
+
+```shell
+pi@raspberrypi ~ $ sudo addgroup hadoop
+pi@raspberrypi ~ $ sudo adduser --ingroup hadoop hduser
+pi@raspberrypi ~ $ sudo adduser hduser sudo
+```
+3. 设置SSH 
+pi@raspberrypi ~ $ su - hduserhduser@raspberrypi ~ $ ssh-keygen -t rsa -P ""
+
+这会生成一个匹配空密码的RSA密钥. 在与其他节点通讯时Hadoop将不再提示输入密码
+
+hduser@raspberrypi ~$ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+现在设置SSH允许用刚生成的密钥访问
+
+hduser@raspberrypi ~$ ssh localhost
+
+现在我们就应该可以不使用密码也可以登录了
+
+4. 安装Hadoop
+
+我们可以从http://www.apache.org/dyn/closer.cgi/hadoop/core下载hadoop
+```shell
+hduser@raspberrypi ~$ wget http://mirror.catn.com/pub/apache/hadoop/core/hadoop-1.1.2/hadoop-1.1.2.tar.gz
+hduser@raspberrypi ~$sudo tar vxzf hadoop-1.1.2.tar.gz -C /usr/local
+hduser@raspberrypi ~$cd /usr/local
+hduser@raspberrypi /usr/local$ sudo mv hadoop-1.1.2 hadoop
+hduser@raspberrypi /usr/local$ sudo chown -R hduser:hadoop hadoop
+```
+现在hadoop就安装好了. 编译home目录下的.bashrc文件, 将以下内容添加到其中
+```shell
+export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-armhf
+export HADOOP_INSTALL=/usr/local/hadoop
+export PATH=$PATH:$HADOOP_INSTALL/bin
+```
+如果你用的是oracle的JDK, 相应的修改JAVA_HOME.
+
+重启一下树莓派来验证安装是否成功:
+```shell
+hduser@raspberrypi ~$ hadoop version
+Hadoop 1.1.2
+Subversion https://svn.apache.org/repos/asf/hadoop/common/branches/
+branch-1.1 -r 1440782
+Compiled by hortonfo on Thu Jan 31 02:03:24 UTC 2013
+From source with checksum c720ddcf4b926991de7467d253a79b8b
+```
+ 5. 配置Hadoop
+注意: 这里的配置是hadoop单节点模式的最低配.
+
+```shell
+配置文件位于"/usr/local/hadoop/conf/", 我们需要修改core-site.xml, hdfs-site.xml, mapred-site.xml三个文件
+```
+core-site.xml
+```shell
+<configuration>
+  <property>
+    <name>hadoop.tmp.dir</name>
+    <value>/fs/hadoop/tmp</value>
+  </property>
+  <property>
+    <name>fs.default.name</name>
+    <value>hdfs://localhost:54310</value>
+  </property>
+</configuration>
+```
+```shell
+mapred-site.xml
+
+<configuration>
+  <property>
+    <name>mapred.job.tracker</name>
+    <value>localhost:54311</value>
+  </property>
+</configuration>
+```
+```shell
+hdfs-site.xml
+
+<configuration>
+  <property>
+    <name>dfs.replication</name>
+    <value>1</value>
+  </property>
+</configuration>
+```
+哦了, 即将完工, 还剩最后一步.
+
+```shell
+hduser@raspberrypi ~$ sudo mkdir -p /fs/hadoop/tmp
+hduser@raspberrypi ~$ sudo chown hduser:hadoop /fs/hadoop/tmp
+hduser@raspberrypi ~$ sudo chmod 750 /fs/hadoop/tmp
+hduser@raspberrypi ~$hadoop namenode -format
+```
+注意:
+
+如果选用的是JDK 8, 我们需要强制在JVM client模式下运行DataNode, 因为JDK 8还不支持server模式. 进入/usr/local/hadoop/bin目录中来编辑hadoop文件(请先备份). 使用nano进行修改的步骤如下:nano hadoop, ctrl-w输入“-server”进行查找. 我们需要删除“-server”这个参数, 然后保存退出就行了.
+
+hadoop单节点系统就算是搭建完成了. 下面给一些有用的命令.
+
+```shell
+1. jps           // 输出本地VM标识符
+2. start-all.sh  // 启动所有hadoop进程
+3. stop-all.sh   // 停止所有hadoop进程
+```
+
+版权:2013-07-14 13:39 Oschina 作者:未知
+
+</xmp>
+
+<script src="../js/strapdown.js"></script>
+</html>

@@ -1,0 +1,505 @@
+﻿<!DOCTYPE html>
+<html>
+<title>树莓派搭建Google TV[翻译]</title>
+<xmp theme="united" style="display:none;">
+[返回首页](../index2.html)
+
+##树莓派搭建Google TV[翻译]
+######目录
+
+*Google TV是啥玩意 ?
+
+*搭建我们自己的Google TV
+
+**最终效果
+
+*步骤
+
+**安装软件:
+
+***安装Raspbian和NodeJS
+
+***安装Chromium和Youtube-dl
+
+**shell命令及脚本
+
+**搭建后台: NodeJS + Express + Socket.io
+
+***添加Socket.io
+
+***客户端处理Socket通信
+
+***在Node服务器上执行Shell命令
+
+***添加OMXControl – 可以控制OMXPlayer的Node模块
+
+***汇总
+
+**搭建前端
+
+*总结
+
+![shumeipai](../src/3_1.jpg)
+
+##Google TV是啥玩意 ?
+![shumeipai](../src/3_2.jpg)
+
+Google TV是支持自选图像、宽带网络、传统电视信号的综合平台，更附带电视节目搜索功能. 谷歌公布了其新版电视的两个版本, 第一个叫做Buddy Box, 由索尼代工的电视盒并且价格昂贵, 第二个是即将发布的集成电视, 将其电视盒内置到电视机内部.
+
+Google TV界面预览:
+![shumeipai](../src/3_3.jpg)
+
+开发者: 可以为Google TV开发新的网页应用或者把已有的android应用改为适配大尺寸屏幕, 在[谷歌的开发者网站](https://developers.google.com/tv/)可以看到详细介绍:
+
+硬件:
+
+* [树莓派](http://www.raspberrypi.org/)
+
+软件:
+
+* [Raspbian]([http://www.raspbian.org/)系统 – 为树莓派特殊定制的Debian发行版
+
+* [NodeJs](http://nodejs.org/)
+
+    |* [Socket.io](http://socket.io/) – 通过websocket远程连接TV
+   
+    |* [Express](http://expressjs.com/) – 用来处理一些基本的http请求
+    
+    |* [Omxcontrol](https://npmjs.org/package/omxcontrol) – 用来控制树莓派上最棒的视频播放器OMXPlayer
+* [Chromium](http://www.chromium.org/Home)浏览器
+
+* [OMXPlayer](http://omxplayer.sconde.net/)
+
+* [Youtube-dl](http://rg3.github.io/youtube-dl/) – 一个下载youtube视频的脚本
+
+    |* [QuoJS](http://quojs.tapquo.com/) – 在手机网页上处理滑动手势
+
+    |* HTML5, CSS3, Javascript, 和[Moustache](http://mustache.github.io/)模板引擎
+
+    |* Youtube API
+
+#####最终效果
+![shumeipai](../src/3_4.jpg)
+
+树莓派TV及其特殊的远程遥控器
+
+ 
+##步骤
+
+主要分为4步:
+
+1.安装软件
+
+2.shell命令及脚本
+
+3.搭建后台: NodeJS + Express + Socket.io
+
+4.搭建前端
+
+##安装软件:
+######安装Raspbian和NodeJS
+
+按照这篇[教程](http://blog.rueedlinger.ch/2013/03/raspberry-pi-and-nodejs-basic-setup/)在树莓派上安装Raspbian和Node Js
+
+(标记一下，貌似上面链接不存在的，回头找找)
+
+######安装Chromium和Youtube-dl
+
+安装Chromium浏览器
+
+```shell
+sudo apt-get install chromium-browser
+```
+为了显示效果更佳我们可以安装使用MC字体
+```shell
+sudo apt-get install ttf-mscorefonts-installer
+```
+安装并升级Youtube下载器
+```shell
+sudo apt-get install youtube-dl 
+
+sudo youtube-dl -U
+```
+注意-1: 现在还无法在树莓派上用Chromium看youtube的视频流, 因为在那种情况下视频并未通过GPU渲染, 会巨卡无比. Youtube-dl是不错的替代方案, 先将视频下载下来然后用OMXPlayer播放, 由于用GPU渲染了视频, 所以播放高清视频比较顺畅.
+
+注意-2: Raspbian上默认就装了OMXPlayer.
+
+##shell命令及脚本
+
+如果你在用SSH连接树莓派, 你需要先添加个环境变量“DISPLAY=:0.0″, 执行以下命令
+```shell
+export DISPLAY=:0.0
+```
+执行以下命令可列出全部环境变量
+```shell
+env
+```
+在全屏模式下测试Chromium:
+```shell
+chromium --kiosk http://www.google.com
+```
+测试Youtube-dl
+```shell
+youtube-dl youtube_video_url
+```
+你可以给youtube-dl加几个参数, 比如添加“-o youtube ID [dot] the extension”会自动更改下载文件的名称,  “-f /22/18 ”可以强制下载视频的720p版本. 这里有完整的参数格式列表.
+```shell
+youtube-dl  -o "%(id)s.%(ext)s" -f /22/18 youtube_video_url
+```
+下载视频完成后, 用OMXPLayer来播放
+```shell
+omxplayer youtube_video_file
+```
+可以用键盘快捷键来暂停/恢复视频, 更多快捷键说明看这里
+
+太棒了! 下面就让我们用Node JS来自动化实现上面的整个过程
+
+##搭建后台: NodeJS + Express + Socket.io
+
+下面是源码的目录结构:
+
+    public
+
+        js
+
+        css
+
+        images
+
+        fonts
+
+        index.html
+
+        remote.html
+
+    app.js
+
+    package.json
+
+Package.json – npm用来自动安装依赖的JSON文件, 并存储了一些基本信息
+```json
+   { "name": "GoogleTV-rPi", 
+	  "version": "0.0.1", 
+	  "private": false, 
+	  "scripts": { "start": "node app.js" }, 
+	  "dependencies": { "express": "3.1.1", 
+	                    "socket.io":"0.9.14", 
+	                    "omxcontrol":"*" }
+	}
+```
+在创建并修改文件之后, 在应用目录执行下列命令来安装依赖.
+```shell
+npm install
+```
+注意-3: 在安装依赖前会自动创建一个名为node_modules 的文件夹, 如果你使用git, 别忘了要创建一个.gitignore文件并把“ node_modules”写入其中, 在添加git项目时忽略这个文件夹.
+
+新建一个名为app.js的文件来创建我们的本地HTTP访问服务
+```javascript
+var express = require('express')
+      , app = express()  
+	  , server = require('http').createServer(app)
+	  , path = require('path') 
+	// all environments 
+	app.set('port', process.env.TEST_PORT || 8080);
+	app.use(express.favicon());
+	app.use(express.logger('dev')); app.use(express.bodyParser());
+	app.use(express.methodOverride());
+	app.use(express.static(path.join(__dirname, 'public'))); 
+	//Routes
+	app.get('/', function (req, res) {
+	  res.sendfile(__dirname + '/public/index.html');
+	});
+	 
+	app.get('/remote', function (req, res) {
+	  res.sendfile(__dirname + '/public/remote.html');
+	});
+	 
+	server.listen(app.get('port'), function(){
+	  console.log('Express server listening on port ' + app.get('port'));
+	});
+```
+上面已经配置了本地访问的路径. 现在我们来测试一下搭建是否成功, 在public/目录中创建index.html和remote.html文件, 写入“Hello, World”, 然后执行命令行
+```shell
+node app.js
+```
+或
+```shell
+npm start
+```
+注意-4: 要在 package.json文件中添加:
+```shell
+	...
+	"scripts": {
+	        "start": "node app.js"
+	    },
+	...
+```
+当服务正常启动时会输出"Express server listening on port 8080"
+执行下列命令来测试我们的“Hello, World”页面
+```shell
+node app.js &
+```
+这是在后台启动Node应用的最原始方法, 如果你熟悉node, 你可以用[Forever.js](https://github.com/nodejitsu/forever)这样的模块来自动执行这项简单的任务
+
+我们的Node应用现在已经在后台启动了, 执行下列命令用chromium在全屏模式下打开我们的Hello, World页面.
+```shell
+chromium --kiosk http://localhost:8080
+```
+######添加Socket.io
+
+我一直都认为WebSocket是现代web的基础, 对于Socket.io我认为其意义重大
+
+当AJAX刚兴起的时候, 虽然很神往, 但是开发者总被不同浏览器处理异步JavaScript和XML请求时不同的方式所困扰. jQuery提供了统一的一组函数从而解决了这个噩梦. Socket.io对于WebSocket有同样作用, 甚至更多!
+
+为了在所有浏览器上提供实时连接, Socket.IO会根据运行时选择传输能力最强的方式, 且不需要修改API. 下面是其支持的传输协议:
+
+    WebSocket
+
+    Adobe&reg; Flash&reg; Socket
+
+    AJAX long polling
+
+    AJAX multipart streaming
+
+    Forever Iframe
+
+    JSONP Polling
+
+把下列内容添加到app.js文件来整合Socket.io:
+```javascript
+  var express = require('express')
+      , app = express()  
+	  , server = require('http').createServer(app)
+	  , path = require('path')
+	  , io = require('socket.io').listen(server)
+	  , spawn = require('child_process').spawn
+```
+并添加以下内容降低日志级别:
+```javascript
+	//Socket.io Config 
+	io.set('log level', 1);
+```
+现在我们的Socket.io就配好了, 但其还没有任何功能, 现在我们要实现如何处理从客户端发到服务端的消息和事件.
+
+下面是实现服务端功能的方法, 对应的我们还要实现在客户端实现如何处理消息, 这会在下一章介绍.
+```javascript
+  io.sockets.on('connection', function (socket) { 
+	    socket.emit('message', { message: 'welcome to the chat' });
+	    socket.on('send', function (data) { 
+	        //Emit to all
+	        io.sockets.emit('message', data);
+	    });
+	});
+```
+服务端现在会在有新客户端连接后发送消息“message”, 然后等待接收名为“send”的事件来处理数据再回复所有连接的客户端
+
+在这里我们只有两种类型的客户端: 树莓派的显示器 (屏幕) 和移动Web应用 (远程控制)
+```javascript
+  var ss; //Socket.io Server 
+    io.sockets.on('connection', function (socket) { 
+	    socket.on("screen", function(data){ 
+	        socket.type = "screen"; 
+	        //Save the screen socket 
+	        ss = socket;
+	        console.log("Screen ready...");
+	    });
+	 
+	    socket.on("remote", function(data){ 
+	        socket.type = "remote";
+	        console.log("Remote ready..."); 
+	        if(ss != undefined){
+	            console.log("Synced...");
+	        }
+	    });
+	)};
+```
+######客户端处理Socket通信
+
+在remote.html和index.html中添加下列内容:
+```javascript
+ <script src="/socket.io/socket.io.js"> </script> 
+    <script> 
+	//use http://raspberryPi.local if your using Avahi Service  
+	//or use your RasperryPi IP instead 
+	var socket = io.connect('http://raspberrypi.local:8080');
+	socket.on('connect', function(data){ 
+	    socket.emit('screen');
+	}); 
+    </script>
+```
+######在Node服务器上执行Shell命令
+
+Node允许我们新建子进程来运行系统命令, 并监听其输入输出. 还能给命令传递参数, 甚至能把一个命令的执行结果重定向给另一个命令. 
+
+在NodeJS中执行shell命令的基本方法:
+```shell
+spawn('echo',['foobar']);
+```
+如果需要重定向输出, 我们需要把下列函数加到app.js文件中:
+```javascript
+    //Run and pipe shell script output  
+	function run_shell(cmd, args, cb, end) { 
+	    var spawn = require('child_process').spawn,
+	        child = spawn(cmd, args),
+	        me = this;
+	    child.stdout.on('data', function (buffer) { cb(me, buffer) });
+	    child.stdout.on('end', end);
+	}
+```
+##添加OMXControl – 可以控制OMXPlayer的Node模块
+
+我是偶然间在npmjs.org上发现可以控制OMXPlayer的模块!
+把下列内容添加app.js文件中来使用这个模块.
+```javascript
+    var omx = require('omxcontrol'); 
+	//use it with express 
+	app.use(omx());
+```
+
+这个模块会为我们创建以下访问路径来控制视频的播放:
+```html
+	http://localhost:8080/omx/start/:filename
+    
+	http://localhost:8080/omx/pause
+    
+	http://localhost:8080/omx/quit
+```
+太TM帅气鸟!
+
+##汇总
+
+最终的app.js文件
+```javascript
+/**
+     * Module dependencies.
+	 */ 
+	var express = require('express')
+	  , app = express()  
+	  , server = require('http').createServer(app)
+	  , path = require('path')
+	  , io = require('socket.io').listen(server)
+	  , spawn = require('child_process').spawn
+	  , omx = require('omxcontrol'); 
+	// all environments 
+	app.set('port', process.env.TEST_PORT || 8080);
+	app.use(express.favicon());
+	app.use(express.logger('dev'));
+	app.use(express.bodyParser());
+	app.use(express.methodOverride());
+	app.use(express.static(path.join(__dirname, 'public')));
+	app.use(omx()); 
+	//Routes 
+	app.get('/', function (req, res) { 
+	    res.sendfile(__dirname + '/public/index.html');
+	});
+	app.get('/remote', function (req, res) { 
+	    res.sendfile(__dirname + '/public/remote.html');
+	}); 
+	//Socket.io Congfig 
+	io.set('log level', 1);
+	 
+	server.listen(app.get('port'), function(){ 
+	    console.log('Express server listening on port ' + app.get('port'));
+	}); 
+	//Run and pipe shell script output  
+	function run_shell(cmd, args, cb, end) { 
+	    var spawn = require('child_process').spawn,
+	        child = spawn(cmd, args),
+	        me = this;
+	    child.stdout.on('data', function (buffer) { cb(me, buffer) });
+	    child.stdout.on('end', end);
+	} 
+	//Save the Screen Socket in this variable 
+	var ss; 
+	//Socket.io Server 
+	io.sockets.on('connection', function (socket) { 
+	    socket.on("screen", function(data){ 
+	        socket.type = "screen";
+	        ss = socket;
+	        console.log("Screen ready...");
+      });
+	    socket.on("remote", function(data){ socket.type = "remote";
+	        console.log("Remote ready...");
+	    });
+	 
+	    socket.on("controll", function(data){ 
+	        console.log(data); 
+	        if(socket.type === "remote"){ 
+	            if(data.action === "tap"){ 
+	                if(ss != undefined){
+	                    ss.emit("controlling", {action:"enter"}); 
+	                }
+            } else if(data.action === "swipeLeft"){ 
+	                if(ss != undefined){
+	                    ss.emit("controlling", {action:"goLeft"}); 
+	                }
+	            } else if(data.action === "swipeRight"){ 
+	                if(ss != undefined){
+	                    ss.emit("controlling", {action:"goRight"}); 
+	                }
+	            }
+	         }
+	     });
+	 
+	    socket.on("video", function(data){ 
+	        if( data.action === "play"){ 
+	            var id = data.video_id,
+	                url = "http://www.youtube.com/watch?v="+id; 
+	            var runShell = new run_shell('youtube-dl',
+	                ['-o','%(id)s.%(ext)s','-f','/18/22',url], 
+	                function (me, buffer) { 
+	                    me.stdout += buffer.toString();
+	                    socket.emit("loading",{output: me.stdout});
+	                    console.log(me.stdout)
+	                }, 
+	                function () { 
+	                    //child = spawn('omxplayer',[id+'.mp4']);
+	                    omx.start(id+'.mp4');
+	                }
+	            );
+	        }    
+	 
+	    });
+	});
+```
+##搭建前端
+树莓派TV前端屏幕显示样式:
+
+![shumeipai](../src/3_5.jpg)
+
+关于如何编写这个前端的介绍超出了本教程的范围, 不过我想我会在不久之后发一些在开发中实用的小技巧.
+
+在为大尺寸屏幕设计时, 你应当遵循一些设计上的考量, Google在其[开发者网站](https://developers.google.com/tv/web/docs/design_for_tv)上详述了一套他们的标准
+
+树莓派TV远程控制端样式:
+
+![shumeipai](../src/3_6.jpg)
+
+大部分远程控制端设计粗糙, 充满了样式丑陋的按钮, 所以我决定使用QuoJS, 现在变得又帅气又易用!
+```javascript   
+   $$(".r-container").swipeLeft(function(){ 
+	    socket.emit('control',{action:"swipeLeft"}); 
+	});
+```
+这是如何用”swipeLeft”方法把“Control”消息传回服务器的示例.
+
+服务器会把这条消息传到屏幕上, 然后根据选择框的指向(Watch, Listen, Play)进行处理
+
+这里还有几个小技巧能让你的web应用在iphone上看起来像原生应用一样带有好看的Icon和启动画面.
+
+只需要把下列内容加到HTML的 <head></head>块中
+```html
+	<link rel="apple-touch-icon" href="images/custom_icon.png"/> 
+	<link rel="apple-touch-startup-image" href="images/startup.png"> 
+	<meta name="viewport" content="width=device-width initial-scale=1, maximum-scale=1, user-scalable=no" /> 
+	<meta name="apple-mobile-web-app-title" content="Remote"> 
+	<meta name="apple-mobile-web-app-capable" content="yes">
+```
+##总结
+
+这个项目仍在不断开发中, 不久之后便会有更新. 如果你喜欢本教程不妨上[Github](https://github.com/DonaldDerek/PiR.tv)给项目加个星标. 视频也录好了! 请看[here](http://www.menaversity.com/). 
+
+</xmp>
+
+<script src="../js/strapdown.js"></script>
+</html>
