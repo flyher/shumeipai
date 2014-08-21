@@ -1,0 +1,548 @@
+﻿<!DOCTYPE html>
+<html>
+<title>Ajax的几种实现方式</title>
+<xmp theme="united" style="display:none;">
+####[[返回目录]](../index.html)    [[Give me a Star]](https://github.com/flyher/shumeipai)
+
+##Ajax的几种实现方式
+######目录
+
+* 1.使用$.ajax向普通页面发送Get请求
+
+* 2.使用$.ajax Get请求调用服务器普通页面的特定方法
+
+* 3.$.ajax POST请求一般处理程序返回json
+
+* 4.$.ajax 使用ScriptManager请求WebService
+
+* 5.$.ajax WebService
+
+
+![ajax](../src/1000_1.jpg)
+
+##1.使用$.ajax向普通页面发送Get请求
+
+* 本方式一共有两个页面
+
+** 发起请求：1_ajax向普通页面发送get请求.aspx
+
+请求前页面：
+![ajax](../src/1000_2.png)
+
+请求后页面：
+![ajax](../src/1000_4.png)
+
+** 被请求：1_test.aspx
+
+被请求页面：
+![ajax](../src/1000_3.png)
+
+
+
+* 页面源码 
+
+** 1_ajax向普通页面发送get请求.aspx
+
+请求页 前端代码(后端无代码):
+
+```html
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <script src="js/jquery-1.4.1.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function Get() {
+            $.ajax({
+                type: 'get',
+                url: '1_test.aspx',
+                async: true,
+                success: function (result) {
+                    set(result);
+                    alert(result);
+                },
+                error: function (result) {
+                    set(result);
+                }
+            });
+        }
+        function set(txt) {
+            document.getElementById("div1").innerHTML = txt;
+        }
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+		<div>
+			<div>ajax向普通页面发送get请求</div>
+			<input id="btn1" type="button" value="发送请求" onclick="Get()"/>
+			<div id="div1">
+			</div>
+		</div>
+    </form>
+</body>
+</html>
+
+```
+
+** 1_test.aspx
+
+被请求页 前端代码(后端无代码)
+
+```html
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+		<div>
+			1_ajax向普通页面发送get请求：
+			这是被请求的页面(1_test.aspx)。
+		</div>
+    </form>
+</body>
+</html>
+```
+
+
+##2.使用$.ajax Get请求调用服务器普通页面的特定方法
+
+* 本方法一共有两个页面
+
+** 发起请求：2_ajax GET请求调用服务器特定方法.aspx
+
+请求前页面：
+![ajax](../src/1000_5.png)
+
+请求后页面：
+![ajax](../src/1000_7.png)
+
+** 被请求：2_test.aspx
+
+被请求页面：
+![ajax](../src/1000_6.png)
+
+
+* 页面源码 
+
+** 2_ajax GET请求调用服务器特定方法.aspx
+
+请求页 前端代码(后端无代码):
+
+
+```html
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <script src="js/jquery-1.4.1.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btn1").click(function () {
+                var type = $("input[name='rdn1']:checked").val();
+                $.ajax({
+                    type: 'get',
+                    url: "2_test.aspx",
+                    async: true,
+                    data: { action: type },
+                    success: function (result) {
+                        set(result);
+                    },
+                    error: function () {
+                        set("error");
+                    }
+                });
+            });
+        });
+        function set(txt) {
+            document.getElementById("div1").innerHTML = txt;
+        }
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        <input id="rdi1" type="radio" name="rdn1" value="getTime" checked="checked"/>getTime
+        <input id="rdi2" type="radio" name="rdn1" value="getDate"/>getDate
+        <br />
+        <input id="btn1" type="button" value="提交" />
+    </div>
+    <div id="div1"></div>
+    </form>
+</body>
+</html>
+```
+
+** 2_test.aspx
+
+被请求页 后端代码(前端无代码)
+
+```aspx
+namespace _20140821Ajax实例
+{
+    public partial class _2_test : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            string str = Request.QueryString["action"];
+            Response.Clear();//清除所有之前生成的Response内容
+            if (!string.IsNullOrEmpty(str))
+            {
+                switch (str)
+                {
+                    case "getTime":
+                        Response.Write(gettime());
+                        break;
+                    case "getDate":
+                        Response.Write(getdate());
+                        break;
+                    default:
+                        Response.Write("1");
+                        break;
+                }
+            }
+        }
+        private string gettime()
+        {
+            return DateTime.Now.ToShortTimeString();
+        }
+        private string getdate()
+        {
+            return DateTime.Now.ToShortDateString();
+        }
+    }
+}
+```
+
+##3.$.ajax POST请求一般处理程序返回json
+
+* 本方法一共有两个页面
+
+** 发起请求：3_ajax POST与json.aspx
+
+请求前页面：
+![ajax](../src/1000_8.png)
+
+请求后页面：
+![ajax](../src/1000_9.png)
+
+** 被请求：handler/3_Handler1.ashx
+
+被请求页面无前端
+
+* 页面源码 
+
+** 3_ajax POST与json.aspx
+
+请求页 前端代码(后端无代码):
+
+```html
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+	<script src="js/jquery-1.4.1.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnPost").click(function () {
+                $.ajax({
+                    type: 'post',
+                    url: 'handler/3_Handler1.ashx',
+                    async: true,
+                    data: { id: 2 },
+                    success: function (result) {
+                        set(result);
+                        var stu = eval('(' + result + ')');
+                        set(stu.id);
+                        set(stu.name);
+                        set(stu.age);
+                    },
+                    error: function () {
+                        set("error");
+                    }
+                });
+            });
+        });
+        function set(txt) {
+            document.getElementById("div1").innerHTML += txt + "<br/>";
+        }
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <br />
+            <input id="btnPost" type="button" value="提交" />
+        </div>
+        <div id="div1"></div>
+    </form>
+</body>
+</html>
+```
+
+** handler/3_Handler1.ashx
+
+被请求页 后端代码(无前端):
+
+```ashx
+namespace _20140821Ajax实例.handler
+{
+    /// <summary>
+    /// _3_Handler1 的摘要说明
+    /// </summary>
+    public class _3_Handler1 : IHttpHandler
+    {
+
+        public void ProcessRequest(HttpContext context)
+        {
+            Stu stu = new Stu();
+            int id = Convert.ToInt32(context.Request.Form["id"]);
+            if (id == 1)
+            {
+                stu.name = "name1";
+
+            }
+            else
+            {
+                stu.name = "这是name：" + id.ToString();
+            }
+            string stujsonstr = JsonConvert.SerializeObject(stu);
+            context.Response.Write(stujsonstr);
+        }
+
+        public bool IsReusable
+        {
+            get
+            {
+                return false;
+            }
+        }
+    }
+}
+```
+
+##4.$.ajax 使用ScriptManager请求WebService
+
+* 本方法一共有两个页面
+
+** 发起请求：4_WebService与ScriptManager.aspx
+
+请求前页面：
+![ajax](../src/1000_10.png)
+
+请求后页面：
+![ajax](../src/1000_12.png)
+
+** 被请求：webservice/4_WebService1.asmx
+
+被请求的webservice页面：
+![ajax](../src/1000_11.png)
+
+* 页面源码 
+
+** 4_WebService与ScriptManager.aspx
+
+请求页 前端代码(后端无代码):
+
+```html
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <script src="js/jquery-1.4.1.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnPost").click(function () {
+                webservice._4_WebService1.GetStu(1, function (result) {
+                    console.log(result);
+                    set(result.id);
+                    set(result.name);
+                }, function () {
+                    set("error");
+                });
+            });
+        });
+        function set(txt) {
+            document.getElementById("div1").innerHTML=txt;
+        }
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="clientid" runat="server">
+            <Services>
+                <asp:ServiceReference Path="~/webservice/4_WebService1.asmx" />
+            </Services>
+        </asp:ScriptManager>
+
+        <div>
+            <input id="btnPost" type="button" value="提交" />
+        </div>
+        <div id="div1"></div>
+    </form>
+</body>
+</html>
+```
+** webservice/4_WebService1.asmx
+
+被请求页 后端代码(无前端):
+
+```asmx
+namespace webservice
+{
+    /// <summary>
+    /// _4_WebService1 的摘要说明
+    /// </summary>
+    [WebService(Namespace = "http://tempuri.org/")]
+    [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+    [System.ComponentModel.ToolboxItem(false)]
+    // 若要允许使用 ASP.NET AJAX 从脚本中调用此 Web 服务，请取消对下行的注释。
+    
+    [System.Web.Script.Services.ScriptService]//第4种方法取消注释此句
+    public class _4_WebService1 : System.Web.Services.WebService
+    {
+
+        [WebMethod]
+        public Stu GetStu(int id)
+        {
+            if (id == 1)
+            {
+                return new Stu() { id = 1, name = "名字1" };
+            }
+            else
+            {
+                return new Stu() { id = 2, name = "名字" + id.ToString() };
+            }
+        }
+		[WebMethod]
+        public string GetDateTime(bool isLong)
+        {
+            if (isLong)
+            {
+                return DateTime.Now.ToLongDateString();
+            }
+            else
+            {
+                return DateTime.Now.ToShortDateString();
+            }
+        }
+    }
+}
+```
+
+##5.$.ajax WebService
+
+* 本方法一共有两个页面
+
+** 发起请求：5_ajax+WebService.aspx
+
+
+请求前页面：
+![ajax](../src/1000_13.png)
+
+请求后页面：
+![ajax](../src/1000_14.png)
+
+** 被请求：webservice/4_WebService1.asmx
+
+被请求的webservice页面：
+![ajax](../src/1000_11.png)
+
+* 页面源码 
+
+**  5_ajax+WebService.aspx
+
+请求页 前端代码(后端无代码):
+
+```html
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <script src="js/jquery-1.4.1.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnPost").click(function () {
+                $.ajax({
+                    type: 'post',
+                    url: 'webservice/4_WebService1.asmx/GetDateTime',
+                    async: true,
+                    data: { isLong: false },
+                    success: function (result) {
+                        var type = $(result).find('string').text();
+                        set(type);
+                    }
+                });
+            });
+        });
+        function set(txt) {
+            document.getElementById("div1").innerHTML = txt;
+        }
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <input id="btnPost" type="button" value="提交" />
+        </div>
+        <div id="div1"></div>
+    </form>
+</body>
+</html>
+
+```
+
+** webservice/4_WebService1.asmx
+
+被请求页 后端代码(无前端):
+
+```asmx
+namespace webservice
+{
+    /// <summary>
+    /// _4_WebService1 的摘要说明
+    /// </summary>
+    [WebService(Namespace = "http://tempuri.org/")]
+    [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+    [System.ComponentModel.ToolboxItem(false)]
+    // 若要允许使用 ASP.NET AJAX 从脚本中调用此 Web 服务，请取消对下行的注释。
+
+    //[System.Web.Script.Services.ScriptService]//第4种方法取消注释此句
+    public class _4_WebService1 : System.Web.Services.WebService
+    {
+
+        [WebMethod]
+        public Stu GetStu(int id)
+        {
+            if (id == 1)
+            {
+                return new Stu() { id = 1, name = "名字1" };
+            }
+            else
+            {
+                return new Stu() { id = 2, name = "名字" + id.ToString() };
+            }
+        }
+        [WebMethod]
+        public string GetDateTime(bool isLong)
+        {
+            if (isLong)
+            {
+                return DateTime.Now.ToLongDateString();
+            }
+            else
+            {
+                return DateTime.Now.ToShortDateString();
+            }
+        }
+    }
+}
+
+```
+
+
+
+####[[返回目录]](../index.html)    [[Give me a Star]](https://github.com/flyher/shumeipai)
+
+![Github](../src/logo.gif)© 2014 [flyher@GitHub, Inc.](https://github.com/flyher)
+	
+</xmp>
+
+<script src="../js/strapdown.js"></script>
+</html>
