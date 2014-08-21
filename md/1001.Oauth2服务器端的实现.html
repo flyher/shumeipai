@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html>
+<title>Oauth2服务器端的实现</title>
+<xmp theme="united" style="display:none;">
+####[[返回目录]](../index.html)    [[Give me a Star]](https://github.com/flyher/shumeipai)
+
+##Oauth2服务器端的实现
+######目录
+
+* 1.什么是Oauth2
+
+* 2.为什么要使用Oauth2以及服务提供方，用户，客户端三方关系
+
+* 3.请求流程及截图演示
+
+* 4.服务端API和客户端Demo代码实现
+
+
+![ajax](../src/1001_1.jpg)
+
+##1.什么是Oauth2
+
+OAuth（开放授权）是一个开放标准，允许用户让第三方应用访问该用户在某一网站上存储的私密的资源（如照片，视频，联系人列表），而无需将用户名和密码提供给第三方应用。
+
+OAuth协议的最新版本为OAuth2.0。
+
+
+##2.为什么要使用Oauth2以及服务提供方，用户，客户端三方关系
+
+#### 为什么要使用Oauth2:
+
+* 发起方为用户
+
+* 客户端 使用服务提供方提供的用户资源
+
+* 这些资源需要用户授权给客户端
+
+* 用户不想把自己在服务提供方的密码提供给客户端
+
+* 由此产生了Oauth.
+
+#### 三方关系
+
+* 服务提供方，用户使用服务提供方来存储受保护的资源，如照片，视频，联系人列表。
+
+* 用户，存放在服务提供方的受保护的资源的拥有者。
+
+* 客户端，要访问服务提供方资源的第三方应用，通常是网站，如提供照片打印服务的网站。在认证过程之前，客户端要向服务提供者申请客户端标识。
+
+#### 对各方好处:
+
+* 对用户:无需提供给客户端自己在服务提供方的密码信息
+
+* 对客户端：无需专门做一套用户注册，校验的系统
+
+* 对服务提供商：提高知名度和自己平台用户的通用性
+
+#### 例子:
+
+* 社会化评论系统：友言，多说 ，多用于静态博客
+
+![oauth2](../src/1001_2.png)
+
+* 合作站点登录
+
+## 3.请求流程
+
+#### 服务器端流程
+
+1.登录流程开始于重定向用户浏览器（如果需要的话，可以弹出窗口或打开新页面），
+
+![oauth2](../src/1001_3.png)
+
+并传递三个必须参数:
+
+* client_id：必须参数。在开发者中心注册应用时获得的APPKey
+
+* redirect_uri：流程结束后要跳转回得URL。redirect_uri所在的域名必须在开发者中心注册应用后，填写在编辑属性选项卡中填写到服务器域名中，来往OAuth2.0用以检查跳转的合法性
+
+* response_type：必须参数。服务端流程，此值固定为“code” 意为oauth2认证方式
+
+以xxx网为例:
+```url
+http://xxx/Oauth2/passport?client_id=**&redirect_uri=http://localhost:9367/Callback.aspx&response_type=code&display=3&state=1111
+```
+如果用户已经登录，xxx网OAuth2.0会校验用户登录状态。如果用户没有登录，xxx网OAuth 2.0会为用户展示登录页面，让用户输入用户名和密码
+
+![oauth2](../src/1001_4.png)
+
+当xxxOAuth 2.0成功验证用户之后，会为用户展示授权页面，让用户为应用授权
+
+![oauth2](../src/1001_5.png)
+
+* scope：非必须参数。以空格分隔的权限列表，若不传递此参数，代表请求用户的默认权限 （权限列表）
+
+以xxx为例：
+```url
+http://xxx/Oauth2/authorize?callbackurl=*&code=***&client_id=*&redirect_uri=*&authorization_code=1&display=3
+```
+如果用户不同意授权（点击 取消），应用将不会被授权。xxx网OAuth2.0会将用户的浏览器重定向（通过HTTP 302）到redirect_uri参数对应的URL上（如果需要，可以在url中带上相应的错误信息）。
+
+如果用户同意授权（点击 授予权限），应用将会被授权。xxx网OAuth2.0会将用户的浏览器重定向（通过HTTP 302）到redirect_uri参数对应的URL上，并在url中使用'code'参数返回一个Authorization_Code，客户端需将Authorization_Code返回，并提供相关参数。
+
+校验成功，服务器端即返回授权access_token,和过期时间expires_in。
+
+![oauth2](../src/1001_6.png)
+
+客户端可以在后台获取，并记录相关信息到自己的数据库
+
+```json
+ { 
+ "access_token": "68d71cbc2a1c8dcbb770e44ee711676a", 
+ "expires_in": 87063 
+ } 
+```
+
+#### 客户端流程
+
+客户端只需要按照服务端流程用参数post提交到服务器端页面即可实现，用户登录成功并授权后服务器端会重定向到客户端指定的回调地址，服务器方生成一个authorization_code返回给客户端,客户端可在后台接受access_secret,进行流程的下一步—应用验证，以便获得可以调用API的Access_token。
+
+* grant_type：此值为“authorization_code”固定值(非必须)
+
+* code：上述过程中获得的authorization_code
+
+* client_id：在开发者中心注册应用时获得的API Key
+
+* client_secret：在开发者中心注册应用时获得的Secret Key
+
+* redirect_uri：必须与获取Authorization_code时传递的“redirect_uri”保持一致
+
+发送post请求到：
+```url
+http://xxx/oauth2/access_token
+```
+服务器端校验成功，即将浏览器重定向到edirect_uri参数对应的URL，客户端可以在后台或者其他方式获取返回的授权access_token(即返回的code)和过期时间 expires_in
+
+
+#### 用户密码端流程
+
+用户只需要在用户名和密码校验阶段输入正确的用户名和密码，并授予恰当的权限即可配合服务器端完成版校验，并返回客户端授权码。
+
+
+#### 使用方式
+
+获得Access_token后，可以Access_token调用xxx网API，如下所示(获得个人profile):
+```url
+http://open.xxx.xxx/oauth2/GetUserName?access_token=xxxxxxx
+```
+返回：
+```json
+{
+	"username":"flyher"
+}
+```
+
+至此，Oauth2已经实现获取个人信息.
+
+##4.服务端API和客户端Demo代码实现
+
+服务器端API
+
+![oauth2](../src/1001_7.png)
+
+客户端Demo
+
+![oauth2](../src/1001_8.png)
+
+
+
+
+####[[返回目录]](../index.html)    [[Give me a Star]](https://github.com/flyher/shumeipai)
+
+![Github](../src/logo.gif)© 2014 [flyher@GitHub, Inc.](https://github.com/flyher)
+	
+</xmp>
+
+<script src="../js/strapdown.js"></script>
+</html>
