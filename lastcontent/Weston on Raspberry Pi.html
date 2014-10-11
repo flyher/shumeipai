@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content=mNote Mac 2.4.10"/><meta name="created" content="2013-07-29T14:46:55Z"/><meta name="updated" content="2013-07-29T14:46:55Z"/><title>Weston on Raspberry Pi</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;"><div>
+<h1 style="border: 0px none rgb(170, 170, 170); color: rgb(170, 170, 170); display: block; font-style: normal; font-variant: normal; font-weight: bold; font-size: 32px; line-height: normal; font-family: 'Times New Roman'; height: 150px; margin: 40px 0px; outline: rgb(170, 170, 170) none 0px; padding: 0px; text-decoration: none; width: 1035px;"><a href="http://wayland.freedesktop.org/" style="border: 0px none rgb(68, 68, 68); color: rgb(68, 68, 68); display: inline; font-style: normal; font-variant: normal; font-weight: bold; font-size: 32px; line-height: normal; font-family: 'Times New Roman'; margin: 0px; outline: rgb(68, 68, 68) none 0px; padding: 0px; text-decoration: underline;"><img src="http://files.note.sdo.com/M5cEN~knrasOTV00g01eR3" alt="Wayland logo" style="width: 117px; height: 150px; float: none; background-image: none; background-attachment: scroll; background-origin: padding-box; background-clip: border-box; background-color: rgba(0, 0, 0, 0); background-size: auto; background-position: 0% 0%; background-repeat: repeat repeat;"></a></h1>
+
+<h2 style="border: 0px none rgb(136, 136, 136); color: rgb(136, 136, 136); display: block; font-style: normal; font-variant: normal; font-weight: bold; font-size: 24px; line-height: normal; font-family: sans; height: 28px; margin: 19.920000076293945px 0px; outline: rgb(136, 136, 136) none 0px; padding: 0px; text-decoration: none; width: 1035px;">Weston on Raspberry Pi</h2>
+
+<p style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 19px; margin: 20px 0px; padding: 0px; text-decoration: none; width: 1035px;">This is a guide for installing Weston into
+<a href="http://www.raspberrypi.org/" style="border: 0px none rgb(68, 68, 68); color: rgb(68, 68, 68); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; margin: 0px; outline: rgb(68, 68, 68) none 0px; padding: 0px; text-decoration: underline;">Raspberry Pi</a>. All commands and
+compiling are done directly on the Pi.</p>
+
+<h2 style="border: 0px none rgb(136, 136, 136); color: rgb(136, 136, 136); display: block; font-style: normal; font-variant: normal; font-weight: bold; font-size: 24px; line-height: normal; font-family: sans; height: 28px; margin: 19.920000076293945px 0px; outline: rgb(136, 136, 136) none 0px; padding: 0px; text-decoration: none; width: 1035px;">Build dependencies</h2>
+
+<p style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 19px; margin: 20px 0px; padding: 0px; text-decoration: none; width: 1035px;">Assuming you are using the Raspbian distribution, install the
+build dependencies:</p>
+<pre style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; height: 45px; margin: 13px 0px; padding: 0px; text-decoration: none; white-space: pre; width: 1035px;">    $ sudo apt-get install build-essential automake libtool bison flex \
+    xutils-dev libcairo2-dev libffi-dev libmtdev-dev libjpeg-dev \
+    libudev-dev libxcb-xfixes0-dev libxcursor-dev
+</pre>
+
+<h2 style="border: 0px none rgb(136, 136, 136); color: rgb(136, 136, 136); display: block; font-style: normal; font-variant: normal; font-weight: bold; font-size: 24px; line-height: normal; font-family: sans; height: 28px; margin: 19.920000076293945px 0px; outline: rgb(136, 136, 136) none 0px; padding: 0px; text-decoration: none; width: 1035px;">Firmware</h2>
+
+<p style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 19px; margin: 20px 0px; padding: 0px; text-decoration: none; width: 1035px;">Make sure you have the latest Raspberry Pi firmware with the
+<a href="https://github.com/Hexxeh/rpi-update" style="border: 0px none rgb(68, 68, 68); color: rgb(68, 68, 68); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; margin: 0px; outline: rgb(68, 68, 68) none 0px; padding: 0px; text-decoration: underline;">rpi-update</a> tool. A too
+old firmware may cause rpi-backend to malfunction on Raspberry Pi.</p>
+
+<p style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 19px; margin: 20px 0px; padding: 0px; text-decoration: none; width: 1035px;">You may want to tweak the following options in
+<tt style="display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; margin: 0px; padding: 0px; text-decoration: none;">/boot/config.txt</tt>:</p>
+<dl style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 114px; margin: 16px 0px; padding: 0px; text-decoration: none; width: 1035px;">
+	<dt style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 19px; margin: 0px; padding: 0px; text-decoration: none; width: 1035px;"><tt style="display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; margin: 0px; padding: 0px; text-decoration: none;">gpu_mem=128</tt></dt>
+	<dd style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 19px; margin: 0px 0px 0px 40px; padding: 0px; text-decoration: none; width: 995px;">How much memory to reserve for the VideoCore, i.e. framebuffers,
+	GL textures, Dispmanx resources.</dd>
+	<dt style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 19px; margin: 0px; padding: 0px; text-decoration: none; width: 1035px;"><tt style="display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; margin: 0px; padding: 0px; text-decoration: none;">dispmanx_offline=1</tt></dt>
+	<dd style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 57px; margin: 0px 0px 0px 40px; padding: 0px; text-decoration: none; width: 995px;">This will enable the firmware to fall back to off-line
+	compositing of Dispmanx elements. Normally the compositing
+	is done on-line, during scanout, but cannot handle too many
+	elements. With off-line enabled, an off-screen buffer
+	is allocated for compositing. When scene complexity
+	(number and sizes of elements) is high, compositing will
+	happen off-line into the buffer.</dd>
+</dl>
+
+<p style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 38px; margin: 20px 0px; padding: 0px; text-decoration: none; width: 1035px;">By default, the rpi-backend is configured for the <tt style="display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; margin: 0px; padding: 0px; text-decoration: none;">dispmanx_offline=1</tt>
+case. Without this setting, it would be better to run Weston with
+<tt style="display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; margin: 0px; padding: 0px; text-decoration: none;">--max-planes=10</tt> command line option.</p>
+
+<p style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 38px; margin: 20px 0px; padding: 0px; text-decoration: none; width: 1035px;">If you want to use Weston with purely GLESv2 compositing, you can pass
+<tt style="display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; margin: 0px; padding: 0px; text-decoration: none;">--max-planes=0</tt> to Weston. In that case it would be preferrable
+to not set <tt style="display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; margin: 0px; padding: 0px; text-decoration: none;">dispmanx_offline=1</tt> to conserve VideoCore memory.</p>
+
+<h2 style="border: 0px none rgb(136, 136, 136); color: rgb(136, 136, 136); display: block; font-style: normal; font-variant: normal; font-weight: bold; font-size: 24px; line-height: normal; font-family: sans; height: 28px; margin: 19.920000076293945px 0px; outline: rgb(136, 136, 136) none 0px; padding: 0px; text-decoration: none; width: 1035px;">Setting up the environment</h2>
+
+<p style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 19px; margin: 20px 0px; padding: 0px; text-decoration: none; width: 1035px;">Here we will install to the home directory of the pi user.</p>
+
+<blockquote style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 150px; margin: 16px 40px; padding: 0px; text-decoration: none; width: 955px;">
+<pre style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; height: 150px; margin: 13px 0px; padding: 0px; text-decoration: none; white-space: pre; width: 955px;">export WLD="$HOME/local"
+export PATH="$WLD/bin:$PATH"
+export LD_LIBRARY_PATH="$WLD/lib:/opt/vc/lib"
+export PKG_CONFIG_PATH="$WLD/lib/pkgconfig/:$WLD/share/pkgconfig/"
+export ACLOCAL="aclocal -I $WLD/share/aclocal"
+export XDG_RUNTIME_DIR="/run/shm/wayland"
+export XDG_CONFIG_HOME="$WLD/etc"
+
+mkdir -p "$WLD/share/aclocal"
+mkdir -p "$XDG_RUNTIME_DIR"
+</pre>
+</blockquote>
+
+<p style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 19px; margin: 20px 0px; padding: 0px; text-decoration: none; width: 1035px;">You may put the above in a script and source it in the terminal
+where you wish to build the packages or run Weston.</p>
+
+<h2 style="border: 0px none rgb(136, 136, 136); color: rgb(136, 136, 136); display: block; font-style: normal; font-variant: normal; font-weight: bold; font-size: 24px; line-height: normal; font-family: sans; height: 28px; margin: 19.920000076293945px 0px; outline: rgb(136, 136, 136) none 0px; padding: 0px; text-decoration: none; width: 1035px;">pkg-config files</h2>
+
+<p style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 19px; margin: 20px 0px; padding: 0px; text-decoration: none; width: 1035px;">Some libraries on the Pi do not have appropriate pkg-config files
+installed. We need to install them.</p>
+
+<p style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 38px; margin: 20px 0px; padding: 0px; text-decoration: none; width: 1035px;">Download the .pc files from
+<a href="http://cgit.collabora.com/git/user/pq/android-pc-files.git/tree/pkgconfig?h=raspberrypi" style="border: 0px none rgb(68, 68, 68); color: rgb(68, 68, 68); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; margin: 0px; outline: rgb(68, 68, 68) none 0px; padding: 0px; text-decoration: underline;">git://git.collabora.co.uk/git/user/pq/android-pc-files.git</a>
+and make sure you take the <em style="display: inline; font-style: italic; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; margin: 0px; padding: 0px; text-decoration: none;">raspberrypi</em> branch. The master branch
+contains similar files for Android, and will not work.</p>
+
+<p style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 19px; margin: 20px 0px; padding: 0px; text-decoration: none; width: 1035px;">Copy the .pc files into <tt style="display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; margin: 0px; padding: 0px; text-decoration: none;">$WLD/share/pkgconfig/</tt>:</p>
+<pre style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; height: 15px; margin: 13px 0px; padding: 0px; text-decoration: none; white-space: pre; width: 1035px;">    $ cp bcm_host.pc egl.pc glesv2.pc $WLD/share/pkgconfig/
+</pre>
+
+<h2 style="border: 0px none rgb(136, 136, 136); color: rgb(136, 136, 136); display: block; font-style: normal; font-variant: normal; font-weight: bold; font-size: 24px; line-height: normal; font-family: sans; height: 28px; margin: 19.920000076293945px 0px; outline: rgb(136, 136, 136) none 0px; padding: 0px; text-decoration: none; width: 1035px;">Wayland libraries</h2>
+
+<p style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 19px; margin: 20px 0px; padding: 0px; text-decoration: none; width: 1035px;">Libwayland is built and installed the same way as in
+<a href="http://wayland.freedesktop.org/building.html" style="border: 0px none rgb(68, 68, 68); color: rgb(68, 68, 68); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; margin: 0px; outline: rgb(68, 68, 68) none 0px; padding: 0px; text-decoration: underline;">the generic build guide</a>.</p>
+
+<pre style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; height: 75px; margin: 13px 0px; padding: 0px; text-decoration: none; white-space: pre; width: 1035px;">    $ git clone git://anongit.freedesktop.org/wayland/wayland
+    $ cd wayland
+    $ ./autogen.sh --prefix=$WLD
+    $ make
+    $ make install
+</pre>
+
+
+<h2 style="border: 0px none rgb(136, 136, 136); color: rgb(136, 136, 136); display: block; font-style: normal; font-variant: normal; font-weight: bold; font-size: 24px; line-height: normal; font-family: sans; height: 28px; margin: 19.920000076293945px 0px; outline: rgb(136, 136, 136) none 0px; padding: 0px; text-decoration: none; width: 1035px;">libxkbcommon</h2>
+
+<p style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 19px; margin: 20px 0px; padding: 0px; text-decoration: none; width: 1035px;">Libxkbcommon is built and installed the same way as in
+<a href="http://wayland.freedesktop.org/building.html" style="border: 0px none rgb(68, 68, 68); color: rgb(68, 68, 68); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; margin: 0px; outline: rgb(68, 68, 68) none 0px; padding: 0px; text-decoration: underline;">the generic build guide</a>, too.</p>
+
+<pre style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; height: 60px; margin: 13px 0px; padding: 0px; text-decoration: none; white-space: pre; width: 1035px;">    $ git clone git://people.freedesktop.org/xorg/lib/libxkbcommon.git
+    $ cd libxkbcommon/
+    $ ./autogen.sh --prefix=$WLD
+    $ make &amp;&amp; make install
+</pre>
+
+
+<h2 style="border: 0px none rgb(136, 136, 136); color: rgb(136, 136, 136); display: block; font-style: normal; font-variant: normal; font-weight: bold; font-size: 24px; line-height: normal; font-family: sans; height: 28px; margin: 19.920000076293945px 0px; outline: rgb(136, 136, 136) none 0px; padding: 0px; text-decoration: none; width: 1035px;">Weston and demo applications</h2>
+
+<p style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 19px; margin: 20px 0px; padding: 0px; text-decoration: none; width: 1035px;">Weston is configured slightly differently compared to the normal build:</p>
+<pre style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; height: 195px; margin: 13px 0px; padding: 0px; text-decoration: none; white-space: pre; width: 1035px;">    $ git clone git://anongit.freedesktop.org/wayland/weston
+    $ cd weston
+
+    $ ./autogen.sh --prefix=$WLD \
+    --disable-setuid-install --with-cairo-glesv2 \
+    --disable-x11-compositor --disable-drm-compositor \
+    --disable-android-compositor --disable-wayland-compositor \
+    --disable-weston-launch --disable-simple-egl-clients \
+    --disable-fbdev-compositor \
+    WESTON_NATIVE_BACKEND="rpi-backend.so"
+
+    $ make
+    $ make install
+</pre>
+
+<p style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 38px; margin: 20px 0px; padding: 0px; text-decoration: none; width: 1035px;">When adding <tt style="display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; margin: 0px; padding: 0px; text-decoration: none;">--disable-wayland-compositor</tt> you can remove the
+dummy <tt style="display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; margin: 0px; padding: 0px; text-decoration: none;">wayland-egl.pc</tt> pkg-config file, if you installed it before.
+This makes sure, that toytoolkit (Weston demo programs) does not use Cairo
+EGL. EGL does not work for clients due to EGL Wayland platform being
+unimplemented on Raspberry Pi.</p>
+
+<p style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 19px; margin: 20px 0px; padding: 0px; text-decoration: none; width: 1035px;">Weston should work by running <tt style="display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; margin: 0px; padding: 0px; text-decoration: none;">weston</tt>. Remember to have the
+environment set up.</p>
+
+<h2 style="border: 0px none rgb(136, 136, 136); color: rgb(136, 136, 136); display: block; font-style: normal; font-variant: normal; font-weight: bold; font-size: 24px; line-height: normal; font-family: sans; height: 28px; margin: 19.920000076293945px 0px; outline: rgb(136, 136, 136) none 0px; padding: 0px; text-decoration: none; width: 1035px;">Troubleshooting</h2>
+
+<h3 style="border: 0px none rgb(136, 136, 136); color: rgb(136, 136, 136); display: block; font-style: italic; font-variant: normal; font-weight: bold; font-size: 19px; line-height: normal; font-family: sans; height: 22px; margin: 18.719999313354492px 0px; outline: rgb(136, 136, 136) none 0px; padding: 0px; text-decoration: none; width: 1035px;">Missing <tt style="border: 0px none rgb(136, 136, 136); color: rgb(136, 136, 136); display: inline; font-style: italic; font-variant: normal; font-weight: bold; font-size: 15px; line-height: normal; font-family: monospace; margin: 0px; outline: rgb(136, 136, 136) none 0px; padding: 0px; text-decoration: none;">bcm_host.pc</tt></h3>
+
+<pre style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; height: 30px; margin: 13px 0px; padding: 0px; text-decoration: none; white-space: pre; width: 1035px;">checking for RPI_BCM_HOST... no
+configure: WARNING: Raspberry Pi BCM host libraries not found, will use stubs instead.
+</pre>
+
+<p style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 38px; margin: 20px 0px; padding: 0px; text-decoration: none; width: 1035px;">If the right pkg-config files are not installed, building weston can
+fail. If you see the above during Weston's configure step, the
+<tt style="display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; margin: 0px; padding: 0px; text-decoration: none;">bcm_host.pc</tt> file was not found, and the rpi-backend will not
+work. The following is what you should see:</p>
+<pre style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; height: 15px; margin: 13px 0px; padding: 0px; text-decoration: none; white-space: pre; width: 1035px;">checking for RPI_BCM_HOST... yes</pre>
+
+<h3 style="border: 0px none rgb(136, 136, 136); color: rgb(136, 136, 136); display: block; font-style: italic; font-variant: normal; font-weight: bold; font-size: 19px; line-height: normal; font-family: sans; height: 22px; margin: 18.719999313354492px 0px; outline: rgb(136, 136, 136) none 0px; padding: 0px; text-decoration: none; width: 1035px;">Build error: <tt style="border: 0px none rgb(136, 136, 136); color: rgb(136, 136, 136); display: inline; font-style: italic; font-variant: normal; font-weight: bold; font-size: 15px; line-height: normal; font-family: monospace; margin: 0px; outline: rgb(136, 136, 136) none 0px; padding: 0px; text-decoration: none;">undefined reference to `wl_egl_...</tt></h3>
+
+<p style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 38px; margin: 20px 0px; padding: 0px; text-decoration: none; width: 1035px;">Somehow, cairo-egl is getting used, when it should not. Remove the
+dummy <tt style="display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; margin: 0px; padding: 0px; text-decoration: none;">wayland-egl.pc</tt>, and make sure
+<tt style="display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; margin: 0px; padding: 0px; text-decoration: none;">--disable-wayland-compositor</tt> is in the configure line. When
+everything is right, you should see:</p>
+<pre style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; height: 30px; margin: 13px 0px; padding: 0px; text-decoration: none; white-space: pre; width: 1035px;">checking for CAIRO_EGL... no
+configure: WARNING: clients will use cairo image, cairo-egl not used</pre>
+
+
+<h3 style="border: 0px none rgb(136, 136, 136); color: rgb(136, 136, 136); display: block; font-style: italic; font-variant: normal; font-weight: bold; font-size: 19px; line-height: normal; font-family: sans; height: 22px; margin: 18.719999313354492px 0px; outline: rgb(136, 136, 136) none 0px; padding: 0px; text-decoration: none; width: 1035px;">Some or all surfaces (graphics) are corrupted</h3>
+
+<p style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 16px; line-height: normal; font-family: 'Times New Roman'; height: 38px; margin: 20px 0px; padding: 0px; text-decoration: none; width: 1035px;">Too old firmware might cause corrupted graphics. If you don't want to
+update the firmware, a workaround is to add <tt style="display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-family: monospace; margin: 0px; padding: 0px; text-decoration: none;">--max-planes=0</tt> to the
+Weston command line. This forces everything to be composited with
+GLESv2.</p>
+
+
+
+</div></body></html>
