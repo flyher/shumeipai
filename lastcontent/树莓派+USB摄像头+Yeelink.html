@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content=mNote Mac 2.4.10"/><meta name="created" content="2013-07-29T14:46:47Z"/><meta name="updated" content="2013-07-29T14:46:47Z"/><title>树莓派+USB摄像头+Yeelink</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;"><div><td style="border: 0px none rgb(68, 68, 68); color: rgb(68, 68, 68); display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Tahoma, 'Microsoft Yahei', Simsun; height: 735px; outline: rgb(68, 68, 68) none 0px; padding: 0px; text-decoration: none; vertical-align: middle; width: 757px; word-wrap: break-word;">
+5分钟一点也不夸张, 在你熟悉Yeelink使用的情况下, 你真的只需几分钟就可以搭建一套在线图像监控, 神马入室小偷啥的, 还能逃过你的千里眼 当然, 要是使用motion来获取图像, 还能做到画面动作检测, 有兴趣的同学可以继续发挥哦. 废话少说, 来看看几分钟怎么做到的吧.<br>
+<br>
+1. 将USB摄像头接到Pi上, 安装驱动, 我所使用的版本(2012-10-28-wheezy-raspbian.img)已经包含了V4L2驱动, 略去xxx字. 有问题的话Google一下<br>
+pi@raspberrypi ~ $ ls -l /dev/video0 <br>
+crw-rw---T 1 root video 81, 0 Jan&nbsp;&nbsp;1&nbsp;&nbsp;1970 /dev/video0<br>
+<br>
+2. 安装抓图软件fswebcam<br>
+pi@raspberrypi ~ $ sudo apt-get install fswebcam<br>
+<br>
+3. 登录Yeelink, 在用户中心增加一个设备, 再为之增加一个图像传感器.<br>
+<br>
+4. 在/home/pi下准备脚本yeelink.sh, 内容为以下两行命令, 其中的ApiKey和URL请改为自己设备对应的信息.<br>
+sudo fswebcam -d /dev/video0 -r 320x240 --bottom-banner --title "RaspberryPi @ Yeelink" --no-timestamp /home/pi/yeelink.jpg<br>
+curl --request POST --data-binary @"/home/pi/yeelink.jpg" --header "U-ApiKey: xxxxxxxxxxxxxxxxxxxx" <a href="http://api.yeelink.net/v1.0/device/1022/sensor/1294/photos" target="_blank" style="border: 0px none rgb(51, 102, 153); color: rgb(51, 102, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Tahoma, 'Microsoft Yahei', Simsun; margin: 0px; outline: rgb(51, 102, 153) none 0px; padding: 0px; text-decoration: underline; word-wrap: break-word;">http://api.yeelink.net/v1.0/device/1022/sensor/1294/photos</a><br>
+<br>
+注：上面的命令中，1022和1294分别是设备号和传感器好，U-ApiKey是yeelink账号的APIKEY，如果你使用的话，可以根据自己的情况进行修改<br>
+<br>
+<br>
+为脚本增加可执行权限<br>
+pi@raspberrypi ~ $ chmod +x yeelink.sh<br>
+<br>
+5. 将脚本加入cronjob<br>
+pi@raspberrypi ~ $ crontab -e<br>
+<br>
+加入下面一行, 让脚本每分钟运行一次, 保存退出.<br>
+*/1 * * * * /home/pi/yeelink.sh<br>
+<br>
+<br>
+搞定, 至此我们的监控就开始运行了, 上网页上看看效果吧<br>
+<a href="http://www.yeelink.net/devices/1022" target="_blank" style="border: 0px none rgb(51, 102, 153); color: rgb(51, 102, 153); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Tahoma, 'Microsoft Yahei', Simsun; margin: 0px; outline: rgb(51, 102, 153) none 0px; padding: 0px; text-decoration: underline; word-wrap: break-word;">http://www.yeelink.net/devices/1022</a></td></div></body></html>

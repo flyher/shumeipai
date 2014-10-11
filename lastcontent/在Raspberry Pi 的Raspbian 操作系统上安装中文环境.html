@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content=mNote Mac 2.4.10"/><meta name="created" content="2013-07-29T14:43:43Z"/><meta name="updated" content="2013-07-29T14:43:43Z"/><title>在Raspberry Pi 的Raspbian 操作系统上安装中文环境</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;"><div><div style="color: rgb(85, 85, 85); display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 28px; font-family: 宋体, 'Arial Narrow', arial, serif; height: 898px; outline: rgb(85, 85, 85) none 0px; padding: 0px; text-decoration: initial; width: 720px; word-wrap: break-word;">
+    		  <p style="border: 0px none rgb(85, 85, 85); color: rgb(85, 85, 85); display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 28px; font-family: 宋体, 'Arial Narrow', arial, serif; height: 840px; margin: 0px; outline: rgb(85, 85, 85) none 0px; padding: 0px 0px 15px; text-decoration: initial; width: 720px; word-wrap: break-word;">默认的raspbian操作系统是不带中文字库的，所以不能正常显示中文字体<br>
+<br>
+我们可以用apt来安装开源字库的安装包 实现中文的显示<br>
+<br>
+输入命令<br>
+sudo apt-get install ttf-wqy-zenhei<br>
+这条命令安装的是文泉驿的正黑体<br>
+<br>
+sudo apt-get install ttf-wqy-microhei<br>
+这条命令安装的是文泉驿的微米黑体<br>
+<br>
+sudo apt-get install ttf-arphic-ukai<br>
+这条命令安装的是文鼎的楷体<br>
+<br>
+sudo apt-get install ttf-arphic-uming<br>
+这条命令安装的是文鼎的明体<br>
+<br>
+linux下中文输入法有scim和ibus 2套不同的输入法引擎可以选择<br>
+<br>
+我这里用口碑比较好的ibus举例<br>
+<br>
+安装ibus 输入法引擎 和 ibus 拼音输入法<br>
+sudo apt-get install ibus ibus-pinyin<br>
+<br>
+会提示安装一系列的库文件<br>
+<br>
+安装完毕后重新启动lxde,可以在屏幕右下角看到ibus的图标.<br>
+右键选择preference ,然后在input method选项卡的select a input method 里面选择Chinese ,然后选pinyin.<br>
+点击add添加拼音输入法,然后点击Close关闭窗口.<br>
+再次点击ibus的图标 可以发现列表里面有拼音输入法可供选择,到这里拼音输入就安装完毕.</p><p style="border: 0px none rgb(85, 85, 85); color: rgb(85, 85, 85); display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 28px; font-family: 宋体, 'Arial Narrow', arial, serif; height: 28px; margin: 0px; outline: rgb(85, 85, 85) none 0px; padding: 0px 0px 15px; text-decoration: initial; width: 720px; word-wrap: break-word;">本文出自 “<a href="http://raspberrypi.blog.51cto.com/" style="border: 0px none rgb(1, 95, 145); color: rgb(1, 95, 145); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 28px; font-family: 宋体, 'Arial Narrow', arial, serif; margin: 0px; outline: rgb(1, 95, 145) none 0px; padding: 0px; text-decoration: initial; word-wrap: break-word;">爱上树莓派</a>” 博客，请务必保留此出处<a href="http://raspberrypi.blog.51cto.com/6262956/1086503" style="border: 0px none rgb(1, 95, 145); color: rgb(1, 95, 145); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 28px; font-family: 宋体, 'Arial Narrow', arial, serif; margin: 0px; outline: rgb(1, 95, 145) none 0px; padding: 0px; text-decoration: initial; word-wrap: break-word;">http://raspberrypi.blog.51cto.com/6262956/1086503</a></p>
+    		</div></div></body></html>
