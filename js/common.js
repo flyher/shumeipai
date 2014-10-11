@@ -5,7 +5,7 @@ $(document).ready(function(){
 	var artid=url[url.length-1];
 	var title=artid.replace(".html","");
 	//$("#divmsg").html("<div class=\"ds-thread\" data-thread-key=\""+artid+"\" data-title=\""+title+"\" data-url=\"http:\/\/flyher.github.io\/shumeipai\/md\/"+artid+"\"></div>");
-	$("#divmsg").html("<div class=\"ds-thread\" data-thread-key=\""+"index"+"\" data-title=\""+title+"\" data-url=\"http:\/\/flyher.github.io\/shumeipai\/md\/"+artid+"\"></div>");
+	$("#divmsg").html("<div class=\"ds-thread\" data-thread-key=\""+"index"+"\" data-title=\""+title+"\" data-url=\"http:\/\/flyher.github.io\/shumeipai\/"+artid+"\"></div>");
 });
 <!-- ¶àËµÆÀÂÛ¿ò end -->
 var duoshuoQuery = {short_name:"smp"};
