@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html>
+<title>使用MVC+EF创建网站API</title>
+
+<xmp theme="united" style="display:none;">
+####[[返回目录]](../index.html)    [[Give me a Star]](https://github.com/flyher/shumeipai)
+
+##使用MVC+EF创建站点API
+######目录
+
+*定义
+
+*分层
+
+*使用MVC+EF创建一个API站点步骤
+
+######定义
+MVC全名是Model View Controller，是模型(model)－视图(view)－控制器(controller)的缩写，一种软件设计典范，用一种业务逻辑、数据、界面显示分离的方法组织代码，将业务逻辑聚集到一个部件里面，在改进和个性化定制界面及用户交互的同时，不需要重新编写业务逻辑。
+
+EF全名是Entity Framework，是微软以ADO.Net为基础开发出来的对象关系映射（ORM）解决方案，目标是降低面向数据的应用程序所需的代码量并减轻维护工作。
+
+######分层
+
+Meihua.M1.API的总体分层:
+
+![shumeipai](../src/999/999_1.png)
+
+
+EF层：
+
+![shumeipai](../src/999/999_2.png)
+
+BLL层：
+
+![shumeipai](../src/999/999_3.png)
+
+API层：
+
+![shumeipai](../src/999/999_4.png)
+
+######使用MVC+EF创建一个API站点步骤
+
+>1.创建MVC4 WEB应用程序
+
+新建项目->Web->MVC4应用程序->Meihua.M1.API->选择基本应用程序
+
+![shumeipai](../src/999/999_5.png)
+
+这样，算是搭好了Hello World的程序。
+
+![shumeipai](../src/999/999_6.jpg)
+
+>2.使用EF
+
+使用EF代替传统三层架构中的 Model+BLL 层
+
+![shumeipai](../src/999/999_7.png)
+
+*打造超简易家居监控网站
+
+RaspberryPi到手有些时日了，除了尝试电影、游戏、VNC、服务器等基本功能之外，一直在琢磨该拿它做什么。忽然想起可用它实现智能家居的网关部分，不过我的那套无线模块不知道放哪里了，所以就先做个简单的测试小站吧。
+
+效果如图：
+
+![shumeipai](../src/4/4_1.jpg)
+
+![shumeipai](../src/4/4_2.jpg)
+
+网上最常见的方法是用PHP服务器或Yeelink这样现成的网站，可惜兔子不会PHP又希望能够用RPi做自己的服务器，索性还是采用兔子自己的懒办法吧。之所以说超简易，是因为这个网站除了实现基本的功能以外，就没有别的东西了，连界面也是用Word排版的。
+网站的实现方法就是HTTPD外加HTML自动刷新。照片是用fswebcam访问USB摄像头拍摄的，保存成jpg文件，传感器数据通过USB转串口接收，保存在txt文件中。
+HTTPD可以使用小巧的mini-httpd，安装指令如下：
+
+```shell
+sudo atp-getinstall mini-httpd
+```
+
+配置方法也很简单，新建一个路径home/pi/mini-httpd/，在该路径下新建空白文件mini-httpd.conf，输入配置信息。
+
+```shell
+port=80
+dir=/home/pi/mini-httpd/wwwroot
+cgipat=cgi-bin/*
+user=nobody
+pidfile=/home/pi/mini-httpd/mini-httpd.pid
+logfile=/home/pi/mini-httpd/mini-httpd.log
+```
+
+同时还需要在home/pi/mini-httpd/下建立wwwroot和cgi-bin文件夹。
+
+运行指令如下：
+
+```shell
+sudo mini-httpd-C home/pi/mini-httpd/mini-httpd.conf
+```
+
+界面可以用Dreamweaver之类的软件做，没有的话用Word也行，设计个看得过去的框架，保存成htm文件。
+
+![shumeipai](../src/4/4_3.jpg)
+
+用编辑器编辑该文件，在对应的表格位置处插入要显示内容，如temp.txt文件里保存的温度信息。
+
+```html
+<iframename=temp id=temp width=100 height=40 frameborder=0 src=temp.txt></iframe>
+```
+
+再在HEAD处将网页设为Unicode模式，并添加页面自动刷新以更新数据和图像，这里设置的是60秒刷新。
+
+```html
+<metahttp-equiv=Content-Type content=”text/html; charset=unicode”>
+<metahttp-equiv=refresh content=60>
+```
+
+图片可以先在Word里添加一张，然后再修改HTML里的路径和文件名。
+
+温湿度和光照用的以前做的一块板子，因为上面传感器蛮多的就用它来演示了。
+
+软硬件基本都是现成的，资料我已经开源了，可以参考我[早期的博客](http://www.eefocus.com/nightseas/blog)。
+
+[编者注：这里建议在淘宝上买个配件减少折腾吧]
+
+![shumeipai](../src/4/4_4.jpg)
+
+串口传输数据的格式为：温度+湿度+光照度，如15C20%100lx。这里兔子写了个小程序将串口数据分别保存在三个txt文件中，代码很简单就不再说明了，大家可以自己下载下来看。个人感觉Linux的串口编程比较麻烦，数据有时候会莫名其妙地接收不成功。
+
+代码和网页文件：[下载地址](../src/4/RPi_HTTP.zip)
+
+摄像头采集照片可以用fswebcam软件，方法是网上看到的。安装方法：
+
+```shell
+sudo apt-getinstall fswebcam
+```
+
+运行：
+
+```shell
+sudo fswebcam -d/dev/video0 -r 320x240 /home/pi/mini-httpd/wwwroot/Photo.jpg
+```
+
+新建脚本cam.sh，加入上面的指令。设置权限chmod+x cam.sh，然后加入cronjob使其每分钟自动运行一次：
+
+```shell
+crontab–e
+```
+
+加入如下内容：
+```
+*/1 * * * * /home/pi/cam.sh
+```
+
+保存退出。
+
+最后把网页文件和兔子写的measure程序放到wwwroot文件夹中，运行程序。用浏览器访问RPi的IP地址就可以看到数据和图像了，每分钟自动刷新一次。如果想在办公室也能看到家里的情况，推荐使用花生壳，会赠送一个免费二级域名。在路由器上登录花生壳账号，并设置DMZ主机为RPi的IP。
+
+经过测试，Chrome、小米手机自带浏览器和UC都没问题，但是IE里图片会显示不出来，不知道是不是HTML代码有问题。再上一张手机登录的截图。
+
+![shumeipai](../src/4/4_5.jpg)
+
+
+版权:2014-7-5 20:24 eeboard 作者:[懒兔子](http://www.eeboard.com/bbs/thread-5525-1-1.html)
+
+
+####[[返回目录]](../index.html)    [[Give me a Star]](https://github.com/flyher/shumeipai)
+
+![Github](../src/logo.gif)© 2014 [flyher@GitHub, Inc.](https://github.com/flyher)
+	
+</xmp>
+
+<script src="../js/strapdown.js"></script>
+</html>

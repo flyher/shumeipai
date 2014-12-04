@@ -1,0 +1,362 @@
+﻿<!DOCTYPE html>
+<html>
+<title>使用d3.js绘制图表</title>
+
+<xmp theme="united" style="display:none;">
+####[[返回目录]](../index.html)    [[Give me a Star]](https://github.com/flyher/shumeipai)
+
+##使用d3.js绘制图表
+######目录
+
+*什么是d3.js
+
+*d3.js的历史
+
+*效果图
+
+*SVG知识
+
+*如何使用d3.js
+
+*实例和应用
+
+######什么是d3.js
+
+>[D3.js](https://www.google.de/#q=d3.js) (D3或Data-Driven Documents）是一个用动态图形显示数据的JavaScript库，一个数据可视化的工具。兼容W3C标准，并且利用广泛实现的SVG，JavaScript，和CSS标准。它是早期的Protovis框架的继承者。与其他的类库相比，D3对视图结果有很大的可控性。
+
+
+######d3.js的历史
+
+>D3是2011年面世的，同年的8月发布了2.0.0版。到2012年12月，D3已被更新到了3.0.0版。
+
+######效果图
+
+>折线图
+
+![shumeipai](../src/1000/1000_1.png)
+
+>柱状图
+
+![shumeipai](../src/1000/1000_2.png)
+
+>饼状图
+
+![shumeipai](../src/1000/1000_3.png)
+
+######SVG知识
+
+[SVG基础资料](http://www.w3school.com.cn/svg/index.asp)
+
+[使用SVG绘制折线图](http://www.w3school.com.cn/svg/polyline1.svg)
+
+[使用SVG绘制柱状图](http://www.w3school.com.cn/svg/rect1.svg)
+
+[使用SVG绘制饼状图](../src/1000/1000_4.svg)
+
+我们先来看看饼状图的SVG源码：
+```html
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xml:space="default"
+   version="1.1"
+   width="100%"
+   height="100%" viewBox="0 0 1024 600">
+	<defs>
+	<script type="text/javascript">
+		function ccolor(evt){
+			evt.target.parentNode.setAttribute("fill", "white");
+		}
+		function bcolor(evt,color){
+			evt.target.parentNode.setAttribute("fill", color);
+		}
+	</script>
+	</defs>
+	<g stroke-width="1" stroke="black">
+
+	<g fill="rgb(45,62,104)" onmouseover="ccolor(evt)" onmouseout="bcolor(evt,'rgb(45,62,104)')">
+		<path d="M 502 300 L 802 300 A 300 150 0 0 0 209.5216263454529 266.6218599065528 z"/>
+		<path d="M 802 250 A 300 150 0 0 0 209.5216263454529 216.6218599065528 L 209.5216263454529 266.6218599065528 A 300 150 0 0 1 802 300 z"/>
+		<path d="M 502 250 L 802 250 A 300 150 0 0 0 209.5216263454529 216.6218599065528 z"/>
+	</g>
+	<g fill="rgb(124,109,58)" onmouseover="ccolor(evt)" onmouseout="bcolor(evt,'rgb(124,109,58)')">
+		<path d="M 502 300 L 209.5216263454529 266.6218599065528 A 300 150 0 0 0 217.62179614986047 347.77299753775264 z"/>
+		<path d="M 209.5216263454529 216.6218599065528 A 300 150 0 0 0 217.62179614986047 297.77299753775264 L 217.62179614986047 347.77299753775264 A 300 150 0 0 1 209.5216263454529 266.6218599065528 z"/>
+		<path d="M 202 250 A 300 150 0 0 0 217.62179614986047 297.77299753775264 L 217.62179614986047 347.77299753775264 A 300 150 0 0 1 202 300 z"/>
+		<path d="M 502 250 L 209.5216263454529 216.6218599065528 A 300 150 0 0 0 217.62179614986047 297.77299753775264 z"/>
+	</g>
+	<g fill="rgb(203,175,62)" onmouseover="ccolor(evt)" onmouseout="bcolor(evt,'rgb(203,175,62)')">
+		<path d="M 502 300 L 217.62179614986047 347.77299753775264 A 300 150 0 0 0 320.8586769023568 419.5698760834384 z"/>
+		<path d="M 217.62179614986047 297.77299753775264 A 300 150 0 0 0 320.8586769023568 369.5698760834384 L 320.8586769023568 419.5698760834384 A 300 150 0 0 1 217.62179614986047 347.77299753775264 z"/>
+		<path d="M 502 250 L 217.62179614986047 297.77299753775264 A 300 150 0 0 0 320.8586769023568 369.5698760834384 z"/>
+	</g>
+	<g fill="rgb(33,166,60)" onmouseover="ccolor(evt)" onmouseout="bcolor(evt,'rgb(33,166,60)')">
+		<path d="M 502 300 L 716.7600547779157 195.26447728708916 A 300 150 0 0 0 502.00000000000034 150 z"/>
+		<path d="M 716.7600547779157 145.26447728708916 A 300 150 0 0 0 502.00000000000034 100 L 502.00000000000034 150 A 300 150 0 0 1 716.7600547779157 195.26447728708916 z"/>
+		<path d="M 502 250 L 716.7600547779157 145.26447728708916 A 300 150 0 0 0 502.00000000000034 100 z"/>
+	</g>
+	<g fill="rgb(115,57,65)" onmouseover="ccolor(evt)" onmouseout="bcolor(evt,'rgb(115,57,65)')">
+		<path d="M 502 300 L 768.9615426434407 231.5684013970257 A 300 150 0 0 0 716.7600547779157 195.26447728708916 z"/>
+		<path d="M 768.9615426434407 181.5684013970257 A 300 150 0 0 0 716.7600547779157 145.26447728708916 L 716.7600547779157 195.26447728708916 A 300 150 0 0 1 768.9615426434407 231.5684013970257 z"/>
+		<path d="M 502 250 L 768.9615426434407 181.5684013970257 A 300 150 0 0 0 716.7600547779157 145.26447728708916 z"/>
+	</g>
+	<g fill="rgb(218,215,2)" onmouseover="ccolor(evt)" onmouseout="bcolor(evt,'rgb(218,215,2)')">
+		<path d="M 502 300 L 775.4517556935018 361.6930654695919 A 300 150 0 0 0 768.9615426434407 231.5684013970257 z"/>
+		<path d="M 775.4517556935018 311.6930654695919 A 300 150 0 0 0 768.9615426434407 181.5684013970257 L 768.9615426434407 231.5684013970257 A 300 150 0 0 1 775.4517556935018 361.6930654695919 z"/>
+		<path d="M 775.4517556935018 311.6930654695919 A 300 150 0 0 0 802 250 L 802 300 A 300 150 0 0 1 775.4517556935018 361.6930654695919 z"/>
+		<path d="M 502 250 L 775.4517556935018 311.6930654695919 A 300 150 0 0 0 768.9615426434407 181.5684013970257 z"/>
+	</g>
+	<g fill="rgb(193,12,80)" onmouseover="ccolor(evt)" onmouseout="bcolor(evt,'rgb(193,12,80)')">
+		<path d="M 502 300 L 604.6060429977004 440.9538931178863 A 300 150 0 0 0 775.4517556935018 361.6930654695919 z"/>
+		<path d="M 604.6060429977004 390.9538931178863 A 300 150 0 0 0 775.4517556935018 311.6930654695919 L 775.4517556935018 361.6930654695919 A 300 150 0 0 1 604.6060429977004 440.9538931178863 z"/>
+		<path d="M 502 250 L 604.6060429977004 390.9538931178863 A 300 150 0 0 0 775.4517556935018 311.6930654695919 z"/>
+	</g>
+	<g fill="rgb(62,159,88)" onmouseover="ccolor(evt)" onmouseout="bcolor(evt,'rgb(62,159,88)')">
+		<path d="M 502 300 L 320.8586769023568 419.5698760834384 A 300 150 0 0 0 604.6060429977004 440.9538931178863 z"/>
+		<path d="M 320.8586769023568 369.5698760834384 A 300 150 0 0 0 604.6060429977004 390.9538931178863 L 604.6060429977004 440.9538931178863 A 300 150 0 0 1 320.8586769023568 419.5698760834384 z"/>
+		<path d="M 502 250 L 320.8586769023568 369.5698760834384 A 300 150 0 0 0 604.6060429977004 390.9538931178863 z"/>
+	</g>
+
+	</g>
+</svg>
+```
+
+
+这样如果是js生成，这个js会显得十分庞大和复杂，耗费人力物力，这个时候，d3.js就派上用途了。
+
+
+######如何使用d3.js
+
+
+我们先来看一个[效果图](file:///E:/Work/git/JqChartD3/JqLine.html)，用d3.js绘制一个简单的折线图。。
+
+写了一段js折线图通用方法，一步步来理解每句话意思，
+
+```jquery
+function DrawLine(divid,data,colorline,colorcircle,colorcirclemin,colorX,colorY) {
+    ///<summary>绘制折线图</summary>
+    ///<param name="divid" type="String">div的id</param>
+    ///<param name="data" type="Array">已经转换为对象数组的json数据</param>
+    ///<param name="colorline" type="String">折线颜色</param>
+    ///<param name="colorcircle" type="String">折线上标记点颜色</param>
+    ///<param name="colorcirclemin" type="String">第一个点标记颜色效果</param>
+    ///<param name="colorX" type="String">x轴颜色</param>
+    ///<param name="colorY" type="String">y轴颜色</param>
+    var margin = { top: 100, right: 100, bottom: 100, left: 100 };
+    var width = 960 - margin.left - margin.right;
+    var height = 460 - margin.top - margin.bottom;
+
+    //时间样式
+    var datenew = d3.time.format("%Y-%m-%e %H:%M:%S").parse;
+
+    //横坐标宽度，横坐标为时间
+    var x = d3.time.scale().range([0,width]);
+    //纵坐标高度，纵坐标为线性数
+    var y = d3.scale.linear().range([height, 0]);
+
+    //创建坐标轴生成器
+    var xAxis = d3.svg.axis().scale(x)
+        .orient("bottom").ticks(5); //X轴范围时间内分的段数,越大精确度越高。
+    var yAxis = d3.svg.axis().scale(y)
+        .orient("left").ticks(5);//Y轴范围时间内分的段数，越大精确度越高。
+
+    //定义折线上值的数值
+    var valuenew = d3.svg.line()
+        .x(function (d) { return x(d.date); })
+        .y(function (d) { return y(d.value); });//稍后我们再来讲传入的data对象
+
+    //追加html
+    var svg1 = d3.select("#chart")
+        .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    data.forEach(function (d) {
+        d.date = datenew(d.date); //横坐标：转换格式
+        //d.value=+d.value;
+    });
+
+    //x,y设置范围
+    x.domain(d3.extent(data, function (d) { return d.date; }))
+    y.domain([0, d3.max(data, function (d) { return d.value; })]);
+
+    //折线
+    svg1.append("path")
+    //.attr("class", "path")//设置path路径的样式，也可以直接在此设置
+        .attr("style", "stroke:" + colorline + ";stroke-width:2;fill:none;")
+        .attr("d", valuenew(data)); //stroke: lightgreen;//将新值传入折线
+         
+
+    //在折线的每个标记点画圆圈，这个相当于在svg里面写各种属性，selectAll即帮助我们遍历了整个节点。
+    svg1.selectAll("dot")
+        .data(data)
+        .enter().append("circle")
+        .attr("r", "5")//半径
+        .attr("cx", function (d) { return x(d.date); })
+        .attr("cy", function (d) { return y(d.value); })//所在的点坐标
+        .attr("fill",colorcircle)//填充颜色
+        .attr("id", function (d, i) {
+            //设置圈圈id
+            return "dot" + i;//设置圈圈id
+        });
+
+    var minIndex = GetMinIndex(data); //data里面最小日期的索引
+    var maxIndex = data.length - minIndex - 1; //data里面最大日期的索引
+
+    //最小日期的圈圈效果
+    $("#dot" + (minIndex)).css("fill", colorcirclemin);
+    svg1.append("circle")
+    .attr("r", "3")
+    .attr("cx", x(data[minIndex].date))
+    .attr("cy", y(data[minIndex].value))
+    .attr("fill", "#06A95E");
+
+    //在折线前面加上一部分延长线
+    var linePre = "M " + (x(data[minIndex].date) - 50) + "," + y(data[minIndex].value)
+    + " L " + x(data[minIndex].date) + "," + y(data[minIndex].value);
+    svg1.append("path")
+    .attr("d", linePre)
+    .attr("style", "stroke: #89E4BB;stroke-width: 1;fill: none;");
+    //console.log(linePre);
+
+    //在折线后面加上一部分延长线
+    var lineNext = "M " + x(data[maxIndex].date) + "," + y(data[maxIndex].value)
+    + " L " + (x(data[maxIndex].date) + 50) + "," + y(data[maxIndex].value);
+    svg1.append("path")
+    .attr("d", lineNext)
+    .attr("style", "stroke: #89E4BB;stroke-width: 1;fill: none;");
+    //console.log(lineNext);
+
+    //标识小三角形的索引位置index
+    var triangleIndex = 0;
+    //在折线后面加上数值备具  时间
+    svg1.selectAll("dot")
+    .data(data)
+    .enter().append("text")
+    .attr("x", function (d, i) { return x(d.date) - 10; })
+    .attr("y", function (d, i) { return y(d.value) - 10; })
+    .text(function (d, i) {
+        /*if (i == maxIndex) {
+        return " 当前指数"
+        }*/
+        if (d.desc == "最新数据") {
+            triangleIndex = i;
+            return "最新数据";
+        }
+        return " " + DateToDate(d.date);
+    })
+    .attr("style", "fill:#666666;font-family:@Microsoft Yahei;font-size:10pt;text-align:center;");
+
+    //在折线后面加上数值备具  数值
+    svg1.selectAll("dot")
+    .data(data)
+    .enter().append("text")
+    .attr("x", function (d, i) { return x(d.date) - 10; })
+    .attr("y", function (d, i) { return y(d.value) - 15 - 10; })
+    .text(function (d, i) {
+        return d.value;
+    })
+    .attr("style", "fill:#666666;font-family:@Microsoft Yahei;font-size:14pt;");
+
+    //在折线圈圈“当前指数”点后加上一个小三角
+    var triangleNow = (x(data[triangleIndex].date) + 55 - 10) + "," + (y(data[triangleIndex].value) - 10)
+        + " " + (x(data[triangleIndex].date) + 55 + 10 - 10) + "," + (y(data[triangleIndex].value) - 10)
+        + " " + (x(data[triangleIndex].date) + 55 + 5 - 10) + "," + (y(data[triangleIndex].value) - 8 - 10);
+    svg1.append("polygon")
+    .attr("points", triangleNow)
+    .attr("style", "fill:#06A95E;stroke:#06A95E;stroke-width:1");
+
+    //$("#dot" + (data.length - 1)).append("circle");
+    //            .attr("r", "2")
+    //            .attr("cx", x(data[data.length - 1].date))
+    //            .attr("cy",y(data[data.length-1].value))
+    //            .attr("fill","lightgreen");
+
+        //x轴
+        svg1.append("g")
+            //.attr("class", "x axis")
+            .attr("style","fill: none;stroke:"+colorX+";stroke-width: 1;shape-rendering: crispEdges;")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis);
+
+        //y轴
+        svg1.append("g")
+            //.attr("class", "y axis")
+            .attr("style", "fill: none;stroke:"+colorY+";stroke-width: 1;shape-rendering: crispEdges;")
+            .call(yAxis);
+}
+```
+
+我们再在html引用：
+
+jquery-1.11.1.js，
+
+d3.v3.js
+
+附加点转换方法
+
+```jquery
+function DateToDate(date) {
+    ///<summary>将基准时间转为yyyy-MM-dd HH24:mi:ss</summary>
+    ///<param name="date" type="String">要转换的时间</param>
+    var newdate = new Date(date).getFullYear() + "-" + (parseInt(new Date(date).getMonth()) + 1) + "-" + new Date(date).getDate() + " " + new Date(date).getHours() + ":" + new Date(date).getMinutes() + ":" + new Date(date).getSeconds();
+    return newdate.toString();
+}
+function GetMinIndex(data) {
+    ///<summary>获取最小的数据索引</summary>
+    ///<param name="date" type="Array">已经格式化成对象的数组集合</param>
+    var count = data.length;
+    var a = data[0].date;
+    var b = data[1].date;
+    if (a > b) {
+        return data.length - 1;
+    } else {
+        return 0;
+    }
+}
+```
+
+写一段方法调用上面的写好的通用折线图方法：
+
+```jquery
+$(document).ready(function () {
+    var json = "{\"date\":\"1404548323000\",\"value\":\"98\",\"value2\":\"100\",\"desc\":\"\"}#{\"date\":\"1404461923000\",\"value\":\"91\",\"value2\":\"90\",\"desc\":\"最新数据\"}#{\"date\":\"1404321015337\",\"value\":\"72\",\"value2\":\"0\",\"desc\":\"\"}#{\"date\":\"1404232721740\",\"value\":\"87\",\"value2\":\"89\",\"desc\":\"\"}#{\"date\":\"1404177101616\",\"value\":\"70\",\"value2\":\"82\",\"desc\":\"\"}#{\"date\":\"1404084120285\",\"value\":\"90\",\"value2\":\"93\",\"desc\":\"\"}#{\"date\":\"1403994569503\",\"value\":\"13\",\"value2\":\"20\",\"desc\":\"\"}";
+    //将json字符串转换为对象数组
+    json = json.split("#");
+    var data = new Array();
+    for (var i = 0; i < json.length; i++) {
+        data[i] = JSON.parse(json[i]);
+        data[i].date = DateToDate(parseInt(data[i].date));
+    }
+	//
+    DrawLine("#chart", data, "lightgreen", "mediumseagreen","white","black","black");
+});
+```
+
+如此以来，打开页面，我们的[折线图](file:///E:/Work/git/JqChartD3/JqLine.html)呈现在眼前了。
+
+*实例和应用
+
+我们再看看d3.js在实例中的应用：
+
+1.[蓝V指数](http://localhost:11544/app.htm)
+
+2.[MICE](http://ideo.meihua.info/V2/today.aspx)
+
+3.[QQ群关系可视化查询](https://qqgroup.insight-labs.org/)
+
+
+版权:2014-12-4 16:54 flyher
+
+
+####[[返回目录]](../index.html)    [[Give me a Star]](https://github.com/flyher/shumeipai)
+
+![Github](../src/logo.gif)© 2014 [flyher@GitHub, Inc.](https://github.com/flyher)
+	
+</xmp>
+
+<script src="../js/strapdown.js"></script>
+</html>
