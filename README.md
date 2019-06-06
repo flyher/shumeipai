@@ -6,9 +6,9 @@
 
 你可以使用你的浏览器访问
 
-本资源主页:http://flyher.github.io/shumeipai/index2.html
+本资源主页:https://flyher.github.io/shumeipai/index2.html
 
-MrakDown版本索引页面:http://flyher.github.io/shumeipai/ [未完成]
+MrakDown版本索引页面:https://flyher.github.io/shumeipai/ [未完成]
 
 
 test
@@ -17,7 +17,7 @@ test
 
 更新栏目:
 
-http://flyher.github.io/shumeipai/index.html
+https://flyher.github.io/shumeipai/index.html
 
 ===
 
