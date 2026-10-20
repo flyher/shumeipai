@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>debian 无线命令配置(WAP2)_在路上_百度空间</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/debian%20%E6%97%A0%E7%BA%BF%E5%91%BD%E4%BB%A4%E9%85%8D%E7%BD%AE%28WAP2%29_%E5%9C%A8%E8%B7%AF%E4%B8%8A_%E7%99%BE%E5%BA%A6%E7%A9%BA%E9%97%B4.html)
+# debian 无线命令配置(WAP2)_在路上_百度空间
+
+在有如 gnome/kde/xfce 等图形环境里可以用 networkmanager 或 wicd 来进行图形方式的配置，只是没有通用性。
+并且回到终端下无线网络就不可用，也太让人不爽了。
+
+下面介绍用命令行方式来对无线网络进行配置，以我的机器配置为例。
+注：１、图形界面的网络配置工具与下面修改文本配置方式冲突，请移除这些软件包。
+２、下面无线网络配置使用 WPA2 加密。WEP加密很容易破解，WPA1已经过时。
+
+１、安装驱动
+识别网卡
+$lspci | grep Wireless
+03:00.0 Network controller: Intel Corporation PRO/Wireless 5100 AGN [Shiloh] Network Connection
+安装驱动
+$sudo aptitude install firmware-iwlwifi
+加载驱动
+$sudo modprobe iwl3945
+
+2、安装软件
+$sudo aptitude install wireless-tools wpasupplicant
+
+3、收集信息
+获取 SSID
+$sudo iwlist scan
+
+4、配置无线网络
+把下面文件中的 ssid 和 passwd 换成无线网络的 ssid 和密码。
+$sudo vim /etc/network/interfaces
+
+auto wlan0
+iface wlan0 inet dhcp
+pre-up ip link set wlan0 up
+pre-up iwconfig wlan0 essid ssid
+wpa-ssid ssid
+wpa-psk password
+
+５、启用无线网线
+$sudo ifup wlan0
+#每次重启之后会自动连接无线网络
+
+参考：<http://wiki.debian.org/WiFi/HowToUse>
+<http://wiki.debian.org/iwlwifi>
+<http://www.cactus.org.cn/2010/05/debian-linux-wifi-config-wpa.html> [❤]
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

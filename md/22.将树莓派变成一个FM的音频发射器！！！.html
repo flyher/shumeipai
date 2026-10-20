@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>将树莓派变成一个FM的音频发射器！！！</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E5%B0%86%E6%A0%91%E8%8E%93%E6%B4%BE%E5%8F%98%E6%88%90%E4%B8%80%E4%B8%AAFM%E7%9A%84%E9%9F%B3%E9%A2%91%E5%8F%91%E5%B0%84%E5%99%A8%EF%BC%81%EF%BC%81%EF%BC%81.html)
+# 将树莓派变成一个FM的音频发射器！！！
+
+*本帖最后由 ukonline2000 于 2013-2-1 15:20 编辑*
+
+本教程叫大家如何将树莓派变成一个FM的音频发射器，可以用收音机，带收音功能的手机来接收FM音频了！！！
+准备：
+1.树莓派
+2.杜邦线母头一根（用于当fm的天线）
+
+操作步骤：
+1.下载附件程序（付源代码）
+![](http://files.note.sdo.com/M5cEN~kihRP0LX0F0003JZ) *（外链图片未本地化）*
+
+[pifm.zip](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTY0MDN8ZTUwNmQzOGF8MTM2MTM0MzAyNHwwfDc2Mzc%3D)
+*(5.31 MB, 下载次数: 1810)*
+
+2013-1-30 17:09 上传
+
+点击文件名下载附件
+
+
+2.拷贝到树莓派中，执行一下命令：
+
+1. ./pifm sound.wav 100.0
+
+*复制代码*
+
+注：
+“sound.wav”为发射的音频文件，你也可以用用自己的文件，注意格式为wav
+“100.0”为发射的fm频段，不设置默认是“103.3”，或者你可以设置自己的频段（可以工作的频率为1MHz-250MHz）
+执行的时候如果遇到找不到命令的提示,请执行下面命令,设置权限
+
+1. sudo chmod 777 pifm
+
+*复制代码*
+
+![fm222.jpg](http://files.note.sdo.com/M5cEN~kihRP0LX0F0003J- "fm222.jpg") *（外链图片未本地化）*
+
+2013-1-30 17:13 上传
+
+[**下载附件** (11.45 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTY0MDR8OTk4MWZkNTh8MTM2MTM0MzAyNHwwfDc2Mzc%3D&nothumb=yes "fm222.jpg 下载次数:0")
+
+
+3.将树莓派的GPIO4上插上杜邦线（红圈所指的管脚），当做天线（我试过不插线，也可以收到，不过信号较差）
+
+![fm111.jpg](http://files.note.sdo.com/M5cEN~kihRP0LX0F0003K1 "fm111.jpg") *（外链图片未本地化）*
+
+2013-1-30 17:13 上传
+
+[**下载附件** (56.02 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTY0MDV8YTYwZWNkMGF8MTM2MTM0MzAyNHwwfDc2Mzc%3D&nothumb=yes "fm111.jpg 下载次数:0")
+
+
+![1133.jpg](http://files.note.sdo.com/M5cEN~kihRP0LX0F0003K3 "1133.jpg") *（外链图片未本地化）*
+
+2013-1-30 17:15 上传
+
+[**下载附件** (35.93 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTY0MDd8Y2QxZTdmMGV8MTM2MTM0MzAyNHwwfDc2Mzc%3D&nothumb=yes "1133.jpg 下载次数:0")
+
+
+![1122.jpg](http://files.note.sdo.com/M5cEN~kihRP0LX0F0003K5 "1122.jpg") *（外链图片未本地化）*
+
+2013-1-30 17:15 上传
+
+[**下载附件** (38.41 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTY0MDZ8YjY0MTBhZDd8MTM2MTM0MzAyNHwwfDc2Mzc%3D&nothumb=yes "1122.jpg 下载次数:0")
+
+
+4.收音机或者手机，调到步骤2中设置的频段即可收听
+
+![1144.jpg](http://files.note.sdo.com/M5cEN~kihRP0LX0F0003K7 "1144.jpg") *（外链图片未本地化）*
+
+2013-1-30 17:15 上传
+
+[**下载附件** (30.1 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTY0MDh8NzI1NjE5ZDV8MTM2MTM0MzAyNHwwfDc2Mzc%3D&nothumb=yes "1144.jpg 下载次数:0")
+
+
+**相关源码仅供学习研究用，一切所带来的后果由玩家自己承担，本人概不负责！！！**
+**请大家遵守法律，使用合法频段**
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

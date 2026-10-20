@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ArchLinux的pacman下载巨慢无比怎么办？手动更换镜像站教程</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/ArchLinux%E7%9A%84pacman%E4%B8%8B%E8%BD%BD%E5%B7%A8%E6%85%A2%E6%97%A0%E6%AF%94%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%8D%A2%E9%95%9C%E5%83%8F%E7%AB%99%E6%95%99%E7%A8%8B.html)
+# ArchLinux的pacman下载巨慢无比怎么办？手动更换镜像站教程
+
+和这个 <http://bbs.shumeipai.org/thread-77-1-1.html> 要做的事情是一致的
+如果碰到pacman下载慢如何对付
+前面啰嗦的简介就略了
+
+Arch Linux ARM镜像站列表见：<http://archlinuxarm.org/about/mirrors> ，仍然挑最快的
+
+> 清华大学 [http://cn.mirror.archlinuxarm.org](http://cn.mirror.archlinuxarm.org/)
+> 德国亚琛工业大学 [http://de3.mirror.archlinuxarm.org](http://de3.mirror.archlinuxarm.org/) （没有英国的镜像，德国的对付一下吧）
+> 台湾淡江大学 http://tw.mirror.archlinuxarm.org
+
+
+（注：树莓派版Arch并不需要专门的软件源，Arch Linux ARM的源就可以适用于各种平台使用的Arch Linux ARM）
+
+执行命令编辑pacman的服务器列表：nano /etc/pacman.d/mirrorlist
+
+1. # Arch Linux ARM repository mirrorlist
+2. # Generated on 2012-09-16
+4. ## Geo-IP based mirror selection and load balancing
+5. Server = http://mirror.archlinuxarm.org/armv6h/$repo
+7. ### Mirrors by country
+8. ### China
+9. # Server = http://cn.mirror.archlinuxarm.org/armv6h/$repo
+10. ### Finland
+11. # Server = http://fi.mirror.archlinuxarm.org/armv6h/$repo
+12. （略去大部分）
+
+*复制代码*
+
+格式很简单。把唯一没有注释的“Server = http://mirror.archlinuxarm.org/armv6h/$repo”注释掉，禁止自动选择镜像服务器。
+
+然后随意编辑，用哪个开哪个就行了。用清华的源，就是China下边一行去掉注释。
+如果列表里没有源，就自己加上，记得在后面补上“/armv6h/$repo”。
+
+编辑后运行 pacman -Syy ，联系新的服务器刷新软件包数据库，看一下速度有无改善。
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

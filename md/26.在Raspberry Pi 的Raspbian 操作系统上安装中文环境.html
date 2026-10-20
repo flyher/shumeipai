@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>在Raspberry Pi 的Raspbian 操作系统上安装中文环境</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E5%9C%A8Raspberry%20Pi%20%E7%9A%84Raspbian%20%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B8%8A%E5%AE%89%E8%A3%85%E4%B8%AD%E6%96%87%E7%8E%AF%E5%A2%83.html)
+# 在Raspberry Pi 的Raspbian 操作系统上安装中文环境
+
+默认的raspbian操作系统是不带中文字库的，所以不能正常显示中文字体
+
+我们可以用apt来安装开源字库的安装包 实现中文的显示
+
+输入命令
+sudo apt-get install ttf-wqy-zenhei
+这条命令安装的是文泉驿的正黑体
+
+sudo apt-get install ttf-wqy-microhei
+这条命令安装的是文泉驿的微米黑体
+
+sudo apt-get install ttf-arphic-ukai
+这条命令安装的是文鼎的楷体
+
+sudo apt-get install ttf-arphic-uming
+这条命令安装的是文鼎的明体
+
+linux下中文输入法有scim和ibus 2套不同的输入法引擎可以选择
+
+我这里用口碑比较好的ibus举例
+
+安装ibus 输入法引擎 和 ibus 拼音输入法
+sudo apt-get install ibus ibus-pinyin
+
+会提示安装一系列的库文件
+
+安装完毕后重新启动lxde,可以在屏幕右下角看到ibus的图标.
+右键选择preference ,然后在input method选项卡的select a input method 里面选择Chinese ,然后选pinyin.
+点击add添加拼音输入法,然后点击Close关闭窗口.
+再次点击ibus的图标 可以发现列表里面有拼音输入法可供选择,到这里拼音输入就安装完毕.
+
+本文出自 “[爱上树莓派](http://raspberrypi.blog.51cto.com/)” 博客，请务必保留此出处<http://raspberrypi.blog.51cto.com/6262956/1086503>
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

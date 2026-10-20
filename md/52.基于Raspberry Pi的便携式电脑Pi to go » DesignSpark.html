@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>基于Raspberry Pi的便携式电脑Pi to go » DesignSpark</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E5%9F%BA%E4%BA%8ERaspberry%20Pi%E7%9A%84%E4%BE%BF%E6%90%BA%E5%BC%8F%E7%94%B5%E8%84%91Pi%20to%20go%20%C2%BB%20DesignSpark.html)
+# 基于Raspberry Pi的便携式电脑Pi to go
+
+[![](http://files.note.sdo.com/M5cEN~kg9tZMLX0es01bzb)](http://www.designspark.com/users/view/%E7%94%B0%E6%99%93%E5%A9%95)Posted by [田晓婕](http://www.designspark.com/users/view/%E7%94%B0%E6%99%93%E5%A9%95) on Thu, Jan 10 2013 02:10:00 *（外链图片未本地化）*
+
+- [Development kits electronics](http://www.designspark.com/nodes/term/slug:development-kits---electronics "View content tagged with Development kits   electronics")
+- [Raspberry pi](http://www.designspark.com/nodes/term/slug:raspberry-pi "View content tagged with Raspberry pi")
+- [Design phase](http://www.designspark.com/nodes/term/slug:design-phase "View content tagged with Design phase")
+- [Lcd](http://www.designspark.com/nodes/term/slug:lcd "View content tagged with Lcd")
+- [Led](http://www.designspark.com/nodes/term/slug:led "View content tagged with Led")
+
+285 views
+
+       鉴于Raspberry非常高的可玩性，让众多电子爱好者纷纷用其创造出不同的新产品。最近又有一位名叫 Nathan Morgan 的玩家对自己的 Raspberry Pi（model B revision 1）做了一番改造，他利用 3D 打印机（用于制作外壳等）和一系列零部件将其变成了一台便携式电脑。
+
+![title](http://files.note.sdo.com/M5cEN~kg9tZMLX0es01bzd) *（外链图片未本地化）*
+
+       这台电脑的名字叫「Pi-to-Go」，采用了一块 640 x 480 的 LCD 屏幕、内建触控板的 QWERTY 键盘、64GB 三星 SSD（1GB 分割区）、续航超过 10 小时的可充电式电池、4GB SD 记忆卡，支持 Wi-Fi 和蓝牙。
+
+       Morgan本着开源的精神已经将制作说明、零部件清单以及 3D 打印所需要用到的文件通通放到了网上，让我们来了解一下他这片博客中的一些内容，来帮助你完成制作吧。
+
+![title](http://files.note.sdo.com/M5cEN~kg9tZMLX0es01bzh) *（外链图片未本地化）*
+
+LCD液晶显示屏
+
+这台便携式电脑采用的，是LCD是制作者从二手市场买来的备份相机系统，屏幕分辨率低，制作者希望可以再下一代Pi to go中得到改善。它使用一个复合输入，可以显示分辨率为640×480像素。
+
+电池
+
+制作者提醒我们务必要注意锂离子电池的使用，因为这很可能就会毁了你的制作，其使用的是笔记本电池。笔记本电池的构造让你不能直插作为电池包，但是制作者找到了一个经济又安全的方式。为了获得电源，你需要连接引脚1 , 2，和4到负极/地面（-），并且将引脚8和9接到正极的（+）。确保连接正确的线索。具体请参考引脚图，一旦完成之后充电是很容易的。
+
+![title](http://files.note.sdo.com/M5cEN~kg9tZMLX0es01bzf) *（外链图片未本地化）*
+
+                                                                                                                               原理图
+
+内部供电枢纽
+
+Raspberry Pi有一个主要缺点就是动力不足，由一个5V微型通用串行总线通信有至少750MA，1A是更好的。但问题在于它的USB串口仅能通过120ma左右，这不足以支持运行。所以制作者采用发现了一个超小型7端口集线器是并把它拆开，需要为一下五件事供电：一个无线网络适配器，蓝牙适配器，一个固态硬盘的硬盘驱动器，键盘/鼠标发射器，和Raspberry Pi本身。电池包的供电时11.1V，所需功率是5V。将电池接到LCD显示屏有一个9-13V的输入，液晶屏上会有一些组件，将需要一个5V电压电源（液晶显示器背光源为例），要找到一个板上的电压调节器和焊料产生5V电容器，并且焊接到5V输入的供电集线器。
+
+扩展存储
+
+    制作者实现了64G固态硬盘，因为Pi本身的内存不足，但是如果仅仅只安装了一个较大的SD卡，加上了一个大的交换文件，或交换分区，最终会烧坏的SD卡。SD卡有非常有限数量的读/写并且很缓慢。
+
+内置无线网卡、蓝牙
+
+使用了一个纳米优盘无线适配器和纳米蓝牙适配器安装在Pi中。这些也都是直接焊接到内置驱动通用串行总线集线器。
+
+操作系统
+
+   raspbian从raspberrypi.org下载。唯一的改动是config.txt文件和添加的高速交换分区，使液晶屏显示正确的和充满整个屏幕。
+
+**config.txt changes**
+overscan\_left=8
+overscan\_right=-40
+overscan\_top=-30
+overscan\_bottom=-30
+sdtv\_mode=2
+
+      更多配置详情可以搜索原文获得，除去 3D 打印部分的总共花费大约在 400 美元（约人民币 2,490 元），开发性这样高的开发板，用Raspberry Pi完成做出你自己的设计并且和DesignSpark的网友分享吧！
+
+[寻找Raspberry P以及其组件](http://china.rs-online.com/web/generalDisplay.html?id=raspberrypi&redirect-relevancy-data=636F3D3226696E3D4931384E4272616E644D504E266C753D7A68266D6D3D6D61746368616C6C7061727469616C26706D3D5E5C442B5C735C442B2426706F3D3526736E3D592673723D52656469726563742673613D2F67656E6572616C446973706C61792E68746D6C3F69643D72617370626572727970692673743D4B4559574F52445F4D554C54495F414C504841267573743D7261737062657272792070692673633D592677633D524947485426&sra=oss&relevancy-data=636F3D3226696E3D4931384E4272616E644D504E266C753D7A68266D6D3D6D61746368616C6C7061727469616C26706D3D5E5C442B5C735C442B2426706F3D3526736E3D592673723D52656469726563742673613D2F67656E6572616C446973706C61792E68746D6C3F69643D72617370626572727970692673743D4B4559574F52445F4D554C54495F414C504841267573743D7261737062657272792070692673633D592677633D524947485426)
+
+[Share on linkedin](http://www.addthis.com/bookmark.php?v=250&winname=addthis&pub=xa-4f75c9ac5eccb233&source=tbx-250&lng=zh&s=linkedin&url=http%3A%2F%2Fwww.designspark.com%2Fblog%2Fpi-to-go&title=%E5%9F%BA%E4%BA%8ERaspberry%20Pi%E7%9A%84%E4%BE%BF%E6%90%BA%E5%BC%8F%E7%94%B5%E8%84%91Pi%20to%20go%20%C2%BB%20DesignSpark&ate=AT-xa-4f75c9ac5eccb233/-/-/51025e0dd179ceb7/3/50a23f5a819cd255&frommenu=1&uid=50a23f5a819cd255&ct=1&pre=http%3A%2F%2Fwww.designspark.com%2Fsearch%2Fq%3Araspberry%2Ftab%3Ablog&tt=0&captcha_provider=nucaptcha "LinkedIn")
+[Share on facebook](http://www.designspark.com/blog/pi-to-go# "Facebook")
+[Share on sinaweibo](http://www.addthis.com/bookmark.php?v=250&winname=addthis&pub=xa-4f75c9ac5eccb233&source=tbx-250&lng=zh-CN&s=sinaweibo&url=http%3A%2F%2Fwww.designspark.com%2Fblog%2Fpi-to-go&title=%E5%9F%BA%E4%BA%8ERaspberry%20Pi%E7%9A%84%E4%BE%BF%E6%90%BA%E5%BC%8F%E7%94%B5%E8%84%91Pi%20to%20go%20%C2%BB%20DesignSpark&ate=AT-xa-4f75c9ac5eccb233/-/-/51025e0dd179ceb7/2&frommenu=1&uid=51025e0dc0f91f20&ct=1&pre=http%3A%2F%2Fwww.designspark.com%2Fsearch%2Fq%3Araspberry%2Ftab%3Ablog&tt=0&captcha_provider=nucaptcha "Sinaweibo")
+[Share on email](http://www.designspark.com/blog/pi-to-go# "Email")
+[More Sharing Services](http://www.designspark.com/blog/pi-to-go#)
+[0](http://www.designspark.com/blog/pi-to-go# "More...")
+
+[Like this](http://www.designspark.com/likes/add/7734)
+[Leave a comment](http://www.designspark.com/discuss/comment.php?mode=post&f=36&title=%E5%9F%BA%E4%BA%8ERaspberry+Pi%E7%9A%84%E4%BE%BF%E6%90%BA%E5%BC%8F%E7%94%B5%E8%84%91Pi+to+go&path=&nid=7734)
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

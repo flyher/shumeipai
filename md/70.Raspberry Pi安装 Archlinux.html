@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Raspberry Pi安装 Archlinux</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/Raspberry%20Pi%E5%AE%89%E8%A3%85%20Archlinux.html)
+# Raspberry Pi安装 Archlinux
+
+*本帖最后由 GeekNapster 于 2012-12-31 15:04 编辑*
+
+由于是用英文写的。大家凑合着看了。道理简单。
+本人半个小时原创，呵呵～
+Archlinux纯净版安装。原标题
+Install Archlinux on Raspberry Pi as you wish!
+
+The easiest way to install archlinux on raspberry PI.
+
+
+now you need to input these command promotes.
+
+
+**[plain]** view plaincopy
+
+
+- dd if=/home/xx/Downloads/archlinux.img of=/dev/sdX bs=2M
+
+
+then
+
+
+you need to plug the SD card into raspberry Pi
+
+Then boot
+
+By default, the user name and password are both "root"
+
+After logging in, you need to check out all your devices with command promotes :
+
+
+**[plain]** view plaincopy
+
+
+- fdisk -l /dev/mmcblk0
+
+
+then you will find there are two partitions down there by default for archlinux installation.
+
+
+The first one is /dev/mmcblk0p1 which is the "/boot" folder whose format is fat32.
+
+The second partition is /dev/mmcblk0p2 which is the "/" folder whose format is ext4.
+
+Now we need to use the rest free space of the SD card disk.
+
+So, we input those commands :
+
+
+**[plain]** view plaincopy
+
+
+- cfdisk /dev/mmcblk0
+
+
+Using cfdisk to mange the partition label of the SD card.
+
+
+Also we could use fdisk. But fdisk needs us to give the specific bytes to make the partition room, which is too precise.
+
+Anyway both cfdisk and fdisk make sense.
+
+now we make a 1GB room for swap, and the rest for folder "/home"
+
+TIPS:
+
+        Now if we use
+
+
+**[plain]** view plaincopy
+
+
+- fdisk -l /dev/mmcblk0
+
+
+we will only see two partitions those which are /dev/mmcblk0p1 and /dev/mmcblk0p2.
+
+
+      We can't see the other two partitions /dev/mmcblk0p3, /dev/mmcblk0p4 those which we have divided from the rest free space of the SD card.
+
+       All we need is to reboot the raspberry pi.
+
+
+**[plain]** view plaincopy
+
+
+- reboot
+
+
+then
+
+
+**[plain]** view plaincopy
+
+
+- fdisk -l /dev/mmcblk0
+
+**[plain]** view plaincopy
+
+
+- [root@alarmpi ~]# fdisk -l /dev/mmcblk0
+- Disk /dev/mmcblk0: 15.9 GB, 15931539456 bytes
+- 4 heads, 16 sectors/track, 486192 cylinders, total 31116288 sectors
+- Units = sectors of 1 \* 512 = 512 bytes
+- Sector size (logical/physical): 512 bytes / 512 bytes
+- I/O size (minimum/optimal): 512 bytes / 512 bytes
+- Disk identifier: 0x000c21e5
+- Device Boot      Start         End      Blocks   Id  System
+- /dev/mmcblk0p1   \*        2048      194559       96256    c  W95 FAT32 (LBA)
+- /dev/mmcblk0p2          194560     3862527     1833984   83  Linux
+- /dev/mmcblk0p3         3862528     5862527     1000000   82  Linux swap / Solaris
+- /dev/mmcblk0p4         5862528    31116287    12626880   83  Linux
+
+
+now we can get all those partitions.
+
+
+Now we need to have swap and format the partition /dev/mmcblk0p4
+
+**[plain]** view plaincopy
+
+
+- mkswap /dev/mmcblk0p3
+- swapon /dev/mmcblk0p3
+- mkfs.ext4 /dev/mmcblk0p4
+
+
+now we need to edit the /etc/fstab
+
+
+make it like this:
+
+
+**[plain]** view plaincopy
+
+
+- #
+- # /etc/fstab: static file system information
+- #
+- # <file system>        <dir>         <type>    <options>          <dump> <pass>
+- devpts                 /dev/pts      devpts    defaults            0      0
+- shm                    /dev/shm      tmpfs     nodev,nosuid        0      0
+- /dev/mmcblk0p1  /boot           vfat    defaults        0       0
+- /dev/mmcblk0p2  /               ext4    defaults        0       0
+- /dev/mmcblk0p3  none            swap    defaults        0       0
+- /dev/mmcblk0p4  /home           ext4    defaults        0       0
+
+
+Alright.
+
+
+Now we make it.
+
+We need to upgrade the archlinux syntactically.
+
+So we need to edit the file
+
+
+**[plain]** view plaincopy
+
+
+- vi /etc/pacman.d/mirrorlist
+
+
+then, uncomment the links below if the place is supposed near your location.
+
+  then
+
+
+**[plain]** view plaincopy
+
+
+- pacman -Sy
+
+
+Now we need to set our localtime and locale.
+
+so we need to uncomment /etc/locale.gen if there is a locale you want to have. ![](http://files.note.sdo.com/M5cEN~kg7G8VnM24s00Oih) *（外链图片未本地化）*
+
+And
+
+
+**[plain]** view plaincopy
+
+
+- ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+
+(because i am in China, so it's Shanghai. It depends on where you are.)
+
+
+Also, you could change /etc/hostname, or never mind.
+
+
+Now you need to add a new user
+
+you could use :
+
+
+**[plain]** view plaincopy
+
+
+- adduser
+
+
+and you could install sudo
+
+
+**[plain]** view plaincopy
+
+
+- pacman -S sudo
+
+
+Then edit the file sudoers by commands
+
+
+**[plain]** view plaincopy
+
+
+- sudo visudo
+
+
+then,
+
+
+add the line "USER ALL = (ALL) ALL" below the line root ALL = (ALL) ALL
+
+Now reboot your computer. It is a clean and fast one.
+
+Or you want to install video driver or get into serial console.
+
+https://wiki.archlinux.org/index.php/Raspberry#Installation
+
+At the bottom of the page, those reference maybe help.
+
+Cheers!
+
+[Raspberry Pi](thread-5812-1-1.html)
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

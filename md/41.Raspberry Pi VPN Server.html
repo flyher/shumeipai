@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Raspberry Pi VPN Server</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/Raspberry%20Pi%20VPN%20Server.html)
+# Raspberry Pi VPN Server
+
+You have a raspberry pi— a low-power always-on computer. Why not use it as a VPN server for tunneling your internet through when travelling? This could, for example, help you ensure a secure browsing experience when you’re on a sketchy public wifi network. Or perhaps you’re considering moving to another country for a couple months. Just find a friend or family member who is willing to let you mooch off their internet from time to time, and plug your Raspberry Pi into their network while you’re away. This will give you an American IP address for utilizing all those US only services while you’re abroad. There aren’t many helpful step-by-step guides to setting up a VPN server on your raspberry pi, so that’s what I seek to provide here.
+
+
+**Contents**
+
+- [VPN Server Setup (Raspberry Pi)](http://wellsb.com/post/29412820494/raspberry-pi-vpn-server#server)
+- [Router Setup](http://wellsb.com/post/29412820494/raspberry-pi-vpn-server#router)
+- [Dynamic DNS (Raspberry Pi)](http://wellsb.com/post/29412820494/raspberry-pi-vpn-server#dyndns)
+- [Windows 7 Client Setup](http://wellsb.com/post/29412820494/raspberry-pi-vpn-server#win7client)
+- [Android Client Setup](http://wellsb.com/post/29412820494/raspberry-pi-vpn-server#androidclient)
+
+
+**VPN Server Setup (Raspberry Pi)**
+
+First, you’ll need a kernel with MPPE support. I have tested this guide with [Occidentalis v0.1](http://learn.adafruit.com/adafruit-raspberry-pi-educational-linux-distro/occidentalis-v0-dot-1) by Adafruit and with [Raspbmc RC4](http://www.raspbmc.com/download/). To test if the kernel on your distro of choice has MPPE support, type
+
+```
+sudo modprobe ppp-compress-18
+```
+
+If this works without any errors, your kernel should do the job. By the way, you can do all this through SSH (or through VNC) or directly on your Pi with a keyboard and mouse.
+
+
+Next, install the PPTP server package. I’m using a debian based distro, so I execute the following command:
+
+```
+sudo apt-get install pptpd
+```
+
+
+Next, edit ‘/etc/pptpd.conf’ If you have started an X session, you can use a graphical text editor. Otherwise, you can use VI. Since this is a beginner’s tutorial, I won’t explain how to use VI. If you are using LXDE, open a **root** terminal and type
+
+```
+leafpad /etc/pptpd.conf
+```
+
+If you prefer working in the terminal use the following. This is what I will use for the remainder of the tutorial, but you can use whatever text editor you like.
+
+```
+sudo vi /etc/pptpd.conf
+```
+
+At the end of the file, add (or uncomment if it already exists) the following lines
+
+```
+localip 192.168.0.1
+remoteip 192.168.1.234-238,192.168.1.245
+```
+
+Be sure to replace this information with what you actually need. LocalIP is the internal IP of your raspberry pi, and the Remote IP range are the addresses that will be handed out to clients.
+
+
+Now, edit the ‘/etc/ppp/pptpd-options’ file.
+
+```
+sudo vi /etc/ppp/pptpd-options
+```
+
+Append the following directives to the end of the file:
+
+```
+ms-dns 192.168.1.1
+nobsdcomp
+noipx
+mtu 1490
+mru 1490
+```
+
+Where the IP used for the ms-dns directive is the DNS server for the local network to which your client will be connecting (quite possibly the IP address of your router).
+
+
+Next, edit the ‘/etc/ppp/chap-secrets’ files. This is where you will place your credentials for logging into the VPN server.
+
+```
+sudo vi /etc/ppp/chap-secrets
+```
+
+Add your authentication credentials in the following form:
+
+```
+username[TAB]*[TAB]password[TAB]*
+```
+
+You should probably use a very strong password for authentication.
+
+Restart the PPTP daemon by executing the following command:
+
+```
+sudo service pptpd restart
+```
+
+
+Now, enable forwarding if you wish to have access to your entire home network while away. Edit the ‘sysctl’ file.
+
+```
+sudo vi /etc/sysctl.conf
+```
+
+Find “net.ipv4.ip\_forward=1” and uncomment it (or change =0 to =1) to enable forwarding. Now, execute the following command to apply changes:
+
+```
+sudo sysctl -p
+```
+
+
+We’re all set on the server side. Everything should persist upon restart, so no worries there. Now, let’s configure our router.
+
+
+**Router Setup**
+
+We must forward TCP port 1723 on the router to the IP Address of the Raspberry Pi. You can visit [Port Forward](http://portforward.com/routers.htm) for step-by-step instructions for setting this up with your particular router. While you’re at it, you may want to set up a static IP address for your Raspberry Pi’s MAC address in your router’s DHCP configuration settings. This way, your local IP address (the one to which you’re forwarding the port) doesn’t change.
+
+
+**Dynamic DNS (Raspberry Pi)**
+
+You may be wondering how you’re going to connect to this thing? Your public IP address is probably not static. We’ll set up dynamic DNS on our Pi, so we can refer to our VPN server by hostname. First, go to [dnsdynamic.org](http://www.dnsdynamic.org/) and register. Validate your email address, and add a domain. Go ahead and save the new domain with the IP address that appears by default. This tutorial will use ‘[domain].dnsdynamic.com’ so when you see this notation, just replace it with the domain you’ve selected.
+
+
+Now, we’re back on our raspberry pi. Open a root terminal and type
+
+```
+sudo apt-get install ddclient
+```
+
+An installation dialogue should appear.
+
+- When asked to select a Dynamic DNS service provider, choose “Other.”
+- It should ask for the name of the service provider. Enter “www.dnsdynamic.org”
+- On the next screen, select the “dyndns2” protocol.
+- Now, enter the username (email address) and password you used when you registered at [dnsdynamic.org](http://www.dnsdynamic.org/)
+- It, now, asks which network interface to use. If you are using the ethernet port on your Pi, enter “eth0”. If you have setup a usb wifi interface adapter, you may enter “wlan0”
+- Next, enter the domain you registered: “[domain].dnsdynamic.com”
+
+
+Now, wait for the installation to complete. If you’re behind a router, ddclient will incorrectly associate your internal IP address with your dynamic DNS domain. You can verify this by going to [dnsdynamic.org](http://www.dnsdynamic.org/), log in, click manage, and edit your existing domain. Let’s fix that.
+Edit ‘ddclient.conf’
+
+```
+sudo vi /etc/ddclient.conf
+```
+
+- Find the line “use=if, if=eth0” and comment it (add a # in front).
+- Add the line “use=web, web=checkip.dyndns.org”
+- Save and quit
+
+
+Restart ddclient
+
+```
+sudo service ddclient restart
+```
+
+Now, when you go to [dnsdynamic.org](http://www.dnsdynamic.org/) and go to manage and edit your existing domain, you should see your public IP address, now.
+
+We’re all finished on the server side. Now, let’s configure our clients.
+
+
+**Windows 7 Client Setup**
+
+- In the Network and Sharing Center, set up a new connection.
+- Connect to workplace
+- Use my Internet Connection (VPN)
+- Internet Address: “[domain].dnsdynamic.com”
+- Destionation Name: “Raspberry Pi” (or whatever you want to call your VPN server)
+- Enter Username and Password (from chap-secrets file on raspberry pi!)
+- If the connection fails, set up this connection anyway and proceed to next step
+- Back in Network and Sharing Center, click Change Adapter Settings
+- Find connection we just created, right click, Properties
+- Security tab: Set type to “PPTP”
+- Advanced tab: Click IP4V, Click Properties
+- In the new window, click Advanced
+- Here you have two options:
+  - If you wish to access resources or services on your home network, but wish to connect to the internet on your existing connection, then uncheck “Use default gateway on remote network.” This will establish a split-tunnel connection.
+  - If you wish to pass all traffic through the VPN, leave the box checked. Your browsing may be slower, but your traffic will appear from your home IP address.
+- Ok. You should now be able to connect
+
+
+**Android Client Setup**
+
+Your instructions may differ slightly depending on android version.
+
+- Go to Settings
+- Under Wireless & Networks, select More…
+- Select VPN
+- Name: “Raspberry Pi” (or whatever you want to call your VPN server)
+- Type: PPTP
+- Server Address: “[domain].dnsdynamic.com”
+- Select Connection you just created
+- Enter Username and Password (from chap-secrets file on server!)
+- You should now be connected to your VPN server.
+
+
+**Conclusion**
+That’s it! You’re all set with a VPN server on your Raspberry Pi. Keep in mind, PPTP is inherently less secure than an OpenVPN protocol solution. However, it’s much easier to set up on a Raspberry Pi :)
+Sources:
+
+- <http://www.howtogeek.com/51237/setting-up-a-vpn-pptp-server-on-debian/>
+- <http://raspberrypipod.blogspot.co.uk/2012/07/dynamic-dns-open-up-your-pis-webserver.html>
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

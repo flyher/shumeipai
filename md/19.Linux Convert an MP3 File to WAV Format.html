@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Linux Convert an MP3 File to WAV Format</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/Linux%20Convert%20an%20MP3%20File%20to%20WAV%20Format.html)
+# Linux Convert an MP3 File to WAV Format
+
+[![](http://files.note.sdo.com/M5cEN~kinpbwLX0rk002eD)](http://www.cyberciti.biz/faq/category/bash-shell/ "See all Bash/Shell scripting related FAQ") *（外链图片未本地化）*
+
+How do I convert an MP3 file to WAV format under Linux using a shell prompt?
+
+ There are plenty of tools that to convert an MP3 file into WAV format. I recommend mpg321 which is a free command-line mp3 player, which uses the mad audio decoding library.
+
+## Install mpg321 or mpg123
+
+Type the following command under Debian / Ubuntu Linux, enter:
+
+```
+sudo apt-get install mpg321
+```
+
+OR
+
+```
+sudo apt-get install mpg123
+```
+
+I recommend using mpg123 as it is updated frequently.
+
+### Install mpg123 under CentOS / RHEL / Fedora Linux
+
+Turn on [rpmforge](http://www.cyberciti.biz/faq/rhel-centos-fedora-media-mp3-players-installtion/) repo and type the following command:
+
+```
+yum install mpg123
+```
+
+## Convert an MP3 to WAV
+
+The -w option will convert an .mp3 file to .wav file. The syntax is:
+
+```
+mpg123 -w output.wav input.mp3
+```
+
+OR
+
+```
+mpg321 -w output.wav input.mp3
+```
+
+## A Sample Shell Script Helper Function
+
+Add the following to your [~/.bashrc startup file](http://bash.cyberciti.biz/guide/Startup_scripts) (tested with bash v3.x+):
+
+```
+mp3towav(){
+	[[ $# -eq 0 ]] && { echo "mp3wav mp3file"; exit 1; }
+	for i in "$@"
+	do
+		# create .wav file name
+		local out="${i%/*}.wav"
+		[[ -f "$i" ]] && { echo -n "Processing ${i}..."; mpg123 -w "${out}" "$i" &>/dev/null  && echo "done." || echo "failed."; }
+	done
+}
+```
+
+Use it as follows:
+
+```
+mp3towav *.mp3
+mp3towav "this is a test.mp3"
+ls *.wav
+```
+
+- [Tweet](https://twitter.com/share)
+
+
+- [![submit to reddit](http://files.note.sdo.com/M5cEN~kinpbwLX0rk002eF)](http://www.reddit.com/submit) *（外链图片未本地化）*
+- [![Download this as pdf](http://files.note.sdo.com/M5cEN~kinpbwLX0rk002eH)](http://www.cyberciti.biz/view/pdf/faq/5672.php) *（外链图片未本地化）*
+
+
+You should follow me on twitter [here](https://twitter.com/nixcraft) or grab [rss feed](http://www.cyberciti.biz/nixcraft-rss-feed-syndication/) to keep track of new changes.
+
+#### Featured Articles:
+
+- [30 Handy Bash Shell Aliases For Linux / Unix / Mac OS X](http://www.cyberciti.biz/tips/bash-aliases-mac-centos-linux-unix.html)
+- [Top 30 Nmap Command Examples For Sys/Network Admins](http://www.cyberciti.biz/networking/nmap-command-examples-tutorials/)
+- [25 PHP Security Best Practices For Sys Admins](http://www.cyberciti.biz/tips/php-security-best-practices-tutorial.html)
+- [20 Linux System Monitoring Tools Every SysAdmin Should Know](http://www.cyberciti.biz/tips/top-linux-monitoring-tools.html)
+- [20 Linux Server Hardening Security Tips](http://www.cyberciti.biz/tips/linux-security.html)
+- [Linux: 20 Iptables Examples For New SysAdmins](http://www.cyberciti.biz/tips/linux-iptables-examples.html)
+- [Top 20 OpenSSH Server Best Security Practices](http://www.cyberciti.biz/tips/linux-unix-bsd-openssh-server-best-practices.html)
+- [Top 20 Nginx WebServer Best Security Practices](http://www.cyberciti.biz/tips/linux-unix-bsd-nginx-webserver-security.html)
+- [20 Examples: Make Sure Unix / Linux Configuration Files Are Free From Syntax Errors](http://www.cyberciti.biz/tips/check-unix-linux-configuration-file-for-syntax-errors.html)
+- [15 Greatest Open Source Terminal Applications Of 2012](http://www.cyberciti.biz/open-source/best-terminal-applications-for-linux-unix-macosx/) ![](http://files.note.sdo.com/M5cEN~kinpbwLX0rk002eJ) *（外链图片未本地化）*
+- [My 10 UNIX Command Line Mistakes](http://www.cyberciti.biz/tips/my-10-unix-command-line-mistakes.html)
+- [Top 10 Open Source Web-Based Project Management Software](http://www.cyberciti.biz/tips/open-source-project-management-software.html)
+- [Top 5 Email Client For Linux, Mac OS X, and Windows Users](http://www.cyberciti.biz/tips/download-email-client-for-linux-mac-osx-windows.html)
+- [The Novice Guide To Buying A Linux Laptop](http://www.cyberciti.biz/tips/linux-laptop.html)
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

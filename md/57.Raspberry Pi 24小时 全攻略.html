@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Raspberry Pi 24小时 全攻略</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/Raspberry%20Pi%2024%E5%B0%8F%E6%97%B6%20%E5%85%A8%E6%94%BB%E7%95%A5.html)
+# Raspberry Pi 24小时 全攻略
+
+[![rpi](http://files.note.sdo.com/M5cEN~kg9i4pnM24s017qB)](http://photo.weibo.com/1572221167/albums/detail/album_id/3454020832880395) *（外链图片未本地化）*
+
+更多实拍照片请见：**[我微博的Raspberry Pi相册](http://photo.weibo.com/1572221167/albums/detail/album_id/3454020832880395)**。
+
+也欢迎阅读：
+[我的 Raspberry Pi 系统配置实战](http://blog.linz.im/2012/rpi-sys.html)。
+
+**视频日后续更新**
+
+### 订购
+
+我的 Raspberry Pi 是在[e络盟](http://cn.element14.com/)订购的。3月6日下的单，每人限购1台，可是下单后不久就接到客服的来电，说全球缺货，要6、7月份才有可能发货。
+
+4月27日收到邮件说即将发货。但是邮件内容细看提示是说6月中旬。
+
+![Raspberry Pi 到货](http://files.note.sdo.com/M5cEN~kg9i3VnM24s017qf) *（外链图片未本地化）*
+
+6月2日收到快递。到付，310.05元。
+
+今天收到发票。发票显示：单板机 RASPBERRY PI B型 单价235元，服务费30元。
+
+买这么一台东西纳税45.05元。
+
+不过整个交易流程感觉很规范。
+
+### 开箱
+
+![Raspberry Pi 包装](http://files.note.sdo.com/M5cEN~kg9i49nM24s017qj) *（外链图片未本地化）*
+
+首先我得说我非常喜欢e络盟得包装。
+
+![Raspberry Pi 说明书](http://files.note.sdo.com/M5cEN~kg9i49nM24s017ql) *（外链图片未本地化）*
+
+上图是Raspberry Pi的说明书，就一张纸，而且内容过于简单。
+
+![Raspberry Pi 尺寸](http://files.note.sdo.com/M5cEN~kg9i49nM24s017qn) *（外链图片未本地化）*
+
+Raspberry Pi和羊城通进行比较，这台电脑就真的和一张卡片（名片、信用卡）差不多大小。
+
+![Raspberry Pi 正面](http://files.note.sdo.com/M5cEN~kg9i4pnM24s017qE) *（外链图片未本地化）*
+
+Raspberry Pi 正面。接口有：
+
+- AV线视频接口
+- 3.5mm耳机音频接口
+- 两个USB接口
+- 电源接口。
+- HDMI视频接口
+- 标准网线接口
+
+另外有两个针状接口不知道是什么，其中一个我弟弟[@林至锐](http://weibo.com/u/2186062550)怀疑是打印机口。
+
+另外两个插有东西的插槽我也不了解是什么。
+
+希望知道的朋友告知。
+
+![Raspberry Pi 背面](http://files.note.sdo.com/M5cEN~kg9i49nM24s017qw) *（外链图片未本地化）*
+
+SD卡插槽在 Raspberry Pi 背面。操作系统要装在SD卡里。
+
+### 配件及启动
+
+由于Raspberry Pi并没有自带配件，所以要让它正常工作，还得自己选购一些配件接上使用。
+
+因为我收到Raspberry Pi当天正要从广州回老家，所以一切都从高速公路上开始。
+
+我发现电源接口很面善，然后拿Motorola ME525的电源试了试，真的对位接上了。然后在手机上查到了Moto的Milestone的电源能用于Raspberry Pi，然后查了一下Raspberry Pi电压和电流的要求，和我手头的电源上标示的值对得上，所以我想我这个手机充电器能用作Raspberry Pi电源。
+
+至于Raspberry Pi如何接显示器，也让我一度疑惑。我知道它的默认接口是HDMI，但是HDMI如何接电脑显示器我是完全没有了解的。但我猜想可能有和显示器相连的转接口。
+
+![Raspberry Pi HDMI2DVI](http://files.note.sdo.com/M5cEN~kg9i49nM24s017qq) *（外链图片未本地化）*
+
+回到老家后我马上跑去电脑店问了一下，还真有，他们从某个显卡的包装盒里取出这么一个小小的转接头，随便开了个价，10块钱交易。
+
+PS. 电脑店的人对我这个设备很感兴趣，我说是电脑他们不信。他们一听说CPU是ARM的，一口咬定这是一块手机主板。
+
+接下来回家[下载Raspberry Pi的系统ROM](http://www.raspberrypi.org/downloads)，这时候需要一个SD卡，于是跑出去找，找了两家电脑店，没有。
+
+最后再苏宁电器买了个号称更快更强的SDHC卡，能用。
+
+不妨阅读一下我写的另一篇关于Raspberry Pi 系统调配的文章：
+
+[blog.linz.im/2012/rpi-sys.html](http://blog.linz.im/2012/rpi-sys.html)
+
+晚上给SDHC装好Raspberry Pi的Debian “squeeze”，万事具备以为可以开动的时候，发现家里只有PS/2接口的键盘。
+
+于是和弟弟走了好远的路找PS/2转USB转换器，接上发现没反应，我打开转换器的盒子，发现线断了。可是按耐不住对这个geek玩具的满腔热情，我用透明胶粘好断处继续进入系统……
+
+![Raspberry Pi runs Python](http://files.note.sdo.com/M5cEN~kg9i4pnM24s017qG) *（外链图片未本地化）*
+弟弟在上面尝试了Python。
+
+第二天为了它买了个USB键盘。
+
+Raspberry Pi有两个USB口，除了USB键盘和USB鼠标，还能接USB存储设备，比如U盘。但是不是接上就马上能用，要挂载。
+我在「[我的 Raspberry Pi 系统配置实战](http://blog.linz.im/2012/rpi-sys.html)」有介绍具体方法。
+
+![Raspberry Pi连接电视](http://files.note.sdo.com/M5cEN~kg9i49nM24s017qu) *（外链图片未本地化）*
+
+在我临离开老家一段时间不能玩Raspberry Pi之前，我还接上了我们家的电视试了下，
+
+![Raspberry Pi连接电视启动系统](http://files.note.sdo.com/M5cEN~kg9i4pnM24s017qz) *（外链图片未本地化）*
+
+屏幕不能显示完全，而且进入LDXE后发现有变形。不过应该可以通过操作系统里的设置工具进行调整。
+
+![Raspberry Pi连接电视上网 linz.im](http://files.note.sdo.com/M5cEN~kg9i3VnM24s017qh) *（外链图片未本地化）*
+
+我用Raspberry Pi连接电视后在电视上开Chromium浏览器打开我的个人网站 **[linz.im](http://linz.im/)** 。
+
+### 初步感觉
+
+如果熟悉命令行操作，不启动图形界面，Raspberry Pi还是挺不错的。
+
+但是进入X之后，慢。点开一个软件往往要登上3、4秒，浏览器开4、5个标签页就死机的情况也出现过。
+
+我没有尝试过网上别人传说的在Raspberry Pi上运行QUAKE 3。也没有尝试过打开高清视频。
+
+我只是觉得如果用这么一个东西去做那些事情，有点蛋疼。
+
+不过有机会我也可能尝试一下蛋疼的滋味。只不过肯定不会主要用来这么用。
+
+### Raspberry Pi 该怎么利用？
+
+其实我已经有几个想法，不过我希望能自己收集到合适的硬件搭配在一起捣鼓点什么。
+
+对于[Raspberry Pi该怎么利用](http://www.geekaa.com/t/823)这个问题，你有什么想法？
+
+欢迎在我blog后留言或者在这里参与讨论：[www.geekaa.com/go/rpi](http://www.geekaa.com/go/rpi)
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

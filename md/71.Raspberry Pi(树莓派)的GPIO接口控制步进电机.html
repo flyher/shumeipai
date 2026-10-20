@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Raspberry Pi(树莓派)的GPIO接口控制步进电机</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/Raspberry%20Pi%28%E6%A0%91%E8%8E%93%E6%B4%BE%29%E7%9A%84GPIO%E6%8E%A5%E5%8F%A3%E6%8E%A7%E5%88%B6%E6%AD%A5%E8%BF%9B%E7%94%B5%E6%9C%BA.html)
+# Raspberry Pi(树莓派)的GPIO接口控制步进电机
+
+*本帖最后由 xinxincaijq 于 2012-12-31 10:54 编辑*
+
+Raspberry Pi是什么？
+引用维基百科的一句话：
+
+The Raspberry Pi is a credit card sized single-board computer developed in the UK by the Raspberry Pi Foundation with the intention of stimulating the teaching of basic computer science in schools.
+简单地说，它就是一个基于ARM CPU的、信用卡那么大的迷你计算机。
+In short, Pi is an ARM-based mini computer which has a credit card size.
+
+在阅读本文之前，请确保你已经阅读过我的另外几篇关于Pi的文章，因为本文与它们有或多或少的关系。
+Before reading this article, please make sure that you've read some other articles of mine on Pi, because this article is more or less based on them.
+
+【1】实验目的 / Experiment purpose
+在树莓派上编写一个C程序，通过其GPIO口控制步进电机的转动方向以及速度。
+Write a C program to control the direction & speed of rotation of a stepper motor through the GPIO on Raspberry Pi.
+
+【2】为什么要用树莓派来控制步进电机 / Why doing this
+在我的概念中，无论是控制接在树莓派上的摄像头来拍照，还是通过树莓派控制LED发光，我都还是在“虚拟世界”中折腾树莓派，因为它没有向外界输出任何动作。而在构建一个稍微复杂的系统时，这种能力可能是很重要的，于是，用树莓派来控制步进电机是我必须要做的事情。
+In my view, no matter using Pi to control webcam, or using Pi to light LED, the Raspberry Pi was in a "virtual" world all the time because it didn't output any movement to the real world. Having this ability may be very important to build a slightly more complex system, so I decided to use Pi to control a stepper motor.
+
+【3】实现方案 / The implementation
+怎样通过Raspberry Pi的GPIO口来控制步进电机？已经有很多人这样做了，例如Youtube上的这个例子。
+How to control a stepper motor through the GPIO on Pi? Lots of people have tried that before, such as this example on Youtube.
+由于步进电机通常需要一块驱动板，而这样的产品已经很容易买到并且极其廉价（肯定比你自己做要便宜），因此，我们没有必要自己去做。我在淘宝上不断地查啊查，终于找到了白菜价的步进电机和配套驱动板，加起来才一共8块多钱。
+Because we need a driver circuit board to drive the stepper motor, and it's really easy to buy this kind of product with super low price nowadays, so it's no need to make it ourselves. I searched taobao.com(the largest e-commerce website in China) and found a super cheap stepper motor & it's matched driver board, they cost me only about 8 RMB, that is, less than $1.5!
+
+下面来看看我买的步进电机和驱动板的样子：
+The stepper motor & it's driver board:
+
+
+步进电机和驱动板的接线：
+Connect the stepper motor with it's driver board:
+
+
+该驱动板配有一个原理图，根据它我们可以知道如何把整个系统连接起来：
+The driver board has a schematic diagram and we can learn from it how to connect the whole system together:
+
+
+可见，驱动板上有4个输入口：IN1~IN4，这4个口用来接树莓派的4个GPIO口。同时，我们需要为驱动板提供5V的供电，这从哪里来？当然是从树莓派引出来。从下面的GPIO口分布图可以得知，“2”口就是+5V，正好就利用它。
+We can see that there are total 4 input pins: IN1~IN4, these 4 pins will be connected to 4 GPIO pins on Raspberry Pi. And we also need to provide a 5V power supply to the board, so where can we get this? Use the pin "2"(5V) next to pin "1"(3.3V) on Pi is the most convenient way. Refer to following GPIO pinouts for details:
+
+
+我将树莓派上的GPIO 17、18、21、22口（用树莓派的命名方式就是0、1、2、3口）分别接到步进电机驱动板上的IN1、IN2、IN3、IN4口，最后接好线的效果如下：
+I connected GPIO 17, 18, 21, 22(namely GPIO 0, 1, 2, 3 in Raspberry Pi name) on Pi to IN1, IN2, IN3, IN4 on the driver board separately, after it's done, the whole system looks like this:
+
+
+【4】编写程序 / Write the program
+在参考了这款步进电机配套的51单片机的示例代码后，我知道了依次把驱动板的IN1~IN4置为高电平，就可以驱动步进电机，也就是说，要把树莓派的4个GPIO输出口依次置为高电平。例如，假设用0代表低电平，1代表高电平的话，GPIO 17、18、21、22口的电平第一次被置为1、0、0、0，第二次被置为0、1、0、0，第三次被置为0、0、1、0，第四次被置为0、0、0、1。
+After checking the code(for MCS51 singlechip) provided by the product dealer I knew that it's possible to drive the motor by set IN1~IN4 high level in turn, namely set the 4 GPIO pins high level in turn. For example, if we use 0 to represent low level and 1 to represent high level, then GPIO 17, 18, 21, 22 on Raspberry Pi will be set to 1,0,0,0 in the 1st round, 0,1,0,0 in the 2nd round, 0,0,1,0 in the 3rd round and 0,0,0,1 in the 4th round.
+
+于是我写出了下面的代码（仍然使用WiringPi这个库来操作GPIO）：
+So I wrote the follow code(still use WiringPi to manipulate the GPIO):
+
+1. /\* moto.c
+2. \* A program to control a stepper motor through the GPIO on Raspberry Pi.
+3. \*
+4. \* Author: Darran Zhang
+5. \*/
+7. #include <wiringPi.h>
+8. #include <stdio.h>
+9. #include <unistd.h>
+10. #include <stdlib.h>
+12. #define CLOCKWISE 1
+13. #define COUNTER\_CLOCKWISE 2
+15. void delayMS(int x);
+16. void rotate(int\* pins, int direction);
+18. int main(int argc,char\* argv[]) {
+19. if (argc < 4) {
+20. printf("Usage example: ./motor 0 1 2 3 \n");
+21. return 1;
+22. }
+24. /\* number of the pins which connected to the stepper motor driver board \*/
+25. int pinA = atoi(argv[1]);
+26. int pinB = atoi(argv[2]);
+27. int pinC = atoi(argv[3]);
+28. int pinD = atoi(argv[4]);
+30. int pins[4] = {pinA, pinB, pinC, pinD};
+32. if (-1 == wiringPiSetup()) {
+33. printf("Setup wiringPi failed!");
+34. return 1;
+35. }
+37. /\* set mode to output \*/
+38. pinMode(pinA, OUTPUT);
+39. pinMode(pinB, OUTPUT);
+40. pinMode(pinC, OUTPUT);
+41. pinMode(pinD, OUTPUT);
+43. delayMS(50);    // wait for a stable status
+44. for (int i = 0; i < 500; i++) {
+45. rotate(pins, CLOCKWISE);
+46. }
+48. return 0;
+49. }
+51. /\* Suspend execution for x milliseconds intervals.
+52. \*  @param ms Milliseconds to sleep.
+53. \*/
+54. void delayMS(int x) {
+55. usleep(x \* 1000);
+56. }
+58. /\* Rotate the motor.
+59. \*  @param pins     A pointer which points to the pins number array.
+60. \*  @param direction  CLOCKWISE for clockwise rotation, COUNTER\_CLOCKWISE for counter clockwise rotation.
+61. \*/
+62. void rotate(int\* pins, int direction) {
+63. for (int i = 0; i < 4; i++) {
+64. if (CLOCKWISE == direction) {
+65. for (int j = 0; j < 4; j++) {
+66. if (j == i) {
+67. digitalWrite(pins[3 - j], 1); // output a high level
+68. } else {
+69. digitalWrite(pins[3 - j], 0); // output a low level
+70. }
+71. }
+72. } else if (COUNTER\_CLOCKWISE == direction) {
+73. for (int j = 0; j < 4; j++) {
+74. if (j == i) {
+75. digitalWrite(pins[j], 1); // output a high level
+76. } else {
+77. digitalWrite(pins[j], 0); // output a low level
+78. }
+79. }
+80. }
+81. delayMS(4);
+82. }
+83. }
+
+*复制代码*
+
+编译程序：
+Compile the code:
+
+1
+g++ motor.c -o motor -lwiringPi
+运行程序：
+Run the program:
+
+1
+./motor 0 1 2 3
+这里向程序传入了4个参数，它们分别代表要控制的树莓派的GPIO口。切记，由于使用了WiringPi库，所以要参考上面的GPIO分布图的左边那部分来确定这些数字。
+The four arguments passed to the program are the GPIO pin numbers on Pi. Be sure to keep in mind that because of using WiringPi, we need to refer to the left part of the GPIO pinouts image describe above to identify the numbers.
+
+可以看到步进电机已经转动了(如下面的Youku视频所示)。如果你发现转动方向（顺/逆时针）反了，你可以把传入的参数顺序调整一下，就可以让它转对方向。
+Then we'll see the stepper motor start to rotate shown as this Youtube video. If you find that the direction of rotation is wrong, just adjust the order of the arguments passed to the program and it will be able to make the direction right.
+
+从前面的代码可见，如果要改变步进电机的转速，只需要改变rotate()函数中每次delay的时间即可。因此，如果我们把delay的时间逐渐由大变小，就会导致步进电机呈加速状态。让步进电机周期性加速的完整代码如下：
+From the code above we know that we can change the rotation speed of the motor by changing the delay time in function rotate(). So if we reduce the delay time gradually, the motor will be in an accelerating state. The full source code to make the motor speeding up periodically is shown below:
+
+1. /\* motor\_speed\_up.c
+2. \* A program to control a stepper motor(speed up) through the GPIO on Raspberry Pi.
+3. \*
+4. \* Author: Darran Zhang (http://www.codelast.com)
+5. \*/
+7. #include <wiringPi.h>
+8. #include <stdio.h>
+9. #include <unistd.h>
+10. #include <stdlib.h>
+12. #define CLOCKWISE 1
+13. #define COUNTER\_CLOCKWISE 2
+15. void delayMS(int x);
+16. void rotate(int\* pins, int direction, int delay);
+17. void stop(int\* pins);
+19. int main(int argc,char\* argv[]) {
+20. if (argc < 4) {
+21. printf("Usage example: ./motor 0 1 2 3 \n");
+22. return 1;
+23. }
+25. /\* number of the pins which connected to the stepper motor driver board \*/
+26. int pinA = atoi(argv[1]);
+27. int pinB = atoi(argv[2]);
+28. int pinC = atoi(argv[3]);
+29. int pinD = atoi(argv[4]);
+31. int pins[4] = {pinA, pinB, pinC, pinD};
+33. if (-1 == wiringPiSetup()) {
+34. printf("Setup wiringPi failed!");
+35. return 1;
+36. }
+38. /\* set mode to output \*/
+39. pinMode(pinA, OUTPUT);
+40. pinMode(pinB, OUTPUT);
+41. pinMode(pinC, OUTPUT);
+42. pinMode(pinD, OUTPUT);
+44. delayMS(50);    // wait for a stable status
+45. int delay = 25;
+46. while (true) {
+47. for (int i = 0; i < 10; i++) {
+48. rotate(pins, CLOCKWISE, delay);
+49. }
+50. delay--;
+51. if (delay < 4) {
+52. delay = 25;
+53. stop(pins);
+54. delayMS(500);
+55. }
+56. }
+58. return 0;
+59. }
+61. /\* Suspend execution for x milliseconds intervals.
+62. \*  @param ms Milliseconds to sleep.
+63. \*/
+64. void delayMS(int x) {
+65. usleep(x \* 1000);
+66. }
+68. /\* Rotate the motor.
+69. \*  @param pins     A pointer which points to the pins number array.
+70. \*  @param direction  CLOCKWISE for clockwise rotation, COUNTER\_CLOCKWISE for counter clockwise rotation.
+71. \*  @param delay    The time intervals(in ms) to delay, and if the value is smaller, the motor rotates faster.
+72. \*/
+73. void rotate(int\* pins, int direction, int delay) {
+74. for (int i = 0; i < 4; i++) {
+75. if (CLOCKWISE == direction) {
+76. for (int j = 0; j < 4; j++) {
+77. if (j == i) {
+78. digitalWrite(pins[3 - j], 1); // output a high level
+79. } else {
+80. digitalWrite(pins[3 - j], 0); // output a low level
+81. }
+82. }
+83. } else if (COUNTER\_CLOCKWISE == direction) {
+84. for (int j = 0; j < 4; j++) {
+85. if (j == i) {
+86. digitalWrite(pins[j], 1); // output a high level
+87. } else {
+88. digitalWrite(pins[j], 0); // output a low level
+89. }
+90. }
+91. }
+92. delayMS(delay);
+93. }
+94. }
+96. /\* Stop the motor.
+97. \*  @param pins     A pointer which points to the pins number array.
+98. \*/
+99. void stop(int\* pins) {
+100. for (int i = 0; i < 4; i++) {
+101. digitalWrite(pins, 0); // output a low level
+102. }
+103. }
+
+*复制代码*
+
+ *程序运行效果如下面的视频（Youku，Youtube）所示：
+Run the program and then you'll see the speeding up effect, as the video(Youku, Youtube) shown below:*
+
+[【分享】通过Raspberry Pi](thread-5802-1-1.html)
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

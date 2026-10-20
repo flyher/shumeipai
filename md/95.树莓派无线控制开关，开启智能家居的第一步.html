@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>树莓派无线控制开关，开启智能家居的第一步</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%97%A0%E7%BA%BF%E6%8E%A7%E5%88%B6%E5%BC%80%E5%85%B3%EF%BC%8C%E5%BC%80%E5%90%AF%E6%99%BA%E8%83%BD%E5%AE%B6%E5%B1%85%E7%9A%84%E7%AC%AC%E4%B8%80%E6%AD%A5.html)
+# 树莓派无线控制开关，开启智能家居的第一步
+
+其实早就买了各种无线开关，当初还答应过网友帮忙调试的，唉。。。但是一直没有时间，昨晚抽了些时间，把功能调通了，也算是给网友一个交代吧，虽然晚了点，呵呵！
+
+btw.树莓派通过无线和arduino的通信，也调通了，以后再出教程吧！
+
+准备设备：
+
+1.树莓派
+
+2.315MHz 发射模块（淘宝上5元，买的时候可以把接收模块也买了玩玩）
+
+[![](http://files.note.sdo.com/M5cEN~kf-e_pnM31Y007Vd)](http://ukonline2000.com/?attachment_id=93) *（外链图片未本地化）*
+
+3.学习型无线开关
+
+[![](http://files.note.sdo.com/M5cEN~kf-e_FnM31Y007Vj)](http://ukonline2000.com/?attachment_id=92) *（外链图片未本地化）*
+
+
+4.遥控开关
+
+[![](http://files.note.sdo.com/M5cEN~kf-e_pnM31Y007Vg)](http://ukonline2000.com/?attachment_id=91) *（外链图片未本地化）*
+
+
+实现步骤：
+
+1.按照下图连接你的遥控开关
+
+[![](http://files.note.sdo.com/M5cEN~kf-e_FnM31Y007Vm)](http://ukonline2000.com/?attachment_id=94) [![](http://files.note.sdo.com/M5cEN~kf-e_FnM31Y007Vr)](http://ukonline2000.com/?attachment_id=95) *（外链图片未本地化）*
+
+
+为了演示方便我有了我的负载接的是另一块树莓派，呵呵
+
+[![](http://files.note.sdo.com/M5cEN~kf-e_FnM31Y007Vu)](http://ukonline2000.com/?attachment_id=98) *（外链图片未本地化）*
+
+2.先让“遥控开关”学习遥控器的编码，购买的卖家有说明，这里就不多说了，然后测试一下，遥控是否能控制“遥控开关”，可以不用接复杂，只要能听到继电器闭合的“咯哒”声，就算是学习成功了
+
+3.将315MHz发射模块连接到树莓派上
+
+发射模块的VCC——->树莓派的5V管脚
+
+发射模块的GND——–>树莓派的Ground管脚
+
+发射模块的DATA——–>树莓派的GPIO0(PIN17)管脚
+
+发射模块的DATA接一个8K的电阻然后接树莓派的3.3V管脚（PIN1）
+
+[![](http://files.note.sdo.com/M5cEN~kf-e_VnM31Y007VI)](http://ukonline2000.com/?attachment_id=99) *（外链图片未本地化）*
+
+原因是发射模块是5V电平的，为了方便大家我做的arduino转接板，转接板的GPIO电平为5V的，不用接电阻直接使用，有兴趣的朋友可以去我的网店购买（ukonline2000.taobao.com）
+
+[![](http://files.note.sdo.com/M5cEN~kf-e_VnM31Y007Vw)](http://ukonline2000.com/?attachment_id=97) *（外链图片未本地化）*
+
+4.下载和安装wiringpi的库
+
+安装git-core
+sudo apt-get install git-core
+
+下载winringPi库
+git clone git://git.drogon.net/wiringPi
+
+编译和安装库
+
+cd wiringPi
+./build
+另外大家可以使用下面的命令对库进行更新
+cd wiringPi
+git pull origin
+
+5.下载附件程序，拷入树莓派中（源程序在里面，可以直接make编译使用，也可以用编译好的send）
+
+[pi-swtich](http://ukonline2000.com/?attachment_id=96)
+
+
+6.安装步骤2中学习遥控器的方式，让遥控开关学习树莓派发出的无线指令，按一下“遥控开关”的学习键，看见红灯亮起时，先输入
+
+开关打开命令：./send 11111 4 1
+
+[![](http://files.note.sdo.com/M5cEN~kf-e_VnM31Y007Vz)](http://ukonline2000.com/?attachment_id=100) *（外链图片未本地化）*
+
+
+看见“遥控开关”的红灯闪两下后赶紧输入下一条命令
+
+开关闭合命令：./send 11111 4 0
+
+[![](http://files.note.sdo.com/M5cEN~kf-e_VnM31Y007VE)](http://ukonline2000.com/?attachment_id=101) *（外链图片未本地化）*
+
+
+红灯闪三下说明学习完成，如果不成功重复该步骤
+
+6.学习完成后，你就可以实现无线遥控了，呵呵
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>把树梅派配置为无线路由器</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E6%8A%8A%E6%A0%91%E6%A2%85%E6%B4%BE%E9%85%8D%E7%BD%AE%E4%B8%BA%E6%97%A0%E7%BA%BF%E8%B7%AF%E7%94%B1%E5%99%A8.html)
+# 把树梅派配置为无线路由器
+
+首先需要一个受驱动支持的无线网卡，配置的结果就是把树梅派的网络连接通过无线网卡分享出来。做分享的无线网卡当然就不能同时来连接网络了。
+安装hostapd
+
+1. sudo apt-get install hostapd
+
+*复制代码*
+
+配置hostapd.conf
+
+1. interface=wlan0
+2. driver=nl80211
+3. ssid=网络名称
+4. channel=6
+5. hw\_mode=g
+6. wpa=2
+7. wpa\_passphrase=密码
+8. wpa\_key\_mgmt=WPA-PSK
+9. wpa\_pairwise=TKIP
+10. rsn\_pairwise=CCMP
+
+*复制代码*
+
+安装isc-dhcp-server
+
+1. sudo apt-get install isc-dhcp-server
+
+*复制代码*
+
+配置/etc/dhcp/dhcpd.conf，在末尾添加
+
+1. subnet 192.168.111.0 netmask 255.255.255.0 {
+2. range 192.168.111.50 192.168.111.150;
+3. option routers 192.168.111.1;
+4. option domain-name-servers 8.8.8.8;
+5. option ip-forwarding off;
+6. option broadcast-address 192.168.111.255;
+7. }
+
+*复制代码*
+
+启动hostapd
+
+1. sudo hostapd hostapd.conf -B
+
+*复制代码*
+
+设置无线网卡地址
+
+1. ifconfig wlan0 192.168.111.1
+
+*复制代码*
+
+启动isc-dhcp-server
+
+1. /etc/init.d/isc-dhcp-server start
+
+*复制代码*
+
+配置iptables
+
+1. echo 1 > /proc/sys/net/ipv4/ip\_forward
+2. iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+
+*复制代码*
+
+这样就可以把树梅派的的有线网络连接通过无线网卡信号分享出去，可以用手机或平板测试一下。如果对iptables足够了解还可以配置很多高级内容。树梅派仅仅配置成为一个无线路由可能还不够，可以配合文件服务器一起用。并不是所有网卡都能配置成功，下面是简单测试结果：
+
+<table cellspacing="0" style="width: 377px; border: 1px solid rgb(227, 237, 245); color: rgb(68, 68, 68); display: table; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Tahoma, Helvetica, SimSun, sans-serif; height: 90px; margin: 0px; outline: rgb(68, 68, 68) none 0px; padding: 0px; text-decoration: initial; word-wrap: break-word;"><tbody style="border: 0px none rgb(227, 237, 245); color: rgb(68, 68, 68); display: table-row-group; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Tahoma, Helvetica, SimSun, sans-serif; height: 90px; margin: 0px; outline: rgb(68, 68, 68) none 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 377px; word-wrap: break-word;"><tr style="border: 0px none rgb(227, 237, 245); color: rgb(68, 68, 68); display: table-row; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Tahoma, Helvetica, SimSun, sans-serif; height: 30px; margin: 0px; outline: rgb(68, 68, 68) none 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 377px; word-wrap: break-word;"><td style="border: 1px solid rgb(227, 237, 245); color: rgb(68, 68, 68); display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Tahoma, Helvetica, SimSun, sans-serif; height: 21px; margin: 0px; outline: rgb(68, 68, 68) none 0px; overflow: hidden; padding: 4px; text-decoration: initial; vertical-align: middle; width: 192px; word-wrap: break-word;"> </td><td style="border: 1px solid rgb(227, 237, 245); color: rgb(68, 68, 68); display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Tahoma, Helvetica, SimSun, sans-serif; height: 21px; margin: 0px; outline: rgb(68, 68, 68) none 0px; overflow: hidden; padding: 4px; text-decoration: initial; vertical-align: middle; width: 93px; word-wrap: break-word;">树梅派 </td><td style="border: 1px solid rgb(227, 237, 245); color: rgb(68, 68, 68); display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Tahoma, Helvetica, SimSun, sans-serif; height: 21px; margin: 0px; outline: rgb(68, 68, 68) none 0px; overflow: hidden; padding: 4px; text-decoration: initial; vertical-align: middle; width: 65px; word-wrap: break-word;"> pc</td></tr><tr style="border: 0px none rgb(227, 237, 245); color: rgb(68, 68, 68); display: table-row; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Tahoma, Helvetica, SimSun, sans-serif; height: 30px; margin: 0px; outline: rgb(68, 68, 68) none 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 377px; word-wrap: break-word;"><td style="border: 1px solid rgb(227, 237, 245); color: rgb(68, 68, 68); display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Tahoma, Helvetica, SimSun, sans-serif; height: 21px; margin: 0px; outline: rgb(68, 68, 68) none 0px; overflow: hidden; padding: 4px; text-decoration: initial; vertical-align: middle; width: 192px; word-wrap: break-word;"> TP-Link 722N</td><td style="border: 1px solid rgb(227, 237, 245); color: rgb(68, 68, 68); display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Tahoma, Helvetica, SimSun, sans-serif; height: 21px; margin: 0px; outline: rgb(68, 68, 68) none 0px; overflow: hidden; padding: 4px; text-decoration: initial; vertical-align: middle; width: 93px; word-wrap: break-word;"> 可以</td><td style="border: 1px solid rgb(227, 237, 245); color: rgb(68, 68, 68); display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Tahoma, Helvetica, SimSun, sans-serif; height: 21px; margin: 0px; outline: rgb(68, 68, 68) none 0px; overflow: hidden; padding: 4px; text-decoration: initial; vertical-align: middle; width: 65px; word-wrap: break-word;"> 可以</td></tr><tr style="border: 0px none rgb(227, 237, 245); color: rgb(68, 68, 68); display: table-row; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Tahoma, Helvetica, SimSun, sans-serif; height: 30px; margin: 0px; outline: rgb(68, 68, 68) none 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 377px; word-wrap: break-word;"><td style="border: 1px solid rgb(227, 237, 245); color: rgb(68, 68, 68); display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Tahoma, Helvetica, SimSun, sans-serif; height: 21px; margin: 0px; outline: rgb(68, 68, 68) none 0px; overflow: hidden; padding: 4px; text-decoration: initial; vertical-align: middle; width: 192px; word-wrap: break-word;"> NW336</td><td style="border: 1px solid rgb(227, 237, 245); color: rgb(68, 68, 68); display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Tahoma, Helvetica, SimSun, sans-serif; height: 21px; margin: 0px; outline: rgb(68, 68, 68) none 0px; overflow: hidden; padding: 4px; text-decoration: initial; vertical-align: middle; width: 93px; word-wrap: break-word;"> 不可以</td><td style="border: 1px solid rgb(227, 237, 245); color: rgb(68, 68, 68); display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: 21px; font-family: Tahoma, Helvetica, SimSun, sans-serif; height: 21px; margin: 0px; outline: rgb(68, 68, 68) none 0px; overflow: hidden; padding: 4px; text-decoration: initial; vertical-align: middle; width: 65px; word-wrap: break-word;"> 可以</td></tr></tbody></table>
+
+关于传输速度方面也可以做更多的测试。
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

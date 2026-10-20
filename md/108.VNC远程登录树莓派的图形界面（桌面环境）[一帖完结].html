@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>VNC远程登录树莓派的图形界面（桌面环境）[一帖完结]</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/VNC%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95%E6%A0%91%E8%8E%93%E6%B4%BE%E7%9A%84%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%EF%BC%88%E6%A1%8C%E9%9D%A2%E7%8E%AF%E5%A2%83%EF%BC%89%5B%E4%B8%80%E5%B8%96%E5%AE%8C%E7%BB%93%5D.html)
+# VNC远程登录树莓派的图形界面（桌面环境）[一帖完结]
+
+安装VNC需要使用命令行。如果需要远程操作安装VNC，就必须通过SSH登录到命令行界面。请先阅读本论坛SSH的相关教程。
+
+**安装**
+树莓派命令行：
+
+1. sudo apt-get install tightvncserver
+
+*复制代码*
+
+---
+
+**开机自动启动**
+安装好之后请一定先使用此命令设置一个VNC密码：
+
+1. vncpasswd
+
+*复制代码*
+
+（先输入操作密码两次，然后会询问是否设置一个查看(view-only)密码，按自己喜欢，一般没必要。）
+
+设置开机启动，需要在/etc/init.d/中创建一个文件。例如tightvncserver：
+（注：启动脚本的名称，有和程序名一致的习惯）
+
+1. sudo nano /etc/init.d/tightvncserver
+
+*复制代码*
+
+内容如下：（putty窗口中按右键=粘贴）
+
+> #!/bin/sh
+> ### BEGIN INIT INFO
+> # Provides:          tightvncserver
+> # Required-Start:    $local\_fs
+> # Required-Stop:     $local\_fs
+> # Default-Start:     2 3 4 5
+> # Default-Stop:      0 1 6
+> # Short-Description: Start/stop tightvncserver
+> ### END INIT INFO
+>
+> # More details see:
+> # <http://www.penguintutor.com/linux/tightvnc>
+>
+> ### Customize this entry
+> # Set the USER variable to the name of the user to start tightvncserver under
+> export USER='pi'
+> ### End customization required
+>
+> eval cd ~$USER
+>
+> case "$1" in
+>   start)
+>     # 启动命令行。此处自定义分辨率、控制台号码或其它参数。
+>     su $USER -c '/usr/bin/tightvncserver -geometry 800x600 :1'
+>     echo "Starting TightVNC server for $USER "
+>     ;;
+>   stop)
+>     # 终止命令行。此处控制台号码与启动一致。
+>     su $USER -c '/usr/bin/tightvncserver -kill :1'
+>     echo "Tightvncserver stopped"
+>     ;;
+>   \*)
+>     echo "Usage: /etc/init.d/tightvncserver {start|stop}"
+>     exit 1
+>     ;;
+> esac
+> exit 0
+
+
+注：少数玩家默认用户不是pi的请自行更改USER变量
+按Ctrl+X，回答Y（存盘）退出nano编辑器。
+然后给tightvncserver文件加执行权限，并更新开机启动列表。
+
+1. sudo chmod 755 /etc/init.d/tightvncserver
+2. sudo update-rc.d tightvncserver defaults
+
+*复制代码*
+
+---
+
+**电脑登录VNC**
+Windows客户端RealVNC Viewer下载：
+
+![](http://files.note.sdo.com/M5cEN~kf-9xwLX02E004Xh) *（外链图片未本地化）*
+
+[VNC-Viewer-5.0.3-Windows-32bit.exe](http://bbs.shumeipai.org/forum.php?mod=attachment&aid=MjY0fDA2NmMwYmVmfDEzNTg5Mzg5NzV8MHwxMTM%3D)
+*(2.65 MB, 下载次数: 35)*
+
+2012-12-17 02:54 上传
+
+点击文件名下载附件
+
+
+(SHA-1:86039c6b8927a1cc1ffda426dae43d779a0b06c5)
+**节省论坛资源，推荐从百度网盘下载**：
+<http://pan.baidu.com/share/link?shareid=170467&uk=153758759>
+
+功能就不做介绍了。
+登录地址输入**“IP地址:控制台号码”**，0号控制台可不加号码。
+
+![图像 1.png](http://files.note.sdo.com/M5cEN~kf-9xMLX02E004Xk "图像 1.png") *（外链图片未本地化）*
+
+2012-12-17 03:04 上传
+
+[**下载附件** (77.08 KB)](http://bbs.shumeipai.org/forum.php?mod=attachment&aid=MjY1fGFhOTY2YWQ2fDEzNTg5Mzg5NzV8MHwxMTM%3D&nothumb=yes "图像 1.png 下载次数:0")
+
+
+也有Linux版本，参考官网 [www.realvnc.com](http://www.realvnc.com/) 。
+
+
+---
+
+**安卓登录VNC**
+安卓客户端androidVNC下载：
+<http://android.d.cn/software/19334.html>
+
+同样不用介绍了。苹果客户端哪位用过？？？求补充~
+
+![Screenshot_2012-12-17-03-02-48.png](http://files.note.sdo.com/M5cEN~kf-9xMLX02E004Xm "Screenshot_2012-12-17-03-02-48.png") *（外链图片未本地化）*
+
+2012-12-17 03:05 上传
+
+[**下载附件** (132.91 KB)](http://bbs.shumeipai.org/forum.php?mod=attachment&aid=MjY2fGMwZGEwZDA3fDEzNTg5Mzg5NzV8MHwxMTM%3D&nothumb=yes "Screenshot_2012-12-17-03-02-48.png 下载次数:0")
+
+
+---
+
+
+> **附：手工启动与参数**
+>
+> 以下用处不大，没兴趣请略过。
+> 使用此命令手工启动VNC服务器程序：
+>
+> 1. tightvncserver -geometry 800x600 :1
+>
+> *复制代码*
+>
+> 如果首次启动，并且未曾使用vncpasswd命令设置密码，程序会要求设置一个。
+>
+> 开机启动很方便。如果没理由，真的不推荐手工启动。
+>
+> 命令行参数说明：
+> 一、:1，指定控制台的号码。
+> 启动多个控制台，可以提供互不影响的多个桌面环境。（大多数人不用多用户操作所以没意义）
+> 可以不加此参数，tightvncserver会自动寻找从1开始的下一个空闲控制台。
+> 加上此参数，会强制使用指定的控制台，如果此控制台已经启动则报错。加此参数可有效防止无意多次启动程序（会启动多个控制台）白白浪费系统资源。
+>
+> **特殊的0号控制台**
+> 0号控制台就是连接真实显示器真正输出图像的那个桌面。
+> 对于VNC客户端，不输入端口号登录，默认就登录到0号控制台，方便。
+> 但是因为0号是真正的桌面，所以和开机启动桌面环境，或者自己用startx命令，都存在啰嗦的冲突。
+> 到头来是个麻烦。因此自动启动的配置教程中，一律使用1号控制台。
+>
+> 二、-geometry 800x600，分辨率。可以不加。
+>
+> 终止VNC控制台：
+>
+> 1. tightvncserver -kill :1
+>
+> *复制代码*
+>
+> 查看正在运行的控制台列表：
+>
+> 1. ps ax | grep Xtightvnc | grep -v grep
+>
+> *复制代码*
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

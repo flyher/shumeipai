@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Raspberry Pi 的远端操作好助手</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/Raspberry%20Pi%20%E7%9A%84%E8%BF%9C%E7%AB%AF%E6%93%8D%E4%BD%9C%E5%A5%BD%E5%8A%A9%E6%89%8B.html)
+# Raspberry Pi 的远端操作好助手 - VNC
+
+[![](http://files.note.sdo.com/M5cEN~kg9vbwLX0es01bEO)](http://www.designspark.com/users/view/Ray%20Chiu)Posted by [Ray Chiu](http://www.designspark.com/users/view/Ray%20Chiu) on Fri, Jul 06 2012 04:24:00 *（外链图片未本地化）*
+
+- [Raspberry pi](http://www.designspark.com/nodes/term/slug:raspberry-pi "View content tagged with Raspberry pi")
+- [Serial peripheral interface](http://www.designspark.com/nodes/term/slug:serial-peripheral-interface "View content tagged with Serial peripheral interface")
+- [Lcd](http://www.designspark.com/nodes/term/slug:lcd "View content tagged with Lcd")
+- [Pic](http://www.designspark.com/nodes/term/slug:pic "View content tagged with Pic")
+
+911 views
+
+当我们在工作或学习时要同时用到Raspberry Pi和自己的电脑工作时，便要使用两个LCD显示器、滑鼠和键盘等，实在十分不方便，所以现在我要为大家介绍以VNC实现Raspberry Pi远端操作的方法，使用了VNC后，你便可以在自己的电脑上看到Raspberry Pi的操作画面了。
+
+**VNC简介**
+
+[![Image](http://files.note.sdo.com/M5cEN~kg9vbwLX0es01bEQ)](http://d4c027c89b30561298bd-484902fe60e1615dc83faa972a248000.r12.cf3.rackcdn.com/imagepicker/54347/raspb_pi_vnc.jpg)（外链文件，未本地化） *（外链图片未本地化）*
+
+图. 透过VNC在Windows平台操控Raspberry Pi
+
+VNC (Virtual Network Computing)是一款知名的远端操作软件，属于开源项目，兼容性很强大，可以跨平台操作，现时主流的VNC版本有[RealVNC](http://www.designspark.com/admin/nodes/edit/www.realvnc.com)、[UltraVNC](http://www.uvnc.com/)和[TightVNC](http://www.tightvnc.com/) ，以TightVNC为例，它的特点是频宽占用率小。 VNC具有基本的远端操作功能，但安全功能会比较弱，因为它主要是应用于区域网络中。
+
+VNC主要由服务端、客户端和协议构成，预设的TCP埠为5900至5096，所以在设置VNC时要注意。在我们应用于Raspberry Pi时，服务端是Raspberry Pi，客户端是我们的电脑，客户端负责接收服务端的影像和传送操控讯息到服务端。
+
+**远端操作的實現**
+
+本文会使用TightVNC为远端操作的工具，请跟从以下的步骤设置你的电脑和Raspberry Pi。
+
+**步驟1:**
+
+在电脑和Raspberry Pi上安装VNC的软件，如果你的电脑是Windows平台，可以在[這個網頁](http://www.tightvnc.com/download-beta.php)下载TightVNC的，除了TightVNC，[RealVNC](http://www.realvnc.com/download/viewer/)是证实可行的版本，如果是Ubuntu的用户，请输入以下命令安装终端服务器客户端和vnc4viewer（VNC的客户端）。
+
+*sudo apt-get install tsclinet vnc4viewer*
+
+在Raspberry Pi上，我们要安装TightVNC服务端，请输入以下命令:
+
+*sudo apt-get install tightvncserver*
+
+**步驟2:**
+
+在Raspberry Pi中输入以下命令运行VNC服务端，然后设置密码，在这里我们可以设置一个只用于观看而不操作Raspberry Pi的密码:
+
+*tightvncserver*
+
+**步驟3:**
+
+然后我们便可以使用VNC，如果你希望以1024 x 728的视窗显示于你的电脑，就要在Raspberry Pi输入以下命令:
+
+*vncserver :1 -geometry 1024x728 -de**pth 24*
+
+以上的步骤需要显示器和键盘输入指令，如果大家希望以远端操作完成以上步骤，可以使用ssh (Secure Shell)远端输入命令，官方推荐使用的Debian Sequeeze影像闭关了ssh功能，大家要重启ssh功能才能以远端的状态完成以上步骤。
+
+[![Image](http://files.note.sdo.com/M5cEN~kg9vbwLX0es01bES)](http://d4c027c89b30561298bd-484902fe60e1615dc83faa972a248000.r12.cf3.rackcdn.com/imagepicker/54347/Terminal-Server-Client.png)（外链文件，未本地化） *（外链图片未本地化）*
+
+图. VNC的客户端的设定
+
+上图是电脑中的VNC的客户端设定，“raspi”是主机文件中的项目，它弱者受制与了Raspberry Pi的知识产权，大家亦可以直接input;知识产权。
+
+[![Image](http://files.note.sdo.com/M5cEN~kg9vbMLX0es01bEU)](http://d4c027c89b30561298bd-484902fe60e1615dc83faa972a248000.r12.cf3.rackcdn.com/imagepicker/54347/geany-pi.png)（外链文件，未本地化） *（外链图片未本地化）*
+
+最后的VNC连接处成功后，我们便可以在电脑中看到Raspberry Pi的画面了
+
+**总结**
+
+远端操控对Raspberry Pi的用家们来说是相当重要的功能，希望大家可以透过的VNC等工具开发Raspberry Pi不同的应用。
+
+[Share on linkedin](http://www.addthis.com/bookmark.php?v=250&winname=addthis&pub=xa-4f75c9ac5eccb233&source=tbx-250&lng=zh&s=linkedin&url=http%3A%2F%2Fwww.designspark.com%2Fblog%2Fchi-raspberry-pi-vnc&title=Raspberry%20Pi%20%E7%9A%84%E8%BF%9C%E7%AB%AF%E6%93%8D%E4%BD%9C%E5%A5%BD%E5%8A%A9%E6%89%8B%20-%20VNC%20%C2%BB%20DesignSpark&ate=AT-xa-4f75c9ac5eccb233/-/-/51025ec360c3f777/3/50a23f5a819cd255&frommenu=1&uid=50a23f5a819cd255&ct=1&pre=http%3A%2F%2Fwww.designspark.com%2Fsearch%2Fpage%3A14%2Fq%3Araspberry%2Ftab%3Ablog%2Flocale%3Achn&tt=0&captcha_provider=nucaptcha "LinkedIn")
+[Share on facebook](http://www.designspark.com/blog/chi-raspberry-pi-vnc# "Facebook")
+[Share on sinaweibo](http://www.addthis.com/bookmark.php?v=250&winname=addthis&pub=xa-4f75c9ac5eccb233&source=tbx-250&lng=zh-CN&s=sinaweibo&url=http%3A%2F%2Fwww.designspark.com%2Fblog%2Fchi-raspberry-pi-vnc&title=Raspberry%20Pi%20%E7%9A%84%E8%BF%9C%E7%AB%AF%E6%93%8D%E4%BD%9C%E5%A5%BD%E5%8A%A9%E6%89%8B%20-%20VNC%20%C2%BB%20DesignSpark&ate=AT-xa-4f75c9ac5eccb233/-/-/51025ec360c3f777/2&frommenu=1&uid=51025ec32d2a9aa7&ct=1&pre=http%3A%2F%2Fwww.designspark.com%2Fsearch%2Fpage%3A14%2Fq%3Araspberry%2Ftab%3Ablog%2Flocale%3Achn&tt=0&captcha_provider=nucaptcha "Sinaweibo")
+[Share on email](http://www.designspark.com/blog/chi-raspberry-pi-vnc# "Email")
+[More Sharing Services](http://www.designspark.com/blog/chi-raspberry-pi-vnc#)
+[0](http://www.designspark.com/blog/chi-raspberry-pi-vnc# "More...")
+
+[Like this](http://www.designspark.com/likes/add/932)
+[Leave a comment](http://www.designspark.com/discuss/comment.php?mode=post&f=36&title=Raspberry+Pi+%E7%9A%84%E8%BF%9C%E7%AB%AF%E6%93%8D%E4%BD%9C%E5%A5%BD%E5%8A%A9%E6%89%8B+-+VNC&path=&nid=932)
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

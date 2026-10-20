@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>将树莓派变成打印机服务器！！！！！</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E5%B0%86%E6%A0%91%E8%8E%93%E6%B4%BE%E5%8F%98%E6%88%90%E6%89%93%E5%8D%B0%E6%9C%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%81%EF%BC%81%EF%BC%81%EF%BC%81%EF%BC%81_1.html)
+# 将树莓派变成打印机服务器！！！！！
+
+*本帖最后由 ukonline2000 于 2013-2-28 16:03 编辑*
+
+**最近买了一个打印机，只有usb接口没有网口，也不支持网络打印，就打算用树莓派来做一个打印机服务器，废话不说，教程走起！！！
+准备工作：
+1.连接网络的树莓派
+2.usb接口的打印机
+
+步骤如下：
+1.安装CUPS软件,"CUPS“是linux下可以用通用打印系统（百度百科<http://baike.baidu.com/view/887944.htm>）**
+
+1. sudo apt-get install cups
+
+*复制代码*
+
+**![1.jpg](http://files.note.sdo.com/M5cEN~kiYl-VnM3fs00isd "1.jpg") *（外链图片未本地化）*
+
+半小时前 上传
+
+[**下载附件** (55.7 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTc1Mzd8ZTIzMjdiZTV8MTM2MjA0MDE5MXwwfDg4MTg%3D&nothumb=yes "1.jpg 下载次数:0")
+
+
+2.允许pi用户配置CUPS,**
+
+1. sudo usermod -a -G lpadmin pi
+
+*复制代码*
+
+**3.备份替换CUPS配置：
+关闭服务**
+
+1. sudo service cups stop
+
+*复制代码*
+
+**备份配置文件**
+
+1. sudo mv /etc/cups/cupsd.conf /etc/cups/cupsd.conf.bak
+
+*复制代码*
+
+**替换配置文件（root用户去掉“sudo”）**
+
+1. sudo cd /etc/cups/ && sudo wget http://jxeeno.tk/local--files/blog:raspberry-pi:print-server/cupsd.conf
+
+*复制代码*
+
+**重启服务**
+
+1. sudo service cups start
+
+*复制代码*
+
+**4.PC端用IE浏览器打开网站“[https://树莓派ip:631/](https://%3Cpi-ip%3E:631/)  ”
+
+![2.jpg](http://files.note.sdo.com/M5cEN~kiYl-VnM3fs00isf "2.jpg") *（外链图片未本地化）*
+
+半小时前 上传
+
+[**下载附件** (149.97 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTc1Mzh8ZDFjOTYwMGV8MTM2MjA0MDE5MXwwfDg4MTg%3D&nothumb=yes "2.jpg 下载次数:0")
+
+
+5.点击“Administrator”界面添加对应的打印机，登录帐号和密码是树莓派的pi用户的密码
+
+
+![3.jpg](http://files.note.sdo.com/M5cEN~kiYl-VnM3fs00isp "3.jpg") *（外链图片未本地化）*
+
+半小时前 上传
+
+[**下载附件** (149.97 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTc1Mzl8OTdiM2MzZGR8MTM2MjA0MDE5MXwwfDg4MTg%3D&nothumb=yes "3.jpg 下载次数:0")
+
+
+![4.jpg](http://files.note.sdo.com/M5cEN~kiYl-VnM3fs00isn "4.jpg") *（外链图片未本地化）*
+
+半小时前 上传
+
+[**下载附件** (77.78 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTc1NDB8OGJiODcxOTB8MTM2MjA0MDE5MXwwfDg4MTg%3D&nothumb=yes "4.jpg 下载次数:0")
+
+
+在local printers中找到usb连接的打印机，打印机名“brother”
+
+![1.png](http://files.note.sdo.com/M5cEN~kiYl-VnM3fs00isj "1.png") *（外链图片未本地化）*
+
+半小时前 上传
+
+[**下载附件** (12.22 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTc1NDN8YWU0ZjFlODR8MTM2MjA0MDE5MXwwfDg4MTg%3D&nothumb=yes "1.png 下载次数:0")
+
+
+![2.png](http://files.note.sdo.com/M5cEN~kiYl-VnM3fs00ish "2.png") *（外链图片未本地化）*
+
+半小时前 上传
+
+[**下载附件** (21.3 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTc1NDR8OGY2ODIyZTF8MTM2MjA0MDE5MXwwfDg4MTg%3D&nothumb=yes "2.png 下载次数:0")
+
+
+![3.png](http://files.note.sdo.com/M5cEN~kiYl-VnM3fs00isl "3.png") *（外链图片未本地化）*
+
+半小时前 上传
+
+[**下载附件** (12.86 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTc1NDJ8ZmJiYjBiMzB8MTM2MjA0MDE5MXwwfDg4MTg%3D&nothumb=yes "3.png 下载次数:0")
+
+
+6.网络打印机的地址“[https://树莓派ip:631/printers/brother](https://192.168.1.111:631/printers/brother) ”**
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

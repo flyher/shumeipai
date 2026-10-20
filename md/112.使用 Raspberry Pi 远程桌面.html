@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>使用 Raspberry Pi 远程桌面</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E4%BD%BF%E7%94%A8%20Raspberry%20Pi%20%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2.html)
+# 使用 Raspberry Pi 远程桌面
+
+[![虫虫](http://files.note.sdo.com/M5cEN~kerrKFnM47A00fQG "虫虫")](http://my.oschina.net/zhlmmc "虫虫") *（外链图片未本地化）*
+
+###### [虫虫](http://my.oschina.net/zhlmmc) 翻译于 3天前
+
+*1*人顶
+
+[顶](javascript:vote_block(4184);) 翻译的不错哦!
+
+你想要远程登录到你的 Raspberry Pi 然后使用图形桌面吗？这其实很简单的。假如你不想专门为 Pi 配一台显示器的话，这里有你想要的解决方案。
+
+OK，这是另外一篇 Raspberry Pi 的文章。由于回复的数量巨大，我将在研究的同事在这里发布更新的新。我希望这能吸引更多人使用这个产品。这篇文章是针对初学者的，所以请不要说这篇文章的内容太浅。
+
+[![虫虫](http://static.oschina.net/uploads/user/0/28_50.jpg?t=1355825992000 "虫虫")](http://my.oschina.net/zhlmmc "虫虫") *（外链图片未本地化）*
+
+###### [虫虫](http://my.oschina.net/zhlmmc) 翻译于 3天前
+
+*1*人顶
+
+[顶](javascript:vote_block(4186);) 翻译的不错哦!
+
+假如你和我一样，不想连接各种线或者将 Raspberry Pi 接到电视上，我的方法将让你在笔记本或者台式机上拥有一个 Pi 的图形桌面，如图：
+
+![](http://files.note.sdo.com/M5cEN~kerrKFnM47A00fQZ) *（外链图片未本地化）*
+
+[![红薯](http://files.note.sdo.com/M5cEN~kerrKFnM47A00fQI "红薯")](http://my.oschina.net/javayou "红薯") *（外链图片未本地化）*
+
+###### [红薯](http://my.oschina.net/javayou) 翻译于 4天前
+
+*2*人顶
+
+[顶](javascript:vote_block(4084);) 翻译的不错哦!
+
+### 配置 Pi
+
+确定你的 Pi 已经连到网络，网络中还有其他的电脑。
+
+为了设置联网，你需要在 Pi 上运行一个服务以便其他电脑连接进来。我这里使用的是 [Raspian Wheezy](http://www.raspberrypi.org/downloads) ，我的大多数教程都是用的这个。
+
+[![红薯](http://static.oschina.net/uploads/user/0/12_50.jpg?t=1342478027000 "红薯")](http://my.oschina.net/javayou "红薯") *（外链图片未本地化）*
+
+###### [红薯](http://my.oschina.net/javayou) 翻译于 4天前
+
+*0*人顶
+
+[顶](javascript:vote_block(4083);) 翻译的不错哦!
+
+我选择用 [xrdp](http://www.xrdp.org/) 来实现，我之前已经使用 xrdp 多时。要在 Raspian 中安装 xrdp 只需要输入以下命令：
+
+> sudo apt-get install xrdp
+
+这个命令将为你安装在 Pi 上使用 xrdp 的所有软件包，而且将在你启动 Raspberry Pi 时自动启动 xrdp。
+
+现在获取你的 IP 地址：
+
+> ifconfig eth0 | grep inet | cut -c21-30
+
+记住这个 IP 地址，接下来你需要用这个 IP 来连接你的 Pi。
+
+[![红薯](http://static.oschina.net/uploads/user/0/12_50.jpg?t=1342478027000 "红薯")](http://my.oschina.net/javayou "红薯") *（外链图片未本地化）*
+
+###### [红薯](http://my.oschina.net/javayou) 翻译于 4天前
+
+*0*人顶
+
+[顶](javascript:vote_block(4085);) 翻译的不错哦!
+
+### 使用 Windows 连接到 Pi
+
+你可以在不同的机器来连接 Pi，我们先从 Windows 系统开始。
+
+只需要简单的从开始菜单进入：
+
+开始 -> 程序 -> 远程桌面连接
+
+然后输入 Pi 的 IP 地址：
+
+![](http://files.note.sdo.com/M5cEN~kerrKFnM47A00fQL "How to set up a remote desktop with Raspberry Pi") *（外链图片未本地化）*
+
+点击“连接”按钮，你将看到一个消息提醒说远程计算机没有被验证，如下图所示：
+
+![](http://files.note.sdo.com/M5cEN~kerrKFnM47A00fQX "How to set up a remote desktop with Raspberry Pi") *（外链图片未本地化）*
+
+你可以直接忽略这个提示信息，因为你的 Pi 运行了 Linux 而不是 Windows ，所以有此提示。
+
+[![红薯](http://static.oschina.net/uploads/user/0/12_50.jpg?t=1342478027000 "红薯")](http://my.oschina.net/javayou "红薯") *（外链图片未本地化）*
+
+###### [红薯](http://my.oschina.net/javayou) 翻译于 4天前
+
+*0*人顶
+
+[顶](javascript:vote_block(4087);) 翻译的不错哦!
+
+你将看到如下图所示的截图：
+
+![](http://files.note.sdo.com/M5cEN~kerrKFnM47A00fQP "How to set up a remote desktop with Raspberry Pi") *（外链图片未本地化）*
+
+登录就可以了。
+
+### 在 Linux 上连接到 Pi
+
+在 Linux 上连接到 Pi 机器是很简单的。
+
+我一般使用 [rdesktop](http://www.rdesktop.org/) 来连接，如果你用的是 Ubuntu 或者是其他 Debian 系的 Linux 发行版，可使用下面命令来安装 rdesktop 工具：
+
+> sudo apt-get install rdesktop
+
+安装后输入下面命令来连接：
+
+> rdesktop < the IP address of your Pi >
+
+你将看到熟悉的 xrdp 屏幕。
+
+如果你使用的是其他的 Linux 发行版，你可用源码来编译，最新版本是 [rdesktop 1.7.1](http://prdownloads.sourceforge.net/rdesktop/rdesktop-1.7.1.tar.gz?download) ，安装很简单。 *（外链文件未本地化）*
+
+[![红薯](http://static.oschina.net/uploads/user/0/12_50.jpg?t=1342478027000 "红薯")](http://my.oschina.net/javayou "红薯") *（外链图片未本地化）*
+
+###### [红薯](http://my.oschina.net/javayou) 翻译于 4天前
+
+*0*人顶
+
+[顶](javascript:vote_block(4086);) 翻译的不错哦!
+
+### 在 OS X 上连接到 Pi
+
+我自己并没有 Mac 来做这个测试，但你可以找到例如 [CoRD](http://cord.sourceforge.net/) 这样的工具来连接。
+
+我争取在最近找一台 Mac 机器来试试。
+
+[![虫虫](http://static.oschina.net/uploads/user/0/28_50.jpg?t=1355825992000 "虫虫")](http://my.oschina.net/zhlmmc "虫虫") *（外链图片未本地化）*
+
+###### [虫虫](http://my.oschina.net/zhlmmc) 翻译于 3天前
+
+*0*人顶
+
+[顶](javascript:vote_block(4187);) 翻译的不错哦!
+
+### 额外的选项
+
+也许你已经发现，Pi 可以支持很高的屏幕分辨率，很有可能比你屏幕支持的最高分辨率还要高。这有可能造成你需要滚动条来查看屏幕的部分区域。
+
+![](http://files.note.sdo.com/M5cEN~kerrKFnM47A00fQN "How to set up a remote desktop with Raspberry Pi") *（外链图片未本地化）*
+
+这就很不方便了。然而在 Windows 上你可以比较容易的通过远程桌面设置来调整屏幕的分辨率。点击“Options”下拉按钮：
+
+![](http://files.note.sdo.com/M5cEN~kerrKFnM47A00fQR "How to set up a remote desktop with Raspberry Pi") *（外链图片未本地化）*
+
+选择 “Display” 设置页:
+
+![](http://files.note.sdo.com/M5cEN~kerrKFnM47A00fQT "How to set up a remote desktop with Raspberry Pi") *（外链图片未本地化）*
+
+[![虫虫](http://static.oschina.net/uploads/user/0/28_50.jpg?t=1355825992000 "虫虫")](http://my.oschina.net/zhlmmc "虫虫") *（外链图片未本地化）*
+
+###### [虫虫](http://my.oschina.net/zhlmmc) 翻译于 3天前
+
+*0*人顶
+
+[顶](javascript:vote_block(4188);) 翻译的不错哦!
+
+你将看到一个滑动条用来设置分辨率和颜色。你可以在“General”设置页点击“Save”按钮来保存你的设置。
+
+在 Linux 中，你可以通过以下命令来设置分辨率：
+
+[view source](http://www.oschina.net/translate/how-to-remote-desktop-raspberry-pi#viewSource "view source")[print](http://www.oschina.net/translate/how-to-remote-desktop-raspberry-pi#printSource "print")[?](http://www.oschina.net/translate/how-to-remote-desktop-raspberry-pi#about "?")
+
+<table style="display: table; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: 14.65625px; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace; height: 14px; letter-spacing: 1px; margin: 0px; padding: 0px; text-align: left; text-decoration: initial; width: 499px;"><tbody style="display: table-row-group; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: 14.65625px; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace; height: 14px; letter-spacing: 1px; margin: 0px; padding: 0px; text-align: left; text-decoration: initial; width: 499px;"><tr style="display: table-row; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: 14.65625px; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace; height: 14px; letter-spacing: 1px; margin: 0px; padding: 0px; text-align: left; text-decoration: initial; width: 499px;"><td style="border: 0px none rgb(175, 175, 175); color: rgb(175, 175, 175); display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: 14.65625px; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace; height: 14px; letter-spacing: 1px; margin: 0px; outline: rgb(175, 175, 175) none 0px; padding: 0px; text-align: left; text-decoration: initial; vertical-align: top; width: 40px;"><code style="border: 0px none rgb(175, 175, 175); color: rgb(175, 175, 175); display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: 14.65625px; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace; height: 14px; letter-spacing: 1px; margin: 0px; outline: rgb(175, 175, 175) none 0px; padding: 0px 4px 0px 0px; text-align: right; text-decoration: initial; white-space: nowrap; width: 36px;">1</code></td><td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: 14.65625px; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace; height: 14px; letter-spacing: 1px; margin: 0px; overflow: hidden; padding: 0px 0px 0px 6.65625px; text-align: left; text-decoration: initial; vertical-align: top; width: 449.34375px;"><code style="display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: 14.65625px; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace; letter-spacing: 1px; margin: 0px; padding: 0px; text-align: left; text-decoration: initial; white-space: nowrap;">rdesktop -r 1024x768 &lt; the IP address of your Pi &gt;</code></td></tr></tbody></table>
+
+rdesktop 会自动调整到你设置的分辨率。
+
+[![校长](http://files.note.sdo.com/M5cEN~kerrKFnM47A00fQV "校长")](http://my.oschina.net/monster "校长") *（外链图片未本地化）*
+
+###### [校长](http://my.oschina.net/monster) 翻译于 3天前
+
+*0*人顶
+
+[顶](javascript:vote_block(4176);) 翻译的不错哦!
+
+### 为什么使用RDP？
+
+有人可能会这么问，也是个好问题。如果你正使用Linux，并且想连接到另一台Linux机器，为什么要使用微软的协议呢？我建议使用xrdp是因为它很快、很稳定，并且跨操作系统。当然你也可以选择VNC，但出于简单考虑，我选择RDP，而且它在Windows系统和Linux系统上表现都很好。
+
+[![红薯](http://static.oschina.net/uploads/user/0/12_50.jpg?t=1342478027000 "红薯")](http://my.oschina.net/javayou "红薯") *（外链图片未本地化）*
+
+###### [红薯](http://my.oschina.net/javayou) 翻译于 3天前
+
+*0*人顶
+
+[顶](javascript:vote_block(4182);) 翻译的不错哦!
+
+### 总结
+
+希望这篇文章能回答你关于“将 Pi 作为虚拟桌面”的问题。如果你像我一样,你可能也会将你的 Pi 藏匿在某个地方，使用起来更方便。而我会将它藏在我的“数据中心”里，当我想玩的时候，直接通过 SSH 或者 RDP 就可以进行控制。
+
+本文中的所有译文仅用于学习和交流目的，转载请务必注明文章译者、出处、和本文链接
+我们的翻译工作遵照 [CC 协议](http://zh.wikipedia.org/wiki/Wikipedia:CC)，如果我们的工作有侵犯到您的权益，请及时联系我们
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

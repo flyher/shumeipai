@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>minicom使用介绍 [TurboLinux知识库]</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/minicom%E4%BD%BF%E7%94%A8%E4%BB%8B%E7%BB%8D%20%5BTurboLinux%E7%9F%A5%E8%AF%86%E5%BA%93%5D.html)
+−目录
+
+- - [一.Minicom介绍](http://www.turbolinux.com.cn/turbo/wiki/doku.php?id=minicom%E4%BD%BF%E7%94%A8%E4%BB%8B%E7%BB%8D#一.minicom介绍)
+  - [二.Minicom的安装](http://www.turbolinux.com.cn/turbo/wiki/doku.php?id=minicom%E4%BD%BF%E7%94%A8%E4%BB%8B%E7%BB%8D#二.minicom的安装)
+
+    - [1.rpm包方式](http://www.turbolinux.com.cn/turbo/wiki/doku.php?id=minicom%E4%BD%BF%E7%94%A8%E4%BB%8B%E7%BB%8D#rpm包方式)
+    - [2.源码包方式](http://www.turbolinux.com.cn/turbo/wiki/doku.php?id=minicom%E4%BD%BF%E7%94%A8%E4%BB%8B%E7%BB%8D#源码包方式)
+  - [三.Minicom的使用](http://www.turbolinux.com.cn/turbo/wiki/doku.php?id=minicom%E4%BD%BF%E7%94%A8%E4%BB%8B%E7%BB%8D#三.minicom的使用)
+
+    - [1.界面介绍](http://www.turbolinux.com.cn/turbo/wiki/doku.php?id=minicom%E4%BD%BF%E7%94%A8%E4%BB%8B%E7%BB%8D#界面介绍)
+    - [2.示例](http://www.turbolinux.com.cn/turbo/wiki/doku.php?id=minicom%E4%BD%BF%E7%94%A8%E4%BB%8B%E7%BB%8D#示例)
+
+## 一.Minicom介绍
+
+Linux下的Minicom的功能与Windows下的超级终端功能相似，可以通过串口控制外部的硬件
+设备.适于在linux通过超级终端对嵌入式设备行管理.同样也可以使用minicom对外置Modem
+进行控制.
+
+## 二.Minicom的安装
+
+### 1.rpm包方式
+
+GTES 10,10.5,11版本都包含minicom包，你可以直接安装他们:
+
+```
+# rpm -ivh minicom-xxx.rpm
+```
+
+### 2.源码包方式
+
+源码包下载地址:
+
+```
+http://alioth.debian.org/projects/minicom/
+```
+
+安装源码包:
+
+```
+# tar zxf minicom-2.2.tar.gz
+# cd minicom-2.2
+# ./configure
+# make
+# make install
+```
+
+## 三.Minicom的使用
+
+### 1.界面介绍
+
+第一次运行minicom，需要进行minicom的设置:
+
+```
+# minicom -s
+
+            ┌─────[configuration]──────┐
+            │ Filenames and paths      │
+            │ File transfer protocols  │
+            │ Serial port setup        │
+            │ Modem and dialing        │
+            │ Screen and keyboard      │
+            │ Save setup as dfl        │
+            │ Save setup as..          │
+            │ Exit                     │
+            │ Exit from Minicom        │
+            └──────────────────────────┘
+```
+
+<serial port setup>
+
+```
+A — Serial Device : /dev/ttyS0
+
+B — lockfile Location : /var/lock
+
+C — Calling Program :
+
+D — Callout Program:
+
+E — Bps/par/Bits : 9600 8N1
+
+F — Hardware Flow Control : YES
+
+G — Software Flow Control : NO
+
+Change with setting?
+```
+
+将选项A的值设置为/dev/ttyS0 表示是串口1.
+将选项E的值设置为9600.
+
+初始化设置中可以设置默认上传/下载的目录,传输协议参数,串口波特率等.设置完成后，
+选择”Save setup as dfl”,保存为默认设置.然后选择”Exit”,按Ctrl-A,再按z,
+即可进入Minicom的主界面.
+
+```
+Welco┌───────────────────────────────────────────────────────────────────┐
+     │                     Minicom Command Summary                       │
+OPTIO│                                                                   │
+Compi│          Commands can be called by CTRL-A <key>                   │
+     │                                                                   │
+Press│               Main Functions                  Other Functions     │
+     │                                                                   │
+     │ Dialing directory..D  run script (Go)....G | Clear Screen.......C │
+     │ Send files.........S  Receive files......R | cOnfigure Minicom..O │
+     │ comm Parameters....P  Add linefeed.......A | Suspend minicom....J │
+     │ Capture on/off.....L  Hangup.............H | eXit and reset.....X │
+     │ send break.........F  initialize Modem...M | Quit with no reset.Q │
+     │ Terminal settings..T  run Kermit.........K | Cursor key mode....I │
+     │ lineWrap on/off....W  local Echo on/off..E | Help screen........Z │
+     │                                            | scroll Back........B │
+     │                                                                   │
+     │      Select function or press Enter for none.                     │
+     │                                                                   │
+     │             Written by Miquel van Smoorenburg 1991-1995           │
+     │             Some additions by Jukka Lahtinen 1997-2000            │
+     │             i18n by Arnaldo Carvalho de Melo 1998                 │
+     └───────────────────────────────────────────────────────────────────┘
+ CTRL-A Z for help | 38400 8N1 | NOR | Minicom 2.00.0 | VT102 |      Offline
+```
+
+可以按快捷键进入相应的菜单.
+
+### 2.示例
+
+调试北电ALTEON 180E设备示例.
+
+```
+Welcome to minicom 2.00.0
+OPTIONS: History Buffer, F-key Macros, Search History Buffer, I18n
+Compiled on Mar 7 2005, 10:29:09.
+
+Press CTRL-A Z for help on special keys
+
+Enter password:
+Password incorrect.
+
+Enter password:
+System Information at 14:53:56 Fri Dec 15, 2006
+
+Alteon 180e
+sysName: 180e
+sysLocation:
+
+Switch is up 0 days, 0 hours, 8 minutes and 50 seconds.
+Last boot: 14:45:06 Fri Dec 15, 2006 (power cycle)
+MAC address: 00:60:cf:48:82:d0 IP (If 1) address: 0.0.0.0
+Hardware Revision: A
+Hardware Part No: E09_5B-B_7B-A
+Software Version 10.0.25-SSH (FLASH image1), active configuration.
+*****DNS Load Balancing*****
+------------------------------------------------------------
+[Main Menu]
+info - Information Menu
+stats - Statistics Menu
+cfg - Configuration Menu
+oper - Operations Command Menu
+boot - Boot Options Menu
+maint - Maintenance Menu
+diff - Show pending config changes [global command]
+apply - Apply pending config changes [global command]
+save - Save updated config to FLASH [global command]
+revert - Revert pending or applied changes [global command]
+exit - Exit [global command, always available]
+```
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

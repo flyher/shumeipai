@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>修改raspbian的源，加速apt-get</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E4%BF%AE%E6%94%B9raspbian%E7%9A%84%E6%BA%90%EF%BC%8C%E5%8A%A0%E9%80%9Fapt-get.html)
+# 修改raspbian的源，加速apt-get
+
+*本帖最后由 hanchao 于 2012-12-15 23:47 编辑*
+
+使用了一天Raspberry Pi ，发现aspbian系统下载程序实在是慢的无法接受了。今天终于找到一些镜像的源。
+具体可见
+http://www.raspbian.org/RaspbianMirrors
+
+国内用户推荐使用这两个，我这里测试第一个速度在还可以。第二个是清华大学的，好多人都说不给力，教育网的同学们可以试试。
+Asia        Singapore        NUS School of Computing SigLabs        http://mirror.nus.edu.sg/raspbian/raspbian
+Asia        China        Tsinghua University Network Administrators        http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/
+
+更新源的方法
+备份之前的源文件
+sudo cp /etc/apt/sources.list /etc/apt/sources.list\_bk
+更新源
+sudo vi /etc/apt/sources.list
+将默认地址替换成上面的地址
+
+![屏幕快照 2012-12-15 下午11.46.04.png](http://files.note.sdo.com/M5cEN~kg7DWVnM24s00NxP "屏幕快照 2012-12-15 下午11.46.04.png") *（外链图片未本地化）*
+
+2012-12-15 23:46 上传
+
+[**下载附件** (32.05 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTMwNjF8MmViYTcwZjF8MTM1OTA3OTM3M3wwfDQ5ODA%3D&nothumb=yes "屏幕快照 2012-12-15 下午11.46.04.png 下载次数:0")
+
+
+更新源信息
+sudo apt-get update
+
+接下来就可以下载软件咯
+sudo apt-get install tightvncserver
+
+昨天一天没下载完成，现在一会就下好了。![](http://files.note.sdo.com/M5cEN~kg7DWVnM24s00NxN) *（外链图片未本地化）*
+远程连接成功啦
+![屏幕快照 2012-12-11 下午9.40.58.png](http://files.note.sdo.com/M5cEN~kg7DWVnM24s00NxR "屏幕快照 2012-12-11 下午9.40.58.png") *（外链图片未本地化）*
+
+2012-12-11 21:42 上传
+
+[**下载附件** (390.79 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI4Njh8MzBkNzkxODN8MTM1OTA3OTM3M3wwfDQ5ODA%3D&nothumb=yes "屏幕快照 2012-12-11 下午9.40.58.png 下载次数:0")
+
+[【分享】](thread-4980-1-1.html)
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

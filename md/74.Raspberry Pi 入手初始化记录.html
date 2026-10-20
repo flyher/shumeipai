@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Raspberry Pi 入手初始化记录</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/Raspberry%20Pi%C2%A0%E5%85%A5%E6%89%8B%E5%88%9D%E5%A7%8B%E5%8C%96%E8%AE%B0%E5%BD%95.html)
+# Raspberry Pi 入手初始化记录
+
+一、硬件准备
+首先就是这块板子了，主要说起他的。
+
+§ 1、电源，采用 miniUSB供电，目前的 android 手机都是用这个接口，我手头上有个小米手机，那么输出电压5V,电钮700mha到1a的要求恰恰达到，插上
+
+§ 2、键盘鼠标用usb的，当然无线的就更方便的，只需要一个接收器占用一个usb口子，另外一个可以留给U盘或者移动硬盘。
+
+§ 3、存储，需要一张sd卡，我们平时手机上用的是tf卡，需要转接卡才行。而通常相机上用的就是sd卡，随便照一张把数据备份出来格式化后备用
+
+§ 4、显示器、音箱，板子带HDMI接口，可以直接将音视频混合高清输出。如果不想另外花钱买HDMI线，也可以直接接传统的电视，用差分输入输出线（红、白、黄三色的那种莲花头子的线）的黄色线接板子上的黄色圆形输出口子，3.5 mm音频插旁边的绿色原型插孔，这样音频、视频的输入输出接口就街上了。
+
+§ 5、网线插孔接上，这个玩电脑的都有，就不多说了。
+
+至此，硬件准备完毕，成本上基本就是订购板子的310.05元人民币，还是让我们开始体验Raspberry Pi 的乐趣吧。
+
+二、刷系统
+
+§ 1、准备系统
+到 官方网站的下载地址 下载 Raspbian “wheezy”，可直接下载或者下载bt种子记住系统的默认帐号和密码
+用户名: pi 密码: raspberry
+
+§ 2、准备刷系统的工具（windows版）
+到 Image Writer for Windows 项目主页 下载 Win32DiskImager ，解压后运行其中的 Win32DiskImager.exe 文件即可。
+
+§ 3、刷系统
+将我们准备好的sd卡接入电脑，运行 Win32DiskImager.exe ，浏览并打开系在并解压开来的 2012-09-18-wheezy-raspbian.img 文件，选择sd卡对应的盘符，我这里是E盘，点击write按钮，开始写入。几分钟后，系统写入完毕。他的/boot分区是fat32格式的，50M左右，部分文件比如config.txt之类的可以直接在这里修改。（这里废话两句，write按钮旁边有个read按钮，别随便按哦，会把sd卡的内容读出来覆盖下载的映像文件。这个啊，就是我们备份的功能啊，装好并自己配置好了以后可以用这招把你自己自定义好的raspbian系统备份好分享给其他人啊，呵呵)。
+
+三、玩转系统
+将sd卡插入板子，接上电源等外设，开机，成功后出现一个向导，按照提示打开ssh登陆，然后点击finish进入命令行。输入 ip addr 记下ip地址,我这里是 192.168.0.168 ，后面出现这样的ip地址请记得替换成你自己的ip地址哈，准备远程登陆了。
+
+§ 1、设置更新镜像，注意，这是改造过后的debian，不是官方的，不能用我们熟悉的比如163、souhu的源，可以到官方的 源列表地址去查，发现国内终于有一家清华大学开源镜像站，难得有国内的源，反应速度也还不错。
+
+sudo su
+cp /etc/apt/sources.list /etc/apt/sources.list.orig
+echo "deb http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ wheezy main contrib non-free rpi" > /etc/apt/sources.list
+apt-get update
+
+§ 2、设置免密码登陆
+puttygen 生成私钥并保存为 pi.ppk,将公钥单独记录下来备用
+vi .ssh/authorized\_keys
+追加公钥
+保存并退出
+客户端运行 pageant ,添加私钥 pi.ppk
+putty中保存session的时候记得在 Connection – Data ->Login Details -> Auto-login username 一栏填写上 pi
+以后直接打开这个session的话就能直接用 pageant 认证登陆，不在输入密码了。
+详细设置可以参考使用 pageant 方便的进行公钥私钥登录ssh、sftp等
+
+§ 3、vnc登陆
+
+服务端准备
+
+sudo apt-get install tightvncserver
+vncserver :1 -geometry 1280x800 -depth 16 -pixelformat rgb565
+根据提示设置好vnc登陆的密码并记录下来备用
+
+客户端准备
+
+§ 到 UltraVNC 下载页 下载并安装 UltraVNC
+
+§ 运行客户端后填写的 VNC Server 地址为 ip地址+刚才的屏幕编号:1,我这里就是 192.168.0.168:1 , 连接成功后就相当于在pi机器面前了
+
+§ 4、插入usb设备
+
+sudo mkdir /media/usbstick
+tail -f /var/log/messages
+插入U盘，注意看提示框显示
+
+mount -t vfat -o rw /dev/sda1 /media/usbstick/
+#不行就用这个
+#sudo mount -t vfat -o uid=pi,gid=pi /dev/sda1 /media/usbstick/
+#ntfs 格式的盘得用另外的方式
+#mount -t ntfs-3g /dev/sda1 /media/USBHDD
+#sudo mount -t ntfs-3g -o uid=pi,gid=pi /dev/sda1 /media/usbdrive/
+cd /media/usbstick
+ls -l
+#拔出之前先unmount
+#sudo umount /media/usbstick
+
+§ 5、bt下载
+apt-get install transmission transmission-daemon transmission-cli
+vi /etc/transmission-daemon/settings.json
+修改配置项
+
+“rpc-enabled”: true,
+“rpc-password”: “[your password]”,
+“rpc-port”: “[your port]”,
+“rpc-username”: “[your username]”,
+接下来就可以通过远程web管理地址(http://192.168.0.168:[your port]/)进行管理了。如果登陆不进去，检查下配置项rpc-whitelist ，将其配置为 “127.0.0.\*,192.168.\*.\*”, 注意，此文件为 json 格式，字段和值都要用双引号括起来。
+
+[【分享】Raspberry Pi](thread-5796-1-1.html)
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

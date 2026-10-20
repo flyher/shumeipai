@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>webiopi  README</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/webiopi%20%20README.html)
+# Introduction
+
+WebIOPi is a REST framework and a webapp which allows you to control your Raspberry Pi's GPIO. Just install it on your Pi, and use any browser from your network. It's useful to start enjoying GPIOs and also to debug some circuits without writing any line of code. It also allows to control your Pi's GPIOs over Internet, so it's a good starting point for home remote control.
+
+You can also [create your own web interface](https://code.google.com/p/webiopi/wiki/CUSTOMIZE) using the included [Javascript library](https://code.google.com/p/webiopi/wiki/JAVASCRIPT), or the [REST API](https://code.google.com/p/webiopi/wiki/RESTAPI). You can even use the WebIOPi power inside your own Python script using the [Server Library](https://code.google.com/p/webiopi/wiki/PYTHON).
+
+WebIOPI is developed by Eric PTAK, also known as trouch, french R&D engineer in networks, software, mobility and Internet of Things.
+
+- [Changelog](https://code.google.com/p/webiopi/wiki/CHANGELOG)
+- [Support & Discussion](http://groups.google.com/group/webiopi)
+- [Eric's blog](http://trouch.com/)
+- [Video tutorial](http://www.youtube.com/watch?v=wGahWkjettw) by RaspberryPiBeginners
+
+# Features
+
+- HTML/Javascript client and Python server
+- Supports binary GPIOs, in both input and output.
+- Software PWM
+- Smartphone compatible
+- Auto-refresh
+
+- Login/Password protection
+- [Easily customize UI](https://code.google.com/p/webiopi/wiki/CUSTOMIZE)
+- [REST API](https://code.google.com/p/webiopi/wiki/RESTAPI)
+- [Python Server Library](https://code.google.com/p/webiopi/wiki/PYTHON)
+- [Javascript Client Library](https://code.google.com/p/webiopi/wiki/JAVASCRIPT)
+
+# Install
+
+*WebIOPi is developed and tested on **Raspbian**.*
+
+You only need Python, either 2.7 or 3.2. Download, then extract and install WebIOPi. The setup script will automatically download and install required dependencies using apt-get. You may have to manually install GCC and Python development headers if you are *not* using Raspbian.
+
+```
+$ wget http://webiopi.googlecode.com/files/WebIOPi-0.5.3.tar.gz
+$ tar xvzf WebIOPi-0.5.3.tar.gz
+$ cd WebIOPi-0.5.3
+$ sudo ./setup.sh
+```
+
+Finally, run Python using webiopi module :
+
+```
+$ sudo python -m webiopi [port]
+```
+
+where port is the port to bind the HTTP server, default is 8000.
+
+You're done, and ready to enjoy WebIOPi ! But the server and GPIO state will be lost when you'll stop the script (CTRL-C) or close the terminal session.
+
+You can also start/stop the background service :
+
+```
+$ sudo /etc/init.d/webiopi start
+and
+$ sudo /etc/init.d/webiopi stop
+```
+
+You can even setup your system to start webiopi at startup :
+
+```
+$ sudo update-rc.d webiopi defaults
+```
+
+# Usage
+
+If your are directly using your Raspberry Pi with keyboard/mouse/display plugged, open a browser to <http://localhost:8000/webiopi/>
+
+If your Raspberry Pi is connected to your network, you can open a browser to <http://raspberrypi:8000/webiopi/> with any device of your network. *Replace raspberrypi by its IP.*
+
+You can even add a port redirection on your router (and/or use IPv6) to control your GPIOs over Internet !
+
+**Default user is "webiopi" and password is "raspberry"**
+
+- Click/Tap the OUT/IN button to change GPIO direction.
+- Click/Tap pins to change the GPIO output state.
+
+![](http://files.note.sdo.com/M5cEN~kgeTY9nM1vM00523) *（外链图片未本地化）*
+
+You can also use the expert app, which gives you an ordered list of GPIOs. It's located at <http://localhost:8000/webiopi/app/expert/> (or <http://raspberrypi:8000/webiopi/app/expert/>)
+
+![](http://files.note.sdo.com/M5cEN~kgeTY9nM1vM00521) *（外链图片未本地化）*
+
+[![](http://files.note.sdo.com/M5cEN~kgeTY9nM1vM0051-)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=79EM7ZV9FQ4HU) *（外链图片未本地化）*
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

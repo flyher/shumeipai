@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>iwlwifi</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/iwlwifi.html)
+[Translation(s)](http://wiki.debian.org/DebianWiki/EditorGuide#translation): English - [Français](http://wiki.debian.org/fr/iwlwifi) - [Italiano](http://wiki.debian.org/it/iwlwifi)
+
+---
+
+# Intel Wireless WiFi Link, Wireless-N, Advanced-N, Ultimate-N devices
+
+This page describes how to enable support for Intel 802.11n devices on Debian systems.
+
+目录
+
+1. [Intel Wireless WiFi Link, Wireless-N, Advanced-N, Ultimate-N devices](http://wiki.debian.org/iwlwifi#Intel_Wireless_WiFi_Link.2C_Wireless-N.2C_Advanced-N.2C_Ultimate-N_devices)
+   1. [Installation](http://wiki.debian.org/iwlwifi#Installation)
+      1. [Squeeze](http://wiki.debian.org/iwlwifi#Squeeze)
+      2. [Wheezy](http://wiki.debian.org/iwlwifi#Wheezy)
+   2. [Supported Devices](http://wiki.debian.org/iwlwifi#Supported_Devices)
+      1. [Squeeze](http://wiki.debian.org/iwlwifi#Squeeze-1)
+      2. [Wheezy](http://wiki.debian.org/iwlwifi#Wheezy-1)
+   3. [See Also](http://wiki.debian.org/iwlwifi#See_Also)
+   4. [External Links](http://wiki.debian.org/iwlwifi#External_Links)
+
+The iwlwifi module (iwlagn prior to Linux 3.2) is produced by the iwlwifi Linux kernel driver, which supports several Intel wireless LAN adapters:
+
+- Intel Wireless WiFi 4965AGN
+
+  - In [Wheezy](http://wiki.debian.org/DebianWheezy), this device is now supported by the [iwlegacy](http://wiki.debian.org/iwlegacy) driver (iwl4965 module).
+- Intel Wireless WiFi 5100AGN, 5300AGN, 5350AGN
+- Intel Wireless WiFi 5150AGN
+- Intel WiFi Link 1000BGN
+- Intel 6000 Series WiFi Adapters (6200AGN and 6300AGN)
+- Intel Wireless WiFi Link 6250AGN Adapter
+- Intel 6005 Series WiFi Adapters
+- Intel 6030 Series WiFi Adapters
+- Intel Wireless WiFi Link 6150BGN 2 Adapter
+- Intel 100 Series WiFi Adapters (100BGN and 130BGN)
+- Intel 2000 Series WiFi Adapters
+
+Non-free firmware is required, which can be provided by installing the [firmware-iwlwifi](http://packages.debian.org/firmware-iwlwifi "DebianPkg") package.
+
+![{i}](http://files.note.sdo.com/M5cEN~kghSZ0LX0KU007jO "{i}") For support of Intel 3945ABG/BG and 4965AGN devices, see [iwlegacy](http://wiki.debian.org/iwlegacy). *（外链图片未本地化）*
+
+## Installation
+
+### Squeeze
+
+See [supported devices (squeeze)](http://wiki.debian.org/iwlwifi#supported-squeeze) for device support available in this release.
+
+1. Add a "non-free" component to /etc/apt/sources.list, for example:
+
+   ```
+   # Debian Squeeze/6.0
+   deb http://ftp.us.debian.org/debian squeeze main contrib non-free
+   ```
+2. Update the list of available packages and install the [firmware-iwlwifi](http://packages.debian.org/firmware-iwlwifi "DebianPkg") and [wireless-tools](http://packages.debian.org/wireless-tools "DebianPkg") packages:
+
+   ```
+   # aptitude update && aptitude install firmware-iwlwifi wireless-tools
+   ```
+3. As the iwlagn module is [automatically loaded](http://wiki.debian.org/Modules) for supported devices, reinsert this module to access installed firmware:
+
+   ```
+   # modprobe -r iwlagn ; modprobe iwlagn
+   ```
+4. Verify your device has an available interface:
+
+   ```
+   # iwconfig
+   ```
+5. [Configure](http://wiki.debian.org/WiFi/HowToUse) your wireless interface as appropriate.
+
+### Wheezy
+
+See [supported devices (wheezy)](http://wiki.debian.org/iwlwifi#supported-wheezy) for current device support in the [testing](http://wiki.debian.org/DebianTesting) distribution.
+
+1. Add a "non-free" component to /etc/apt/sources.list, for example:
+
+   ```
+   # Debian Wheezy (testing)
+   deb http://ftp.us.debian.org/debian wheezy main contrib non-free
+   ```
+2. Update the list of available packages and install the [firmware-iwlwifi](http://packages.debian.org/firmware-iwlwifi "DebianPkg") and [wireless-tools](http://packages.debian.org/wireless-tools "DebianPkg") packages:
+
+   ```
+   # aptitude update && aptitude install firmware-iwlwifi wireless-tools
+   ```
+3. As the iwlwifi module is [automatically loaded](http://wiki.debian.org/Modules) for supported devices, reinsert this module to access installed firmware:
+
+   ```
+   # modprobe -r iwlwifi ; modprobe iwlwifi
+   ```
+4. Verify your device has an available interface:
+
+   ```
+   # iwconfig
+   ```
+5. [Configure](http://wiki.debian.org/WiFi/HowToUse) your wireless interface as appropriate.
+
+## Supported Devices
+
+### Squeeze
+
+The page [HowToIdentifyADevice/PCI](http://wiki.debian.org/HowToIdentifyADevice/PCI) explains how to identify a PCI device.
+
+The following list is based on the *alias* fields of modinfo iwlagn in Debian 2.6.32 (2.6.32-46) kernel images.
+
+- ```
+  PCI: 8086:0083 Intel Corporation Centrino Wireless-N 1000 [Condor Peak]
+  PCI: 8086:0084 Intel Corporation Centrino Wireless-N 1000 [Condor Peak]
+  PCI: 8086:0086 Intel Corporation (Device name unknown)
+  PCI: 8086:0087 Intel Corporation Centrino Advanced-N + WiMAX 6250 [Kilmer Peak]
+  PCI: 8086:0088 Intel Corporation (Device name unknown)
+  PCI: 8086:0089 Intel Corporation Centrino Advanced-N + WiMAX 6250 [Kilmer Peak]
+  PCI: 8086:008D Intel Corporation (Device name unknown)
+  PCI: 8086:008E Intel Corporation (Device name unknown)
+  PCI: 8086:4229 Intel Corporation PRO/Wireless 4965 AG or AGN [Kedron] Network Connection
+  PCI: 8086:422B Intel Corporation Centrino Ultimate-N 6300
+  PCI: 8086:422C Intel Corporation Centrino Advanced-N 6200
+  PCI: 8086:4230 Intel Corporation PRO/Wireless 4965 AG or AGN [Kedron] Network Connection
+  PCI: 8086:4232 Intel Corporation WiFi Link 5100
+  PCI: 8086:4235 Intel Corporation Ultimate N WiFi Link 5300
+  PCI: 8086:4236 Intel Corporation Ultimate N WiFi Link 5300
+  PCI: 8086:4237 Intel Corporation PRO/Wireless 5100 AGN [Shiloh] Network Connection
+  PCI: 8086:4238 Intel Corporation Centrino Ultimate-N 6300
+  PCI: 8086:4239 Intel Corporation Centrino Advanced-N 6200
+  PCI: 8086:423A Intel Corporation PRO/Wireless 5350 AGN [Echo Peak] Network Connection
+  PCI: 8086:423B Intel Corporation PRO/Wireless 5350 AGN [Echo Peak] Network Connection
+  PCI: 8086:423C Intel Corporation WiMAX/WiFi Link 5150
+  PCI: 8086:423D Intel Corporation WiMAX/WiFi Link 5150
+  ```
+
+### Wheezy
+
+The page [HowToIdentifyADevice/PCI](http://wiki.debian.org/HowToIdentifyADevice/PCI) explains how to identify a PCI device.
+
+The following list is based on the *alias* fields of modinfo iwlwifi in Debian 3.2.0 (3.2.35-2) kernel images.
+
+- ```
+  PCI: 8086:0082 Intel Corporation Centrino Advanced-N 6205 [Taylor Peak]
+  PCI: 8086:0083 Intel Corporation Centrino Wireless-N 1000 [Condor Peak]
+  PCI: 8086:0084 Intel Corporation Centrino Wireless-N 1000 [Condor Peak]
+  PCI: 8086:0085 Intel Corporation Centrino Advanced-N 6205 [Taylor Peak]
+  PCI: 8086:0087 Intel Corporation Centrino Advanced-N + WiMAX 6250 [Kilmer Peak]
+  PCI: 8086:0089 Intel Corporation Centrino Advanced-N + WiMAX 6250 [Kilmer Peak]
+  PCI: 8086:008A Intel Corporation Centrino Wireless-N 1030 [Rainbow Peak]
+  PCI: 8086:008B Intel Corporation Centrino Wireless-N 1030 [Rainbow Peak]
+  PCI: 8086:0090 Intel Corporation Centrino Advanced-N 6230 [Rainbow Peak]
+  PCI: 8086:0091 Intel Corporation Centrino Advanced-N 6230 [Rainbow Peak]
+  PCI: 8086:0885 Intel Corporation Centrino Wireless-N + WiMAX 6150
+  PCI: 8086:0886 Intel Corporation Centrino Wireless-N + WiMAX 6150
+  PCI: 8086:0887 Intel Corporation Centrino Wireless-N 2230
+  PCI: 8086:0888 Intel Corporation Centrino Wireless-N 2230
+  PCI: 8086:088E Intel Corporation Centrino Advanced-N 6235
+  PCI: 8086:088F Intel Corporation Centrino Advanced-N 6235
+  PCI: 8086:0890 Intel Corporation Centrino Wireless-N 2200
+  PCI: 8086:0891 Intel Corporation Centrino Wireless-N 2200
+  PCI: 8086:0892 Intel Corporation Centrino Wireless-N 135
+  PCI: 8086:0893 Intel Corporation Centrino Wireless-N 135
+  PCI: 8086:0894 Intel Corporation Centrino Wireless-N 105
+  PCI: 8086:0895 Intel Corporation Centrino Wireless-N 105
+  PCI: 8086:0896 Intel Corporation Centrino Wireless-N 130
+  PCI: 8086:0897 Intel Corporation Centrino Wireless-N 130
+  PCI: 8086:08AE Intel Corporation Centrino Wireless-N 100
+  PCI: 8086:08AF Intel Corporation Centrino Wireless-N 100
+  PCI: 8086:422B Intel Corporation Centrino Ultimate-N 6300
+  PCI: 8086:422C Intel Corporation Centrino Advanced-N 6200
+  PCI: 8086:4232 Intel Corporation WiFi Link 5100
+  PCI: 8086:4235 Intel Corporation Ultimate N WiFi Link 5300
+  PCI: 8086:4236 Intel Corporation Ultimate N WiFi Link 5300
+  PCI: 8086:4237 Intel Corporation PRO/Wireless 5100 AGN [Shiloh] Network Connection
+  PCI: 8086:4238 Intel Corporation Centrino Ultimate-N 6300
+  PCI: 8086:4239 Intel Corporation Centrino Advanced-N 6200
+  PCI: 8086:423A Intel Corporation PRO/Wireless 5350 AGN [Echo Peak] Network Connection
+  PCI: 8086:423B Intel Corporation PRO/Wireless 5350 AGN [Echo Peak] Network Connection
+  PCI: 8086:423C Intel Corporation WiMAX/WiFi Link 5150
+  PCI: 8086:423D Intel Corporation WiMAX/WiFi Link 5150
+  ```
+
+## See Also
+
+- [iwlegacy](http://wiki.debian.org/iwlegacy) - Intel PRO/Wireless 3945 and WiFi Link 4965 devices
+- [ipw2200](http://wiki.debian.org/ipw2200) - Intel PRO/Wireless 2100, 2200 and 2915 devices
+- [How to use a WiFi interface](http://wiki.debian.org/WiFi/HowToUse)
+
+## External Links
+
+- <http://intellinuxwireless.org/>
+
+---
+
+[CategoryHardware](http://wiki.debian.org/CategoryHardware) | [CategoryWireless](http://wiki.debian.org/CategoryWireless)
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

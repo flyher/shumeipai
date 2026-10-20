@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>树莓派内核编译教程</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B.html)
+# 树莓派内核编译教程
+
+如题，首先在<https://github.com/raspberrypi/linux/>上下载最新的内核源代码，连接如下：[https://github.com/raspberrypi/linux/archive/rpi-3.2.27.zip](https://github.com/raspberrypi/linux/archive/rpi-3.2.27.zip)然后安装编译工具如gcc、make、patch等，可以使用apt-get install gcc make命令 *（外链文件未本地化）*
+
+然后检查系统时间，如果时间不对，可以手动设置一下时间，也可以重新启动ntp服务，自动对时
+
+将下载的内核文件放在随便找个目录放着，并用unzip解压它，
+
+unzip rpi-3.2.27.zip
+
+如果命令不成功则可能是没有安装unzip，可以使用apt-get install unzip命令安装就行了
+
+开始编译内核，首先使用以下命令对内核进行配置
+
+make menuconfig
+
+载图太麻烦了，所以我直接用鼠标选了图，大家将就的看看吧。
+
+需要说明的是在System Type  --->这一项里，一定要选择合适的cpu也就是armBCM2708这个型号，其它的东西大家可以自己选择，需要什么用星号表示将这一项编译进内核，M表示编译成模块。
+
+
+- .config - Linux/arm 3.2.27 Kernel Configuration
+- qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+- lqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq System Type qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqk
+- x  Arrow keys navigate the menu.  <Enter> selects submenus --->.  Highlighted letters are       x
+- x  hotkeys.  Pressing <Y> includes, <N> excludes, <M> modularizes features.  Press <Esc><Esc>   x
+- x  to exit, <?> for Help, </> for Search.  Legend:
+- built-in  [ ] excluded  <M> module  < >  x
+- x  module capable                                                                               x
+- x lqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqk x
+- x x
+- MMU-based Paged Memory Management Support                                    x x
+- x x              ARM system type (Broadcom BCM2708 family)  --->                              x x
+- x x              \*\*\* System MMU \*\*\*                                                           x x
+- x x              Broadcom BCM2708 Implementations  --->                                       x x
+- x x              \*\*\* Processor Type \*\*\*                                                       x x
+- x x          -\*- Support ARM V6 processor                                                     x x
+- x x              \*\*\* Processor Features \*\*\*                                                   x x
+- x x
+- Support Thumb user binaries                                                  x x
+- x x          [ ] Disable I-Cache (I-bit)                                                      x x
+- x x          [ ] Disable D-Cache (C-bit)                                                      x x
+- x x          [ ] Disable branch prediction                                                    x x
+- x x
+- Use non-cacheable memory for DMA                                             x x
+- x x          [ ] ARM errata: FSR write bit incorrect on a SWP to read-only memory             x x
+- x x          -\*- ARM errata: Invalidation of the Instruction Cache operation can fail         x x
+- x x          [ ] ARM errata: Possible cache data corruption with hit-under-miss enabled       x x
+- x x                                                                                           x x
+- x x                                                                                           x x
+- x x                                                                                           x x
+- x x                                                                                           x x
+- x x                                                                                           x x
+- x x                                                                                           x x
+- x x                                                                                           x x
+- x x                                                                                           x x
+- x x                                                                                           x x
+- x x                                                                                           x x
+- x x                                                                                           x x
+- x x                                                                                           x x
+- x x                                                                                           x x
+- x mqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqj x
+- tqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqu
+- x                               <Select>    < Exit >    < Help >                                x
+- mqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqj
+
+
+*复制代码*
+选择完了后可以使用左右键来进行选择<Select> < Exit > < Help >，退出时会自己保存配置
+
+如果你的在做make menuconfig时没有看到上面的画面，而是看到一堆英文，则一般是没有安装libncurses5-dev开发库，使用apt-get install libncurses5-dev来安装就行了
+
+当选择完成后直接make就可以了
+
+make程序会自己编译内核以及模块。
+
+安装模块使用make modules\_install命令
+
+在make运行完成后需要重新生成一个镜像。这需要使用其它的工具。
+
+在https://github.com/raspberrypi/tools上面有一个目录mkimage,这个目录下存有这些工具，将这里面的文件全部下载下来，存放在一个目录中，然后执行下面的命令：
+
+python imagetool-uncompressed.py 你的源代码目录/arch/arm/boot/Image
+
+很快这个命令就会执行完成，你会发现在目录下有一个kernel.img的文件，这个就是你的新内核，将它覆盖boot目录下的kernel.img文件，现在你可以使用新内核来启动你的pi了。
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

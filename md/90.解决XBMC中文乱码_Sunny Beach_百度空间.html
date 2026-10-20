@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>解决XBMC中文乱码_Sunny Beach_百度空间</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E8%A7%A3%E5%86%B3XBMC%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81_Sunny%20Beach_%E7%99%BE%E5%BA%A6%E7%A9%BA%E9%97%B4.html)
+# 解决XBMC中文乱码_Sunny Beach_百度空间
+
+XBMC是支持中文的，但自身不带中文字体。这也是为什么直接在软件中设置界面为中文，会导致操作界面文字变乱码。
+解决乱码的方法就是给他加入中文字体。
+
+解决方法：
+1、先找一款喜欢的字体（下面以细黑字体simhei.ttf为例），放到桌面，然后在终端输入下面命令
+sudo -i
+mv /usr/share/xbmc/media/Fonts/simhei.ttf /usr/share/xbmc/media/Fonts/arial.ttf
+说明：重命名simhei.ttf为arial.ttf并替换XBMC安装目录下的arial.ttf字体
+将以上命令中的 simhei.ttf 换成要你想用的字体名就可以了
+
+2、打开XBMC，进入SETTING-Appearance----Look and Feel中将Skin Fonts设置为arial，再将 region中的language设置为Chinese simplified即可。
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

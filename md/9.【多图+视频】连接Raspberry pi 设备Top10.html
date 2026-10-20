@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>【多图+视频】连接Raspberry pi 设备Top10</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E3%80%90%E5%A4%9A%E5%9B%BE%2B%E8%A7%86%E9%A2%91%E3%80%91%E8%BF%9E%E6%8E%A5Raspberry%20pi%20%E8%AE%BE%E5%A4%87Top10.html)
+# 【多图+视频】连接Raspberry pi 设备Top10
+
+*本帖最后由 xinxincaijq 于 2013-4-10 15:32 编辑*
+
+
+**连接Raspberry pi 设备Top10**
+
+在使用Raspberry pi的这段时间里，我已经尝试了很多种设备和传感器。我把连接Raspberry pi 设备Top10列出来，大多数情况下，它们都很便宜很容易连接而且很好的为未来更加复杂的项目建立模块。我将详细介绍的链接附上，在这里有很Python脚本例程，希望能够帮助大家！
+
+从机器人汽车到安全系统，有很多将这些小型项目与令人惊叹的创作相结合的方法！如果你想给一个Raspberry Pi拥有者买礼物，那么以下这些将会是很好的起点。
+
+**1.超声波模块**
+
+超声波传感器模块是给你的Pi加入测距功能的一种简单的方式。照片中所示的设备有两个电源引脚，一个触发引脚和一个反馈引脚。
+看看我的 “[使用Python进行超声波测距](http://www.raspberrypi-spy.co.uk/2012/12/ultrasonic-distance-measurement-using-python-part-1/)”的帖子吧，看看如何连接它到GPIO和如何通过简单的Python脚本来阅读。
+
+![Ultrasonic-Sensor-03.jpg](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTk3MDl8MDFkOWNjYjF8MTM2NjUxMjMyMHwwfDExNDgy&noupdate=yes "Ultrasonic-Sensor-03.jpg") *（外链图片未本地化）*
+
+2013-4-10 13:17 上传
+
+[**下载附件** (85.27 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTk3MDl8MDFkOWNjYjF8MTM2NjUxMjMyMHwwfDExNDgy&nothumb=yes "Ultrasonic-Sensor-03.jpg 下载次数:2")
+
+
+**2.PIR模块**
+
+简单的“被动红外”传感器可以让你来检测运动。我在eBuy上找到的传感器只花了几磅。传感器有三个引脚，可以直接连接到Raspberry Pi的GPIO头。这些都是很好的安全系统或机器人传感器。
+“便宜PIR传感器和Raspberry Pi”的页面上可以找到一个python脚本示例。
+
+![pir_module_2.jpg](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTk3MTB8OTU1YTBkNzN8MTM2NjUxMjMyMHwwfDExNDgy&noupdate=yes "pir_module_2.jpg") *（外链图片未本地化）*
+
+2013-4-10 13:19 上传
+
+[**下载附件** (58.16 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTk3MTB8OTU1YTBkNzN8MTM2NjUxMjMyMHwwfDExNDgy&nothumb=yes "pir_module_2.jpg 下载次数:1")
+
+
+**3.步进电机**
+
+这是我试图从GPIO控制的第一波硬件之一，步进电机通过控制板直接与GPIO接口相连。你给设备输入序列则马达转动。
+
+在我的“[用Python控制步进电机](http://www.raspberrypi-spy.co.uk/2012/07/stepper-motor-control-in-python/)”页面可以找到相关说明和Python示例。
+
+![28BJY-48-Stepper-Motor.jpg](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTk3MTF8YzhjNTllOGZ8MTM2NjUxMjMyMHwwfDExNDgy&noupdate=yes "28BJY-48-Stepper-Motor.jpg") *（外链图片未本地化）*
+
+2013-4-10 13:21 上传
+
+[**下载附件** (13.53 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTk3MTF8YzhjNTllOGZ8MTM2NjUxMjMyMHwwfDExNDgy&nothumb=yes "28BJY-48-Stepper-Motor.jpg 下载次数:9")
+
+
+**4.16×2或20×4字符LCD显示屏**
+
+16×2或20×4字符LCD显示屏很便宜就能买到而且插到Pi的GPIO引脚上很方便。我写文章用的  [16×2](http://www.raspberrypi-spy.co.uk/2012/07/16x2-lcd-module-control-using-python/)和[20×4](http://www.raspberrypi-spy.co.uk/2012/08/20x4-lcd-module-control-using-python/)字符LCD显示屏都是从eBay上买的。无论你买什么样的设备，只要它与“Hitachi HD44780”LCD控制器兼容就行。幸运的是，大部分都是基于这种常见的控制器。
+
+除了一些基本的组件，你还可以调整亮度和实现开关显示屏。
+
+![20x4_lcd_module1.jpg](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTk3MTJ8MmQ2MGQ2ZmR8MTM2NjUxMjMyMHwwfDExNDgy&noupdate=yes "20x4_lcd_module1.jpg") *（外链图片未本地化）*
+
+2013-4-10 13:21 上传
+
+[**下载附件** (92.54 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTk3MTJ8MmQ2MGQ2ZmR8MTM2NjUxMjMyMHwwfDExNDgy&nothumb=yes "20x4_lcd_module1.jpg 下载次数:1")
+
+
+**5.USB串口模块**
+
+一个USB串口模块可以实现你的Pi通过USB接口进行通信。USB端可以插入PC，笔记本电脑或平板电脑，引脚端可以和GPIO的引脚8和10相连。
+
+默认情况下，这些引脚配置为串行终端接口，并允许你通过PC或平板电脑输入Linux命令行，如果USB端口能提供充足电源，它甚至还可以通过主机设备给Pi供电。
+
+![usb_serial_module.jpg](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTk3MTh8YWYyYWU2MGF8MTM2NjUxMjMyMHwwfDExNDgy&noupdate=yes "usb_serial_module.jpg") *（外链图片未本地化）*
+
+2013-4-10 13:27 上传
+
+[**下载附件** (53.7 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTk3MTh8YWYyYWU2MGF8MTM2NjUxMjMyMHwwfDExNDgy&nothumb=yes "usb_serial_module.jpg 下载次数:0")
+
+
+**6.USB无线适配器**
+
+无线网卡相当便宜，而且是可以使Pi不用连线而连接网络很好的方式。Edimax 7811是很受欢迎的选择，而且易于配置包括最新Raspbian镜像在内的无线实用程序。
+
+我还使用Edimax 7711
+
+![edimax_7811un_wifi_dongle.jpg](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTk3MTd8Nzc0OWI0ODF8MTM2NjUxMjMyMHwwfDExNDgy&noupdate=yes "edimax_7811un_wifi_dongle.jpg") *（外链图片未本地化）*
+
+2013-4-10 13:26 上传
+
+[**下载附件** (35.13 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTk3MTd8Nzc0OWI0ODF8MTM2NjUxMjMyMHwwfDExNDgy&nothumb=yes "edimax_7811un_wifi_dongle.jpg 下载次数:0")
+
+
+**7.迷你液晶屏**
+
+有很多种小屏幕可以接收复杂视频输入， 与Raspberry Pi的视频输出完美连接。大部分这些屏幕都是当做倒车摄像头屏幕销售，12V电压供电而且通常有两路视频输入。
+
+我的是从eBay花16英镑买的，我用它写了“[廉价迷你液晶屏](http://www.raspberrypi-spy.co.uk/2012/11/cheap-miniature-lcd-screen/)”的文章，而且用它创建了一个矩阵屏幕。
+
+![lcd_screen_1.jpg](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTk3MTZ8ZTlmMmI4ODB8MTM2NjUxMjMyMHwwfDExNDgy&noupdate=yes "lcd_screen_1.jpg") *（外链图片未本地化）*
+
+2013-4-10 13:25 上传
+
+[**下载附件** (106.24 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTk3MTZ8ZTlmMmI4ODB8MTM2NjUxMjMyMHwwfDExNDgy&nothumb=yes "lcd_screen_1.jpg 下载次数:0")
+
+
+**8.BerryClip 6 LED Buzzer板**
+
+BerryClip是一款可直接与Pi的GPIO头相连的插件板，它提供6种颜色的LED，一个蜂鸣器和一个瞬时开关。这些都可以通过你偏好的语言进行控制，但也有很多Python示例脚本可以尝试。
+
+欲了解更多详情，请访问页面[BerryClip page](http://www.raspberrypi-spy.co.uk/berryclip-6-led-add-on-board/) 。
+
+![berryclip_2013_03_06-150x150.jpg](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTk3MTV8ZWI4NmUzOTV8MTM2NjUxMjMyMHwwfDExNDgy&noupdate=yes "berryclip_2013_03_06-150x150.jpg") *（外链图片未本地化）*
+
+2013-4-10 13:25 上传
+
+[**下载附件** (7.06 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTk3MTV8ZWI4NmUzOTV8MTM2NjUxMjMyMHwwfDExNDgy&nothumb=yes "berryclip_2013_03_06-150x150.jpg 下载次数:0")
+
+
+**9.USB蓝牙适配器**
+
+蓝牙适配器既便宜又可以方便的从实体店或网上购买到。我已经成功使用“Origo”品牌的设备和Tesco“Technika”纳米蓝牙适配器，Tesco适配器成本5英镑而且不比USB插头本身打多少。
+
+适配器可以使你链接各种蓝牙功能的设备，比如键盘、鼠标、Wii控制器。
+
+
+![tesco_nano_bluetooth_dongle.jpg](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTk3MTR8NGQyN2UwYjV8MTM2NjUxMjMyMHwwfDExNDgy&noupdate=yes "tesco_nano_bluetooth_dongle.jpg") *（外链图片未本地化）*
+
+2013-4-10 13:25 上传
+
+[**下载附件** (56.03 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTk3MTR8NGQyN2UwYjV8MTM2NjUxMjMyMHwwfDExNDgy&nothumb=yes "tesco_nano_bluetooth_dongle.jpg 下载次数:0")
+
+
+**10.任天堂Wii控制器**
+
+
+如果你已经有了一个任天堂的Wii，那你很有值得来看看我的“[任天堂Wii控制器，Python和Raspberry pi](http://www.raspberrypi-spy.co.uk/2013/02/nintendo-wii-remote-python-and-the-raspberry-pi/)”页面。文中解释了你Wii 控制器如何与Raspberry pi相连和如何用Python读取按键状态。这将开启远程控制项目的整个世界。
+
+
+![Nintendo_Wii_Remote.jpg](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTk3MTN8NzAyZjRiOWF8MTM2NjUxMjMyMHwwfDExNDgy&noupdate=yes "Nintendo_Wii_Remote.jpg") *（外链图片未本地化）*
+
+2013-4-10 13:24 上传
+
+[**下载附件** (163.49 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTk3MTN8NzAyZjRiOWF8MTM2NjUxMjMyMHwwfDExNDgy&nothumb=yes "Nintendo_Wii_Remote.jpg 下载次数:0")
+
+
+译自原文：http://www.raspberrypi-spy.co.uk/2013/03/top-10-things-to-connect-to-your-raspberry-pi/
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Debian Wheezy Raspberry Pi minimal image</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/Debian%20Wheezy%20Raspberry%20Pi%20minimal%20image.html)
+# Debian Wheezy Raspberry Pi minimal image
+
+[![](http://files.note.sdo.com/M5cEN~kg8lV9nM24s00Xce "raspberry pi qemu")](http://www.linuxsystems.it/wp-content/uploads/2012/06/raspi.jpeg)（外链文件，未本地化）I made my own Raspberry Pi custom image based on Debian Wheezy. *（外链图片未本地化）*
+
+Features include:
+
+- A **minimal** Debian Wheezy installation (similar to a netinstall) instead of the outdated Squeeze packages
+- Disabled incremental updates, means apt-get update is much faster
+- Workaround for a kernel bug which hangs the Raspberry Pi under heavy network/disk loads
+- A custom 3.1.9+ kernel with latest raspberry pi patches
+- Latest version of the firmwares
+- Lower GPU ram usage (32MB) by default
+- 224MB of ram are available to the system now
+- A very tiny **107MB** image: even with a 2GB SD there is **a lot** of free space
+- ssh starts by default
+- The clock is automatically updated using ntp
+- IPv6 support
+- Just 7MB of ram usage after the boot
+
+Here is the link to **download** my custom image: [http://files2.linuxsystems.it/wheezy\_20120608.img.7z](http://files2.linuxsystems.it/wheezy_20120608.img.7z) *（外链文件未本地化）*
+
+You will have to extract the image with [p7zip](http://p7zip.sourceforge.net/):
+
+> 7za x wheezy\_20120608.img.7z
+
+Then flash it to your SD with dd:
+
+> dd bs=1M if=wheezy\_20120608.img of=/dev/sdX
+
+Finally, if you have an sd larger than 2GB, grow the partition with gparted (first move the swap partition at the end).
+
+The **root password** is raspberry.
+
+[![](http://files.note.sdo.com/M5cEN~kg8lV9nM24s00Xci "raspberry pi chroot")](http://www.linuxsystems.it/wp-content/uploads/2012/06/raspiroot.png)（外链文件，未本地化） *（外链图片未本地化）*
+
+You will have to reconfigure your timezone after the first boot:
+
+> dpkg-reconfigure tzdata
+
+The keyboard layout:
+
+> dpkg-reconfigure console-data
+
+And the localization:
+
+> dpkg-reconfigure locales
+
+It’s done, I hope you will enjoy it.
+
+Edit: I also released a [Raspbian Wheezy armhf minimal image](http://www.linuxsystems.it/2012/06/raspbian-wheezy-armhf-raspberry-pi-minimal-image/) with hardfp binaries.
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

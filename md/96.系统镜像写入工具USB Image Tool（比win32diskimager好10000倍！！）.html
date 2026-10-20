@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>系统镜像写入工具USB Image Tool（比win32diskimager好10000倍！！）</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E7%B3%BB%E7%BB%9F%E9%95%9C%E5%83%8F%E5%86%99%E5%85%A5%E5%B7%A5%E5%85%B7USB%20Image%20Tool%EF%BC%88%E6%AF%94win32diskimager%E5%A5%BD10000%E5%80%8D%EF%BC%81%EF%BC%81%EF%BC%89.html)
+# 系统镜像写入工具USB Image Tool（比win32diskimager好10000倍！！）
+
+几乎所有的新手教程都使用Win32DiskImager作为系统安装工具——中文的、英文的、官方的、eLinux wiki的，不一而足。
+
+![破烂工具Win32DiskImager](http://files.note.sdo.com/M5cEN~kf-dTFnM31Y007An "破烂工具Win32DiskImager") *（外链图片未本地化）*
+
+2012-11-17 02:59 上传
+
+[**下载附件** (11.45 KB)](http://bbs.shumeipai.org/forum.php?mod=attachment&aid=MjZ8MTE4OWRkN2Z8MTM1ODk0MTY0MXwwfDI0&nothumb=yes "win32diskimager.png 下载次数:0")
+
+破烂工具Win32DiskImager
+
+
+但是这个工具：
+
+> - **不支持中文目录名! （文件或目录有中文，会出现123错误）**
+>
+>   ![未命名.jpg](http://files.note.sdo.com/M5cEN~kf-dTFnM31Y007Aq "未命名.jpg") *（外链图片未本地化）*
+>
+>   2012-12-3 19:11 上传
+>
+>   [**下载附件** (16.01 KB)](http://bbs.shumeipai.org/forum.php?mod=attachment&aid=MTYwfDcxMDJjMGU4fDEzNTg5NDE2NDF8MHwyNA%3D%3D&nothumb=yes "未命名.jpg 下载次数:0")
+> - **只使用盘符区分不同USB设备，用户需要自行核实，极不方便。**
+> - **浏览文件，记不住最后使用的目录，找常用的文件很麻烦。**
+> - **不支持压缩。**
+> - **必须先插好SD卡，再开软件。**
+> - **其它小问题：界面风格简陋；MD5在XP下乱码等**
+
+
+---
+
+
+我一直在寻找一个更方便的Win32DiskImager替代品。
+这个答案就是：USB Image Tool！界面先睹为快，相信您一看到界面，就会发现和win32diskimager不一样的感觉：
+
+![USB Image Tool截图](http://files.note.sdo.com/M5cEN~kf-dTFnM31Y007As "USB Image Tool截图") *（外链图片未本地化）*
+
+2012-11-17 05:28 上传
+
+[**下载附件** (20.29 KB)](http://bbs.shumeipai.org/forum.php?mod=attachment&aid=Mjh8OWRmMDU3MjB8MTM1ODk0MTY0MXwwfDI0&nothumb=yes "usbit-screenshot.png 下载次数:1")
+
+USB Image Tool截图
+
+
+---
+
+**特点**
+
+- **中文文件名OK**！
+- 可以通过设备名称、SD卡大小，直接判断写入的设备正确与否
+- 只能读写SD卡和U盘，干脆不认USB移动硬盘，保证安全
+- 自带压缩，备份可直接压缩成ZIP/GZ，恢复可以直读ZIP/GZ包
+- “收藏夹”功能，一键恢复你喜欢的多种系统
+- 刷新设备列表功能，可以先开软件再插SD卡，甚至先开软件再插读卡器都行
+- 一个软件窗口内，多个读卡器就可以并行读写，互不干扰，无需开多次软件
+
+
+---
+
+**使用**
+打开软件之后，左侧就会显示出机器上插入的所有U盘和读卡器（不显示移动硬盘）的列表。
+
+![USB Image Tool选择磁盘](http://files.note.sdo.com/M5cEN~kf-dTVnM31Y007Au "USB Image Tool选择磁盘") *（外链图片未本地化）*
+
+2012-11-17 06:57 上传
+
+[**下载附件** (27.93 KB)](http://bbs.shumeipai.org/forum.php?mod=attachment&aid=Mjl8YWUyMTg1OGV8MTM1ODk0MTY0MXwwfDI0&nothumb=yes "usbit-selectdrive.png 下载次数:1")
+
+USB Image Tool选择磁盘
+
+
+上边这个机器上插入了SanDisk U盘和多功能读卡器。可以轻易的从设备名称分辨出来。
+右侧会显示选中磁盘的详情。其中最有用的就是大小。可以看一眼SD卡大小是否正确，来保证稳妥。
+如果先打开软件后插SD卡，那左侧可能不会马上显示出来（空的读卡器是不显示的）。点“Rescan”手动刷新左侧列表即可。
+
+用法很简单：**左侧选好盘，右侧使用“Restore”将.img镜像写入SD卡；使用“Backup”将SD卡内容存成.img镜像。**
+就这些！
+可以用绿色的箭头辅助记忆：卡在左边，左箭头是往卡里写东西，右箭头是从卡里读东西~
+
+注意：**左上角必须是Device Mode**，不能是Volume Mode！（因为我们读写的是整个SD卡，而不是某一个分区）默认就是Device Mode所以不用管。但是如果出错，就请检查一下是不是误碰了~
+
+
+> **Win7用户注意！！**
+> Win7下必须右键选择“以管理员身份运行”。（因为绕开文件系统直接写盘）
+> 如果不用管理员身份，程序也能启动，但左上角会强制锁死成“Volume Mode”，无法选择“Device Mode”从而无法使用！
+> 不过您肯定不喜欢每次启动都要按右键……所以请更改USB Image Tool.exe的属性，将“兼容性”中的“以管理员身份运行此程序”勾选，强制程序必须索要管理员权限才能运行。
+>
+> ![USB Image Tool强制使用管理员权限](http://files.note.sdo.com/M5cEN~kf-dTVnM31Y007Ax "USB Image Tool强制使用管理员权限") *（外链图片未本地化）*
+>
+> 2012-11-17 07:11 上传
+>
+> [**下载附件** (19.28 KB)](http://bbs.shumeipai.org/forum.php?mod=attachment&aid=MzB8Y2JiMDhhODd8MTM1ODk0MTY0MXwwfDI0&nothumb=yes "usbit-forceadmin.png 下载次数:0")
+>
+> USB Image Tool强制使用管理员权限
+>
+>
+> 之后无论怎么启动程序，系统就总是让你选择“是否授予管理员权限”，这样就正常了。至于双击，Win+R“运行”，建快捷方式…都随便 ![](http://files.note.sdo.com/M5cEN~kf-dTVnM31Y007AB) *（外链图片未本地化）*
+
+
+---
+
+**写SD卡：直接读取zip压缩包**
+USB Image Tool可以直读.zip压缩包。网上下载的zip格式系统镜像，**下完直接用，根本不用解**！
+点击Restore，选择.zip文件即可。注意打开对话框中默认看不到.zip文件，放心，在“文件类型”处选择“All Files (\*.\*)”即可。
+
+**读SD卡：直接压缩成zip文件**
+在备份SD卡内容时，也可以直接写成zip格式，节省大量磁盘空间。（一般可省70%！）
+点击Backup时，在“文件类型”处，选择“Compressed (zip) image files (.imz)”即可直接存成zip包。
+（注：.imz就是.zip，没有任何不同。把扩展名改成zip打开一看便知）
+
+**收藏夹功能**
+使用“Favorites”选项卡，您可以收藏你喜欢的系统镜像。需要写SD卡时点“Restore”一键恢复，方便快捷！
+
+![USB Image Tool收藏夹](http://files.note.sdo.com/M5cEN~kf-dTVnM31Y007AD "USB Image Tool收藏夹") *（外链图片未本地化）*
+
+2012-11-17 07:13 上传
+
+[**下载附件** (26.91 KB)](http://bbs.shumeipai.org/forum.php?mod=attachment&aid=MzF8YWE3NmE1NTJ8MTM1ODk0MTY0MXwwfDI0&nothumb=yes "usbit-favorites.png 下载次数:0")
+
+USB Image Tool收藏夹
+
+
+---
+
+
+其他选项可以自行试验下。
+唯一比win32diskimager少的功能：Restore时不能计算所使用.img文件的MD5值。
+（Backup所产生的.img文件的MD5，可以自动算出 ）
+不过如果您实在需要这个功能，下个小软件HashCalc算算就好了 ![](http://bbs.shumeipai.org/static/image/smiley/default/smile.gif) *（外链图片未本地化）*
+
+不管是新装个SD卡，还是给已经调试好的SD卡“做个ghost”，都是很方便的工具。还不准备一份试用一下？
+
+**下载**
+本论坛提供USB Image Tool最新版本下载：
+
+
+![](http://files.note.sdo.com/M5cEN~kf-dTVnM31Y007AF) *（外链图片未本地化）*
+
+[usbit 1.59.zip](http://bbs.shumeipai.org/forum.php?mod=attachment&aid=Mjd8NGE1N2ZlNGV8MTM1ODk0MTY0MXwwfDI0)
+*(224.78 KB, 下载次数: 140)*
+
+2012-11-17 05:27 上传
+
+点击文件名下载附件
+
+USB Image Tool 1.59下载
+阅读权限: 10
+
+
+Win7直接运行不解释。WinXP如果运行出错，请安装.net Framework 2.0：
+<http://www.onlinedown.net/soft/38669.htm>
+（22MB不大，安装也只需几分钟，.net2.0版还是挺轻量的~）
+
+官网：<http://www.alexpage.de/usb-image-tool/>
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

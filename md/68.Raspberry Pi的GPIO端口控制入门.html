@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Raspberry Pi的GPIO端口控制入门</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/Raspberry%20Pi%E7%9A%84GPIO%E7%AB%AF%E5%8F%A3%E6%8E%A7%E5%88%B6%E5%85%A5%E9%97%A8.html)
+# Raspberry Pi的GPIO端口控制入门
+
+*本帖最后由 奇迹的龙 于 2013-1-16 01:29 编辑*
+
+考完研闲了一段时间，这两天开始正式学习单片机开发，以便完成毕业设计。本来想跟大家分享Raspberry Pi与STM32F4DISCOVERY开发板之间，使用nRF24L01无线模块进行通讯的方法，无奈水平有限，暂时还没能调试好，为了赶上爱板网的这次分享活动，就先将Raspberry Pi的GPIO端口控制方法跟大家分享一下，其他的以后再发。
+
+**第一步**，安装系统.建议Raspberry Pi官方的Debian系统，在这里下载好镜像之后，dd至SD卡上即可，系统的初始化设置可能需要用到显示器。
+
+**第二步**，使用SSH登录Raspberry Pi。默认用户名:pi，密码:raspberry，主机名:raspberrypi，将Raspberry Pi通过网线连上路由器之后，使用ssh命令登录：
+
+1. ssh pi@raspberrypi
+
+*复制代码*
+
+**第三步**，下载并安装GPIO库。首先下载源代码：
+
+1. wget http://www.open.com.au/mikem/bcm2835/bcm2835-1.16.tar.gz
+
+*复制代码*
+
+然后编译安装：
+
+1. tar xzvf bcm2835-1.16.tar.gz
+2. cd bcm2835-1.16
+3. ./configure
+4. make
+5. sudo make install
+
+*复制代码*
+
+**第四步**，示例。这个C库暂时还没有文档，所以只能先看代码注释了解用法，好在代码不多。下面用这个交替闪烁两个LED灯的示例来验证下吧。
+
+1. #include <bcm2835.h>
+3. #define LEDA\_PIN RPI\_GPIO\_P1\_16        /\* LED灯A使用P1上的16引脚 \*/
+4. #define LEDB\_PIN RPI\_GPIO\_P1\_18        /\* LED灯A使用P1上的18引脚 \*/
+6. int main(int argc, char \*\*argv)
+7. {
+8. if (!bcm2835\_init())
+9. return 1;
+11. /\* 初始化GPIO端口 \*/
+12. bcm2835\_gpio\_fsel(LEDA\_PIN, BCM2835\_GPIO\_FSEL\_OUTP);
+13. bcm2835\_gpio\_write(LEDA\_PIN, LOW);
+14. bcm2835\_gpio\_fsel(LEDB\_PIN, BCM2835\_GPIO\_FSEL\_OUTP);
+15. bcm2835\_gpio\_write(LEDB\_PIN, LOW);
+17. while (1) {
+18. bcm2835\_gpio\_write(LEDA\_PIN, HIGH);
+19. bcm2835\_gpio\_write(LEDB\_PIN, LOW);
+21. bcm2835\_delay(250);
+23. bcm2835\_gpio\_write(LEDA\_PIN, LOW);
+24. bcm2835\_gpio\_write(LEDB\_PIN, HIGH);
+26. bcm2835\_delay(250);
+27. }
+29. return 0;
+30. }
+
+*复制代码*
+
+**第五步**，编译运行。将上面的代码保存为文件，比如rpi\_led.c，然后上传到Raspberry上：
+
+1. scp rpi\_led.c pi@raspberrypi:~
+
+*复制代码*
+
+编译：
+
+1. gcc rpi\_led.c -l rt  -l bcm2835 -o rpi\_led
+
+*复制代码*
+
+将两只LED灯分别连接到GPIO23、GPIO24和Ground，运行：
+
+1. sudo ./rpi\_led
+
+*复制代码*
+
+怎么样，两只LED灯是不是已经开始交替闪烁了？
+
+[【分享】Raspberry Pi](thread-6791-1-1.html)
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

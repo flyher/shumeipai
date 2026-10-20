@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Raspbian系统中文化（中文支持、中文字体、中文输入法）</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/Raspbian%E7%B3%BB%E7%BB%9F%E4%B8%AD%E6%96%87%E5%8C%96%EF%BC%88%E4%B8%AD%E6%96%87%E6%94%AF%E6%8C%81%E3%80%81%E4%B8%AD%E6%96%87%E5%AD%97%E4%BD%93%E3%80%81%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E6%B3%95%EF%BC%89.html)
+# Raspbian系统中文化（中文支持、中文字体、中文输入法）
+
+**中文支持**
+第一次开机raspi-config配置程序，选择change\_locale：
+（如果不是第一次开机：命令行终端执行sudo raspi-config）
+
+![locale1.png](http://files.note.sdo.com/M5cEN~kf-c0wLX02E005CH "locale1.png") *（外链图片未本地化）*
+
+2012-12-5 00:36 上传
+
+[**下载附件** (10.56 KB)](http://bbs.shumeipai.org/forum.php?mod=attachment&aid=MTYxfDQxOGMxMGVjfDEzNTg5NDExNzV8MHw4MA%3D%3D&nothumb=yes "locale1.png 下载次数:0")
+
+
+操作提示：按空格键在前面打勾或去掉勾（星号=勾），PageUp PageDown快速翻页，Tab键跳到OK按钮上
+去掉en\_GB.UTF-8 UTF-8，勾上：“en\_US.UTF-8 UTF-8”、“zh\_CN.UTF-8 UTF-8”、“zh\_CN.GBK GBK”
+
+<OK>，下一屏幕默认语言选zh\_CN.UTF-8。
+
+![locale2.png](http://files.note.sdo.com/M5cEN~kf-c0wLX02E005CF "locale2.png") *（外链图片未本地化）*
+
+2012-12-5 00:37 上传
+
+[**下载附件** (8.28 KB)](http://bbs.shumeipai.org/forum.php?mod=attachment&aid=MTYyfDBkNmRmNzg4fDEzNTg5NDExNzV8MHw4MA%3D%3D&nothumb=yes "locale2.png 下载次数:0")
+
+
+这里选择的默认语言会用于：桌面环境、命令行程序的--help帮助等。
+
+**中文字体**
+Raspbian继承了Debian的一个毛病：就算选了默认中文，也不自动安装中文字体。
+所以只设置系统支持中文，也无法马上显示汉字。进入桌面会出现乱码：
+
+![locale3.png](http://files.note.sdo.com/M5cEN~kf-c0MLX02E005CK "locale3.png") *（外链图片未本地化）*
+
+2012-12-5 01:15 上传
+
+[**下载附件** (58.8 KB)](http://bbs.shumeipai.org/forum.php?mod=attachment&aid=MTY0fGFhNjU5NjNmfDEzNTg5NDExNzV8MHw4MA%3D%3D&nothumb=yes "locale3.png 下载次数:0")
+
+
+不用着急——双击“LX □□”（黑色显示器图标）进入“LX 终端”，输入命令安装中文字体“文泉驿正黑”：
+
+1. sudo apt-get -y install ttf-wqy-zenhei
+
+*复制代码*
+
+不必理会乱码，命令跑完了重启。（重启按桌面右下方那个红色电源按钮）
+
+**中文输入法**
+终端下执行命令：sudo apt-get -y install scim-pinyin
+如要加装五笔输入法，再执行：sudo apt-get -y install scim-tables-zh
+重启生效。可以在上一步装中文字体的时候一起安装一起重启。
+
+输入法的位置：桌面右下角的键盘图标。热键也是Ctrl+空格。
+
+![locale4.png](http://files.note.sdo.com/M5cEN~kf-c0MLX02E005CN "locale4.png") *（外链图片未本地化）*
+
+2012-12-5 01:30 上传
+
+[**下载附件** (65.4 KB)](http://bbs.shumeipai.org/forum.php?mod=attachment&aid=MTY2fGI4ZGNmNjkxfDEzNTg5NDExNzV8MHw4MA%3D%3D&nothumb=yes "locale4.png 下载次数:0")
+
+
+注：apt-get命令中的“-y”参数，用处是免“确认安装吗？[Y/n]”一步，直接安装。可以不加。
+
+有些教程推荐ibus输入法。树莓派跑ibus太慢，建议别用。老实一点用scim最好。
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

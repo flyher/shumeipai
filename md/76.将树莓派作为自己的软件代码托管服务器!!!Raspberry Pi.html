@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>将树莓派作为自己的软件代码托管服务器!!!Raspberry Pi</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E5%B0%86%E6%A0%91%E8%8E%93%E6%B4%BE%E4%BD%9C%E4%B8%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E8%BD%AF%E4%BB%B6%E4%BB%A3%E7%A0%81%E6%89%98%E7%AE%A1%E6%9C%8D%E5%8A%A1%E5%99%A8%21%21%21Raspberry%20Pi.html)
+# 将树莓派作为自己的软件代码托管服务器!!!Raspberry Pi
+
+TortoiseSVN的安装非常简单，直接运行安装程序，按照默认方式安装即可，安装完毕需要重新启动系统。如果没什么意外的话，随便右击一个文件即可看到上下文菜单多了一个菜单项是TortoiseSVN，如果是文件夹还会有另外一个项是SVN Checkout…。在使用之前你可以根据自己的喜欢对TortoiseSVN进行一些设置，右击任一文件选择TortoiseSVN->Settings即可打开设置对话框如下：
+
+![TortoiseSVN-1.jpg](http://files.note.sdo.com/M5cEN~kg7F7pnM24s00O4w "TortoiseSVN-1.jpg") *（外链图片未本地化）*
+
+1、首先需要安装Subversion软件：
+
+- sudo apt-get install subversion
+
+2、创建仓库
+
+- svnadmin create /var/svn
+
+/var/svn 为所创建仓库的路径，理论上可以是任何目录
+
+3、修改配置文件/var/svn/conf/svnserve.conf
+
+- #去掉#[general]前面的#号
+- [general]
+- #匿名访问的权限，可以是read,write,none,默认为read
+- anon-access = none
+- #认证用户的权限，可以是read,write,none,默认为write
+- auth-access = write
+- #密码数据库的路径，去掉前面的#
+- password-db = passwd
+
+注意：所有的行都必须顶格，否则报错。 建议：为了防止不必要的错误，建议你直接用我上面的内容覆盖掉文件原来的内容.
+
+4、修改配置文件passwd
+
+- [users]
+- svnuser = password
+- ukonline2000 = ukonline2000
+
+注意：
+
+◆一定要去掉[users]前面的#,否则svn只能以匿名用户登录，客户端不会出现登录窗口，除非你的anon不为none,否则将返回一个错误。
+
+◆这里的密码都是没有加密的，我按照一些教程所说的用htpasswd生成的密码无法使用。
+
+5、停止Subversion服务器：
+
+- killall svnserve
+
+6、启动Subversion服务器 对于单个代码仓库,启动命令：
+
+- svnserve -d -r /var/svn
+
+其中-d表示在后台运行，-r指定服务器的根目录，这样访问服务器时就可以直接 用svn://服务器ip来访问了。
+
+
+另外,客户端推荐用TortoiseSVN
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

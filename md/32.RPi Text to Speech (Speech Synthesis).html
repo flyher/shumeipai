@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>RPi Text to Speech (Speech Synthesis)</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/RPi%20Text%20to%20Speech%20%28Speech%20Synthesis%29.html)
+# RPi Text to Speech (Speech Synthesis)
+
+This guide shows you three easy methods of getting your Raspberry Pi to talk, and describes the pros and cons of each.
+
+<table style="background-image: none; background-attachment: scroll; background-origin: padding-box; background-clip: border-box; background-color: rgb(249, 249, 249); background-size: auto; border: 1px solid rgb(170, 170, 170); display: table; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 19.1875px; font-family: sans-serif; height: 146px; margin: 0px; padding: 5px; text-decoration: initial; width: 165px; background-position: 0% 0%; background-repeat: repeat repeat;"><tbody style="border: 0px none rgb(170, 170, 170); display: table-row-group; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 19.1875px; font-family: sans-serif; height: 146px; margin: 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 165px;"><tr style="border: 0px none rgb(170, 170, 170); display: table-row; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 19.1875px; font-family: sans-serif; height: 142px; margin: 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 165px;"><td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 19.1875px; font-family: sans-serif; height: 140.296875px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 159px;"><div style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 19.1875px; font-family: sans-serif; height: 19px; margin: 0px; padding: 0px; text-align: center; text-decoration: initial; width: 159px;"><h2 style="display: inline; font-style: normal; font-variant: normal; font-weight: bold; font-size: 12px; line-height: 19.1875px; font-family: sans-serif; margin: 0px 0px 7.296000003814697px; overflow: hidden; padding: 0px; text-align: center; text-decoration: initial;">Contents</h2><span style="display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 19.1875px; font-family: sans-serif; margin: 0px; padding: 0px; text-align: center; text-decoration: initial;"> [<a href="http://elinux.org/RPi_Text_to_Speech_(Speech_Synthesis)#" style="border: 0px none rgb(6, 69, 173); color: rgb(6, 69, 173); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 19.1875px; font-family: sans-serif; margin: 0px; outline: rgb(6, 69, 173) none 0px; padding: 0px; text-align: center; text-decoration: initial;">hide</a>] </span></div>
+<ul style="display: block; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; height: 114.015625px; margin: 3.6480000019073486px 0px; padding: 0px; text-align: left; text-decoration: initial; width: 159px; list-style: none outside none;">
+<li style="display: list-item; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; height: 18px; margin: 0px 0px 1.215999960899353px; padding: 0px; text-align: left; text-decoration: initial; width: 159px; list-style: none outside none;"><a href="http://elinux.org/RPi_Text_to_Speech_(Speech_Synthesis)#Why_use_Text_to_Speech.3F" style="border: 0px none rgb(6, 69, 173); color: rgb(6, 69, 173); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; margin: 0px; outline: rgb(6, 69, 173) none 0px; padding: 0px; text-align: left; text-decoration: initial;"><span style="border: 0px none rgb(6, 69, 173); color: rgb(6, 69, 173); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; margin: 0px; outline: rgb(6, 69, 173) none 0px; padding: 0px; text-align: left; text-decoration: initial;">1</span> <span style="border: 0px none rgb(6, 69, 173); color: rgb(6, 69, 173); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; margin: 0px; outline: rgb(6, 69, 173) none 0px; padding: 0px; text-align: left; text-decoration: initial;">Why use Text to Speech?</span></a></li>
+<li style="display: list-item; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; height: 18px; margin: 0px 0px 1.215999960899353px; padding: 0px; text-align: left; text-decoration: initial; width: 159px; list-style: none outside none;"><a href="http://elinux.org/RPi_Text_to_Speech_(Speech_Synthesis)#Install_supporting_packages" style="border: 0px none rgb(6, 69, 173); color: rgb(6, 69, 173); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; margin: 0px; outline: rgb(6, 69, 173) none 0px; padding: 0px; text-align: left; text-decoration: initial;"><span style="border: 0px none rgb(6, 69, 173); color: rgb(6, 69, 173); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; margin: 0px; outline: rgb(6, 69, 173) none 0px; padding: 0px; text-align: left; text-decoration: initial;">2</span> <span style="border: 0px none rgb(6, 69, 173); color: rgb(6, 69, 173); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; margin: 0px; outline: rgb(6, 69, 173) none 0px; padding: 0px; text-align: left; text-decoration: initial;">Install supporting packages</span></a></li>
+<li style="display: list-item; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; height: 18px; margin: 0px 0px 1.215999960899353px; padding: 0px; text-align: left; text-decoration: initial; width: 159px; list-style: none outside none;"><a href="http://elinux.org/RPi_Text_to_Speech_(Speech_Synthesis)#Festival_Text_to_Speech" style="border: 0px none rgb(6, 69, 173); color: rgb(6, 69, 173); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; margin: 0px; outline: rgb(6, 69, 173) none 0px; padding: 0px; text-align: left; text-decoration: initial;"><span style="border: 0px none rgb(6, 69, 173); color: rgb(6, 69, 173); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; margin: 0px; outline: rgb(6, 69, 173) none 0px; padding: 0px; text-align: left; text-decoration: initial;">3</span> <span style="border: 0px none rgb(6, 69, 173); color: rgb(6, 69, 173); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; margin: 0px; outline: rgb(6, 69, 173) none 0px; padding: 0px; text-align: left; text-decoration: initial;">Festival Text to Speech</span></a></li>
+<li style="display: list-item; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; height: 18px; margin: 0px 0px 1.215999960899353px; padding: 0px; text-align: left; text-decoration: initial; width: 159px; list-style: none outside none;"><a href="http://elinux.org/RPi_Text_to_Speech_(Speech_Synthesis)#Espeak_Text_to_Speech" style="border: 0px none rgb(6, 69, 173); color: rgb(6, 69, 173); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; margin: 0px; outline: rgb(6, 69, 173) none 0px; padding: 0px; text-align: left; text-decoration: initial;"><span style="border: 0px none rgb(6, 69, 173); color: rgb(6, 69, 173); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; margin: 0px; outline: rgb(6, 69, 173) none 0px; padding: 0px; text-align: left; text-decoration: initial;">4</span> <span style="border: 0px none rgb(6, 69, 173); color: rgb(6, 69, 173); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; margin: 0px; outline: rgb(6, 69, 173) none 0px; padding: 0px; text-align: left; text-decoration: initial;">Espeak Text to Speech</span></a></li>
+<li style="display: list-item; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; height: 18px; margin: 0px 0px 1.215999960899353px; padding: 0px; text-align: left; text-decoration: initial; width: 159px; list-style: none outside none;"><a href="http://elinux.org/RPi_Text_to_Speech_(Speech_Synthesis)#Google_Text_to_Speech" style="border: 0px none rgb(6, 69, 173); color: rgb(6, 69, 173); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; margin: 0px; outline: rgb(6, 69, 173) none 0px; padding: 0px; text-align: left; text-decoration: initial;"><span style="border: 0px none rgb(6, 69, 173); color: rgb(6, 69, 173); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; margin: 0px; outline: rgb(6, 69, 173) none 0px; padding: 0px; text-align: left; text-decoration: initial;">5</span> <span style="border: 0px none rgb(6, 69, 173); color: rgb(6, 69, 173); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; margin: 0px; outline: rgb(6, 69, 173) none 0px; padding: 0px; text-align: left; text-decoration: initial;">Google Text to Speech</span></a></li>
+<li style="display: list-item; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; height: 18px; margin: 0px 0px 1.215999960899353px; padding: 0px; text-align: left; text-decoration: initial; width: 159px; list-style: none outside none;"><a href="http://elinux.org/RPi_Text_to_Speech_(Speech_Synthesis)#Recommendations" style="border: 0px none rgb(6, 69, 173); color: rgb(6, 69, 173); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; margin: 0px; outline: rgb(6, 69, 173) none 0px; padding: 0px; text-align: left; text-decoration: initial;"><span style="border: 0px none rgb(6, 69, 173); color: rgb(6, 69, 173); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; margin: 0px; outline: rgb(6, 69, 173) none 0px; padding: 0px; text-align: left; text-decoration: initial;">6</span> <span style="border: 0px none rgb(6, 69, 173); color: rgb(6, 69, 173); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18.234375px; font-family: sans-serif; margin: 0px; outline: rgb(6, 69, 173) none 0px; padding: 0px; text-align: left; text-decoration: initial;">Recommendations</span></a></li>
+</ul>
+</td></tr></tbody></table>
+
+## Why use Text to Speech?
+
+It’s very easy add to your program - just output a string to the speech function instead of the screen.
+You don’t need an expensive/complicated LCD or monitor for your project - just use any old mp3 player loudspeaker or PC loudspeaker which you have probably got lying around - or even an earphone works well for debugging purposes too.
+
+You could use speech output for:
+(i) status messages - e.g. internet connection made or IP address on a headless RPi;
+(ii) user interface - e.g. speak the mode selected or station name with button presses on an RPi internet radio;
+(iii) main functionality - e.g. tell the time and read the weather forecast on your RPi alarm clock.
+
+## Install supporting packages
+
+Speech output requires a few audio software packages to be installed on your RPi. They may be already there but it does no harm to try to install these listed below anyway. The installer will let you know if the package is already present on your RPi. The instructions below are based on the Raspbian distribution (August 2012).
+
+Firstly I recommend updating your Raspbian distribution if you have not recently already done so. Speech did not work for me until I did this. This may take 30 - 60 minutes depending on your connection speed etc. To do this:
+
+```
+sudo apt-get update
+sudo apt-get upgrade
+```
+
+If you do not already have sound on your RPi then you will need the alsa sound utilities:
+
+```
+ sudo apt-get install alsa-utils
+```
+
+and edit the file /etc/modules using:
+
+```
+ sudo nano /etc/modules
+```
+
+to have line:
+
+```
+ snd_bcm2835
+```
+
+If this line is already there then leave the file as is!
+
+Install the mplayer audio/movie player with:
+
+```
+sudo apt-get install mplayer
+```
+
+To sort out the mplayer error message, edit file /etc/mplayer/mplayer.conf using:
+
+```
+ sudo nano /etc/mplayer/mplayer.conf
+```
+
+to add line
+
+```
+nolirc=yes
+```
+
+## Festival Text to Speech
+
+The first speech package I tried was Festival. It worked fine and produces a voice like a rough sounding robot. This may be just what you need if you are adding speech to your RPi robot project.
+
+Install Festival with:
+
+```
+ sudo apt-get install festival
+```
+
+Try out Festival with:
+
+```
+ echo “Just what do you think you're doing, Dave?” | festival --tts
+```
+
+or to speak RPi’s IP address:
+
+```
+ hostname -I | festival -tts
+```
+
+## Espeak Text to Speech
+
+Espeak is a more modern speech synthesis package than Festival. It sounds clearer but does wail a little. If you are making an alien or a RPi witch then it’s the one for you! Seriously it is a good allrounder with great customisation options.
+
+Install Espeak with:
+
+```
+sudo apt-get install espeak
+```
+
+Test Espeak with:
+English female voice, emphasis on capitals (-k), speaking slowly (-s) using direct text:-
+
+```
+ espeak -ven+f3 -k5 -s150 "I've just picked up a fault in the AE35 unit"
+```
+
+## Google Text to Speech
+
+Google’s Text to Speech engine is a little different to Festival and Espeak. Your text is sent to Google’s servers to generate the speech file which is then returned to your Pi and played using mplayer. This means you will need an internet connection for it to work, but the speech quality is superb.
+
+I used used ax206geek’s bash script to access the Google Text to Speech engine:
+
+Create a file speech.sh with:
+
+```
+ nano speech.sh
+```
+
+Add these lines to the file and save it (in nano editor use CTRL-O writeOut)
+
+```
+#!/bin/bash
+say() { local IFS=+;/usr/bin/mplayer -ao alsa -really-quiet -noconsolecontrols "http://translate.google.com/translate_tts?tl=en&q=$*"; }
+say $*
+```
+
+Alternatively save from here: [File:Speech.sh](http://elinux.org/File:Speech.sh "File:Speech.sh")
+
+Add execute permissions to your script with:
+
+```
+chmod u+x speech.sh
+```
+
+Test it using:
+
+```
+./speech.sh Look Dave, I can see you're really upset about this.
+```
+
+## Recommendations
+
+I hope this guide has given you some ideas of how you can make use of speech output in your own project. As to which speech package to recommend, Festival works well enough, Espeak is clearer and so easier to understand and the Google engine gives super quality but is useless if you internet connection goes down. Maybe implement a speech function which first does a ping to Google before deciding whether to use Google or Espeak as its output engine?
+
+All comments/suggestions welcome! Let me know for what you have used speech on your Pi - StevenP on the official Raspberry Pi Forum.
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

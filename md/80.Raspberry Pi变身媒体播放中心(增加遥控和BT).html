@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Raspberry Pi变身媒体播放中心(增加遥控和BT)</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/Raspberry%20Pi%E5%8F%98%E8%BA%AB%E5%AA%92%E4%BD%93%E6%92%AD%E6%94%BE%E4%B8%AD%E5%BF%83%28%E5%A2%9E%E5%8A%A0%E9%81%A5%E6%8E%A7%E5%92%8CBT%29.html)
+# Raspberry Pi变身媒体播放中心(增加遥控和BT)
+
+*本帖最后由 hanchao 于 2013-1-6 21:45 编辑*
+
+硬件环境
+Raspberry Pi  SD卡 键盘 电视  音箱 网络
+系统环境
+raspbmc
+
+**安装XBMC**
+本来是想在raspbian通过apt-get install xbmc 安装的，可惜出现错误，只得另寻它法。
+
+后来在xbmc找到Raspberry Pi下的安装方法
+http://xbmc.org/download/
+他推荐使用直接使用专为Raspberry Pi打造的发行版本，其中以raspbmc最为出名。那我就用它吧。
+
+
+![logo.png](http://files.note.sdo.com/M5cEN~kg7EdpnM24s00NHa "logo.png") *（外链图片未本地化）*
+
+2012-12-13 17:27 上传
+
+[**下载附件** (11.71 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5ODN8ZjdlOGMyNTV8MTM1OTA3OTQ1N3wwfDUwNTY%3D&nothumb=yes "logo.png 下载次数:1")
+
+
+安装方法比较简单，见下面的网站。这里需要注意备份之前的数据，这里会把你的SD卡数据清空。
+Installing: Windows
+http://www.raspbmc.com/wiki/user/windows-installation/
+Mac OS X, Linux
+http://www.raspbmc.com/wiki/user/os-x-linux-installation/
+
+不过这里我还是吃了不少苦头，一开始这么样都无法写入SD卡。从Mac OS X改成Windows，结果都失败了。最后在Windows上无意修复，提示我卡处于写保护。![](http://files.note.sdo.com/M5cEN~kg7EdpnM24s00NHd)好在是发现原因了，再来一次搞定了 *（外链图片未本地化）*
+
+接下来把SD卡出入Raspberry Pi，插上电源启动。然后是漫长的等待，系统会下载一些运行环境，大概1-2个小时吧。喝个咖啡、吃个饭、看个电影，反正该干嘛去干嘛去。
+
+**体验XBMC**
+等更新完成后即可进入XBMC界面
+
+![Screenshot_2012-12-13-14-39-00.png](http://files.note.sdo.com/M5cEN~kg7EdFnM24s00NHH "Screenshot_2012-12-13-14-39-00.png") *（外链图片未本地化）*
+
+2012-12-13 17:27 上传
+
+[**下载附件** (324.31 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5ODR8ZTVkMWM0NDR8MTM1OTA3OTQ1N3wwfDUwNTY%3D&nothumb=yes "Screenshot_2012-12-13-14-39-00.png 下载次数:0")
+
+
+这里是英文界面，要显示中文界面可以这么设置
+
+设置语言
+System->Settings->Appearance->International->Language这个选项设为“Chinese (Simple)”
+
+
+![Screenshot_2012-12-13-14-32-00.png](http://files.note.sdo.com/M5cEN~kg7EdFnM24s00NHv "Screenshot_2012-12-13-14-32-00.png") *（外链图片未本地化）*
+
+2012-12-13 17:27 上传
+
+[**下载附件** (255.85 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5ODZ8NzAzNjcwYTR8MTM1OTA3OTQ1N3wwfDUwNTY%3D&nothumb=yes "Screenshot_2012-12-13-14-32-00.png 下载次数:0")
+
+
+设置Arial字体（这时看不到字了，只能通过位置选。这里图片不太准确，只供参考）
+System->Settings->Appearance->Skin->Fonts这个选项设为“Arial based”
+
+
+![Screenshot_2012-12-13-14-31-53.png](http://files.note.sdo.com/M5cEN~kg7EdFnM24s00NHz "Screenshot_2012-12-13-14-31-53.png") *（外链图片未本地化）*
+
+2012-12-13 17:27 上传
+
+[**下载附件** (262.97 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5ODV8NjgwYzUxMWN8MTM1OTA3OTQ1N3wwfDUwNTY%3D&nothumb=yes "Screenshot_2012-12-13-14-31-53.png 下载次数:0")
+
+
+设置完成之后，主界面就变成中文了
+
+
+![Screenshot_2012-12-13-14-38-05.png](http://files.note.sdo.com/M5cEN~kg7EdVnM24s00NHL "Screenshot_2012-12-13-14-38-05.png") *（外链图片未本地化）*
+
+2012-12-13 17:27 上传
+
+[**下载附件** (325.01 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5ODd8N2Y5YmJkYzJ8MTM1OTA3OTQ1N3wwfDUwNTY%3D&nothumb=yes "Screenshot_2012-12-13-14-38-05.png 下载次数:0")
+
+
+第一个是天气
+
+![Screenshot_2012-12-13-14-53-15.png](http://files.note.sdo.com/M5cEN~kg7EdFnM24s00NHF "Screenshot_2012-12-13-14-53-15.png") *（外链图片未本地化）*
+
+2012-12-13 17:27 上传
+
+[**下载附件** (315.62 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5ODh8NjFkMDYzMzh8MTM1OTA3OTQ1N3wwfDUwNTY%3D&nothumb=yes "Screenshot_2012-12-13-14-53-15.png 下载次数:0")
+
+
+周五又要下雪了
+
+图片、视频、音乐都大同小异。进入视频，我们来看个视频吧。
+添加个视频目录
+视频->文件->添加视频...->浏览
+
+
+![Screenshot_2012-12-13-15-29-20.png](http://files.note.sdo.com/M5cEN~kg7EdFnM24s00NHn "Screenshot_2012-12-13-15-29-20.png") *（外链图片未本地化）*
+
+2012-12-13 17:28 上传
+
+[**下载附件** (119.79 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5OTB8OGYwNzdjZGN8MTM1OTA3OTQ1N3wwfDUwNTY%3D&nothumb=yes "Screenshot_2012-12-13-15-29-20.png 下载次数:0")
+
+
+这里支持本地和局域网共享的，找到存放视频的目录添加进来，然后就可以在文件下面找到你的视频了。
+
+![Screenshot_2012-12-13-14-51-53.png](http://files.note.sdo.com/M5cEN~kg7EdFnM24s00NHp "Screenshot_2012-12-13-14-51-53.png") *（外链图片未本地化）*
+
+2012-12-13 17:28 上传
+
+[**下载附件** (104.49 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5ODl8NWM0M2IzNTJ8MTM1OTA3OTQ1N3wwfDUwNTY%3D&nothumb=yes "Screenshot_2012-12-13-14-51-53.png 下载次数:0")
+
+
+我们还可以添加视频扩展
+视频->视频扩展功能->获取更多...
+
+![Screenshot_2012-12-13-15-33-32.png](http://files.note.sdo.com/M5cEN~kg7EdFnM24s00NHx "Screenshot_2012-12-13-15-33-32.png") *（外链图片未本地化）*
+
+2012-12-13 17:29 上传
+
+[**下载附件** (251.83 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5OTF8NjdkOWQ3MjF8MTM1OTA3OTQ1N3wwfDUwNTY%3D&nothumb=yes "Screenshot_2012-12-13-15-33-32.png 下载次数:0")
+
+
+这里面包块一些互联网的流媒体视频。不过这里全都是英文的，在天朝的使用意义不大。
+
+**本地化插件**
+不要失望，如果想要看优酷、土豆和中文输入的话，可以去安装xbmc-addons-chinese提供的一些插件。
+http://code.google.com/p/xbmc-addons-chinese/downloads/list
+我下载了repository.googlecode.xbmc-addons-chinese-eden.zip这个插件集合。
+
+安装插件
+系统设置->扩展功能->从zip文件安装
+
+![Screenshot_2012-12-13-15-36-20.png](http://files.note.sdo.com/M5cEN~kg7EdFnM24s00NHC "Screenshot_2012-12-13-15-36-20.png") *（外链图片未本地化）*
+
+2012-12-13 17:30 上传
+
+[**下载附件** (279.41 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5OTJ8Yzk0OWNhOWZ8MTM1OTA3OTQ1N3wwfDUwNTY%3D&nothumb=yes "Screenshot_2012-12-13-15-36-20.png 下载次数:0")
+
+
+等待安装完成，你在去看
+视频->视频扩展功能->获取更多...
+望下翻，你会发现
+
+
+好了这会可以看优酷了
+
+
+![Screenshot_2012-12-13-15-06-23.png](http://files.note.sdo.com/M5cEN~kg7EdpnM24s00NHf "Screenshot_2012-12-13-15-06-23.png") *（外链图片未本地化）*
+
+2012-12-13 17:30 上传
+
+[**下载附件** (281.46 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5OTN8YmQzZDcyMzh8MTM1OTA3OTQ1N3wwfDUwNTY%3D&nothumb=yes "Screenshot_2012-12-13-15-06-23.png 下载次数:4")
+
+
+![Screenshot_2012-12-13-15-10-06.jpg](http://www.eeboard.com/bbs/static/image/common/none.gif "Screenshot_2012-12-13-15-10-06.jpg") *（外链图片未本地化）*
+
+2012-12-13 17:34 上传
+
+[**下载附件** (131.39 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5OTR8MTg0ZmYyZDl8MTM1OTA3OTQ1N3wwfDUwNTY%3D&nothumb=yes "Screenshot_2012-12-13-15-10-06.jpg 下载次数:0")
+
+
+yes , ![](http://files.note.sdo.com/M5cEN~kg7EdpnM24s00NHl)  现在就差一个好电视啦。 *（外链图片未本地化）*
+
+**遥控客户端Official XBMC Remote**
+
+
+![New_icon-256.png](http://www.eeboard.com/bbs/static/image/common/none.gif "New_icon-256.png") *（外链图片未本地化）*
+
+2012-12-16 00:01 上传
+
+[**下载附件** (68.91 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTMwNjJ8Y2ZlZTgwNzd8MTM1OTA3OTQ1N3wwfDUwNTY%3D&nothumb=yes "New_icon-256.png 下载次数:2")
+
+
+iOS http://itunes.apple.com/us/app/unofficial-official-xbmc-remote/id520480364?ls=1&mt=8
+Android https://play.google.com/store/apps/details?id=org.xbmc.android.remote
+使用这个之前需要在XBMC打开远程控制功能，打开系统设置----》网络------》服务----》勾选   允许通过HTTP控制XBMC     允许本机程序控制XBMC   允许异地程序控制XBMC    其他保持默认。
+
+然后到手机上add host
+name of this instance:    随便填                                                                        
+host or IP address    填树莓派的的IP
+port    XBMC上设置的端口  默认80                                                                        
+username     password     根据电脑上设置的填 其他保持默认   
+保存  OK
+
+iOS版本可以自动查找可用的XBMC服务比较好用。
+
+![mza_8781879762314206650.480x480-75.jpg](http://www.eeboard.com/bbs/static/image/common/none.gif "mza_8781879762314206650.480x480-75.jpg") *（外链图片未本地化）*
+
+2012-12-16 00:38 上传
+
+[**下载附件** (44.62 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTMwNjR8NTNkYWFiYTR8MTM1OTA3OTQ1N3wwfDUwNTY%3D&nothumb=yes "mza_8781879762314206650.480x480-75.jpg 下载次数:0")
+
+
+**BT下载**transmission-daemon
+这一段感谢@诺亚
+安装transmission-daemon
+sudo apt-get install transmission-daemon
+默认情况下，无法使用其他电脑访问transmission的web下载界面。为了便于远程下载文件，修改一下配置
+关闭服务
+sudo service transmission-daemon stop
+修改配置文件
+/etc/transmission-daemon/settings.json
+"rpc-authentication-required": true,.  关闭用户验证，改成false
+"rpc-whitelist-enabled": true,.  关闭白名单过滤，改成false
+重新启动服务
+sudo service transmission-daemon start
+
+用其他电脑访问
+http://树莓派的IP:9091
+
+![屏幕快照 2012-12-16 上午12.19.56.png](http://www.eeboard.com/bbs/static/image/common/none.gif "屏幕快照 2012-12-16 上午12.19.56.png") *（外链图片未本地化）*
+
+2012-12-16 00:20 上传
+
+[**下载附件** (100.75 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTMwNjN8MjRkYmQ4NmV8MTM1OTA3OTQ1N3wwfDUwNTY%3D&nothumb=yes "屏幕快照 2012-12-16 上午12.19.56.png 下载次数:0")
+
+
+下载文件存放的路径是在配置文件中设置的
+"download-dir": "/var/lib/transmission-daemon/downloads",.  
+
+本来我是想改到U盘上的，但改后总是提示没有权限无法下载 无奈了   求解决办法
+
+
+**发现的问题**
+中文输入插件无法使用
+优酷、搜狐视屏等在线视频源，在播放第二节就黑屏了，比较郁闷。
+另外关于Airplay，我没能成功，不知道是什么原因。
+
+
+**参考**
+在Raspberry Pi上安装XBMC(Raspbmc)教程与演示
+<http://www.eeboard.com/videos/>在raspberry-pi上安装xbmcraspbmc教程与演示/
+【RaspberryPi使用手记】简介及利用Raspbmc搭建媒体播放器
+http://vistb.net/2012/12/raspberrypi-tour-use-raspbmc-build-htpc/
+XBMC在线中文扩展功能库安装使用说明（Dharma/Eden）
+http://bbs.htpc1.com/thread-100936-1-1.html
+
+[【分享】Raspberry Pi](thread-5056-1-1.html)
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

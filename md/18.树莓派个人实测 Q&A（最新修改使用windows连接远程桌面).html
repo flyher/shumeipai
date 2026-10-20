@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>树莓派个人实测 Q&amp;A（最新修改使用windows连接远程桌面)</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E6%A0%91%E8%8E%93%E6%B4%BE%E4%B8%AA%E4%BA%BA%E5%AE%9E%E6%B5%8B%20Q%26A%EF%BC%88%E6%9C%80%E6%96%B0%E4%BF%AE%E6%94%B9%E4%BD%BF%E7%94%A8windows%E8%BF%9E%E6%8E%A5%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%29.html)
+# 树莓派个人实测 Q&A（最新修改使用windows连接远程桌面)
+
+*本帖最后由 powerdruy 于 2013-1-10 10:42 编辑*
+
+这篇帖子我打算用Q&A的方式来编写，这样大家更容易一目了然的看明整个帖子的内容，层次分明，调理清晰，以下均是我个人拿到树莓派之后实际使用中碰到的问题和解决办法。
+
+**1. Q:树莓派怎么启动？**
+
+A:使用win32diskimager将系统镜img文件写入SD卡中，然后插到树莓派的卡槽中，上电，即可启动系统。需要注意的是，我最初使用的是TF小卡套上SD卡套来实现启动的，一开始也的确使用正常，后来在使用过程中发现系统无法启动，一度以为是RPI坏了，发回爱板网让小鸟帮我检测，得出结论是SD卡套的问题。这个卡套在电脑上读写的时候是正常的，但是树莓派却无法读出系统。因此建议各位还是尽量直接用SD卡，或者是用U大的TF转SD变形卡，比市面上2块钱的SD卡套质量要好的多.
+
+
+**2. Q:没有屏幕，没有键盘，怎么玩树莓派？**
+
+A:没有屏幕和键盘，只要你有一根最大负载至少750ma的5V电源适配器和一根网线，你就可以使用电脑通过SSH连上树莓派。这里，我要说明的是，树莓派官方系统Raspbian自2012-9-18版本之后，均设置了ssh服务随系统自动启动，我使用的是最新的2012-10-28版本的。插上SD卡，插上网线，上电，树莓派启动约30秒之后，应该就启动完成了。我们只需要一个SSH客户端来连接树莓派就可以。这里推荐putty.exe这个小巧的ssh客户端软件，整个程序就一个exe文件，很精简。
+
+
+![ssh.jpg](http://files.note.sdo.com/M5cEN~kiwGTVnM3Vw00iaf "ssh.jpg") *（外链图片未本地化）*
+
+2012-12-17 10:57 上传
+
+[**下载附件** (58.22 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTMxNjl8ZTVjMDg5M2V8MTM2MTU4NjYwM3w2NzYzfDUxOTE%3D&nothumb=yes "ssh.jpg 下载次数:13")
+
+
+IP地址填上树莓的IP，其他设置不用更改，点击OPEN。这时会提示需要输入账号和密码，树莓派的默认账号是pi,默认密码是raspberry,注意密码输入的时候是没有\*号来告诉你输了几位的。ssh连接成功后如图所示
+
+
+![ssh2.jpg](http://files.note.sdo.com/M5cEN~kiwGTVnM3Vw00iah "ssh2.jpg") *（外链图片未本地化）*
+
+2012-12-17 11:01 上传
+
+[**下载附件** (63.12 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTMxNzB8OTZkZjg4Njd8MTM2MTU4NjYwM3w2NzYzfDUxOTE%3D&nothumb=yes "ssh2.jpg 下载次数:8")
+
+
+**3. Q:如何让你的电脑远程连接上树莓派桌面？**
+    A:树莓派的官方系统raspbian自带了x window，因此是可以使用它的类WIN风格的GUI界面的。但是ssh是不支持GUI图形界面的，因此我们这次要用到是vnc。首先按照问题2的操作，连接上树莓派。然后输入以下命令
+
+1. sudo apt-get install tightvncserver
+
+*复制代码*
+
+之后树莓派就会自动从网上下载vnc的服务器端，安装过程中会提示是否安装，按小写的y后回车，继续安装。安装完成后会让你设置一个VNC登陆的密码，输入密码后还会问你是否输入个只能观看不能操作的密码，一般选择n，也就是不设置。整个安装完成之后输入
+
+1. vncserver -geometry 1024x768
+
+*复制代码*
+
+后面那个参数就是你想显示的分辨率。命令成功执行后，ssh里会显示
+
+
+![ssh3.jpg](http://files.note.sdo.com/M5cEN~kiwGTVnM3Vw00ia6 "ssh3.jpg") *（外链图片未本地化）*
+
+2012-12-17 11:12 上传
+
+[**下载附件** (31.16 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTMxNzF8YzllNzRjN2F8MTM2MTU4NjYwM3w2NzYzfDUxOTE%3D&nothumb=yes "ssh3.jpg 下载次数:9")
+
+
+这里说明一点，每执行一次上面的命令，就打开了一个VNC的端口。VNC默认的端口是5901，也就是说，上面命令执行完成后的编号表示你当前可以连接的端口号。这时候VNC的服务端已经安装完成了，你需要一个客户端来连接这个服务端。这里可以使用tightvnc view或者RealVNC,这两个软件可以自行谷歌搜下。启动VNC view，这里以tightvnc举例
+
+![tightvnc.jpg](http://files.note.sdo.com/M5cEN~kiwGTVnM3Vw00iaj "tightvnc.jpg") *（外链图片未本地化）*
+
+2012-12-17 11:17 上传
+
+[**下载附件** (54.08 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTMxNzJ8NTYwMzBlNmF8MTM2MTU4NjYwM3w2NzYzfDUxOTE%3D&nothumb=yes "tightvnc.jpg 下载次数:10")
+
+
+IP是你的树莓派的IP，端口号就是上面ssh中New 'X' desktop is raspberrypi:1加上5900，因此现在可以连接的端口号是5901。当然你可以再次执行vncserver -geometry 1024x768，那么New 'X' desktop is raspberrypi:2，可以连接的端口号就是5901和5902，以此类推。点击连接按钮，需要输入前面设置过的VNC登陆密码，登陆成功后的效果
+
+
+![vnc成功.jpg](http://files.note.sdo.com/M5cEN~kiwGTVnM3Vw00iau "vnc成功.jpg") *（外链图片未本地化）*
+
+2012-12-17 11:22 上传
+
+[**下载附件** (100.49 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTMxNzZ8NjliNTJlZDB8MTM2MTU4NjYwM3w2NzYzfDUxOTE%3D&nothumb=yes "vnc成功.jpg 下载次数:9")
+
+
+这里有几个问题我需要说明下。有时候VNC连上去，不出来桌面，而是灰色的面板，整个时候滑动几下鼠标的滚轮，可能会解决问题，这个是无意中发现的，不保证一定有效。还有一个情况是，我使用tightvnc view和Realvnc view连上去，点鼠标右键出来的菜单不一样，到现在还不知道是什么原因，而且两个view都无法用界面上的按钮输入ctrl+alt+del来调出任务管理器。
+
+![realvnc.jpg](http://files.note.sdo.com/M5cEN~kiwGTVnM3Vw00ian "realvnc.jpg") *（外链图片未本地化）*
+
+2012-12-17 11:29 上传
+
+[**下载附件** (95.19 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTMxNzd8ODQ2ZDY1NDR8MTM2MTU4NjYwM3w2NzYzfDUxOTE%3D&nothumb=yes "realvnc.jpg 下载次数:11")
+
+   
+![tightvncyoujian.jpg](http://files.note.sdo.com/M5cEN~kiwGTVnM3Vw00ial "tightvncyoujian.jpg") *（外链图片未本地化）*
+
+2012-12-17 11:29 上传
+
+[**下载附件** (82.79 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTMxNzh8MzQ4Y2FhNzB8MTM2MTU4NjYwM3w2NzYzfDUxOTE%3D&nothumb=yes "tightvncyoujian.jpg 下载次数:7")
+
+
+**4. Q:如何让树莓派显示中文？**
+    A:树莓派默认是采用英文字库的，而且系统里没有预装中文字库，所以即使你在locale中改成中文，也不会显示中文，只会显示一堆方块。因此需要我们手动来安装中文字体。好在有一个中文字体是免费开源使用的。ssh中输入以下命令
+
+1. sudo apt-get install ttf-wqy-zenhei
+
+*复制代码*
+
+安装过程中如果碰到(Y/n)，都选择y
+中文字库安装完成之后，还需要安装一个中文输入法。输入如下命令
+
+1. sudo apt-get install scim-pinyin
+
+*复制代码*
+
+一样的安装过程，安装完毕后输入
+
+1. sudo raspi-config
+
+*复制代码*
+
+然后选择change\_locale，在Default locale for the system environment:中选择zh\_CN.UTF-8,配置完成之后，输入命令
+
+1. sudo reboot
+
+*复制代码*
+
+重启完成好就可以在VNC连接上去后使用中文显示和中文输入法了，切换中文输入法一样也是ctrl+space
+
+
+![中文输入法.jpg](http://files.note.sdo.com/M5cEN~kiwGTVnM3Vw00iaq "中文输入法.jpg") *（外链图片未本地化）*
+
+2012-12-17 11:51 上传
+
+[**下载附件** (98.42 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTMxODB8MTAzYTliZTN8MTM2MTU4NjYwM3w2NzYzfDUxOTE%3D&nothumb=yes "中文输入法.jpg 下载次数:8")
+
+
+**5. Q:如何在树莓派上安装谷歌的开源浏览器Chromium?**
+    A:连接ssh,输入如下命令
+
+1. sudo apt-get install chromium-browser  chromium-l10n
+
+*复制代码*
+
+提示是否安装，输入y,等待安装完成
+完成之后，进入桌面 选择菜单-〉互联网-〉Chromium网页浏览器，就可以打开熟悉的chrome浏览器了
+
+![chrome菜单.jpg](http://files.note.sdo.com/M5cEN~kiwGTVnM3Vw00ias "chrome菜单.jpg") *（外链图片未本地化）*
+
+2012-12-17 12:41 上传
+
+[**下载附件** (102.52 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTMxODN8NmI3MjYwNzh8MTM2MTU4NjYwM3w2NzYzfDUxOTE%3D&nothumb=yes "chrome菜单.jpg 下载次数:8")
+
+
+还有一种方式，是在系统发行版软件库里没有chrome的时候来安装chrome浏览器的
+打开ssh，输入如下命令
+
+1. wget http://goo.gl/go5yx -O install.sh
+
+*复制代码*
+
+成功后，打入：
+
+1. chmod a+x install.sh
+
+*复制代码*
+
+然后，输入（注意一定要加上前面的”点斜杆”）：
+
+1. ./install.sh
+
+*复制代码*
+
+就开始下载和安装一些必要的包，还有下载整个Chrome并安装，整个过程速度飞快。
+这个方式参考了这个链接里的教程http://www.leiphone.com/raspberry-pi-hands-on.html
+不过这种安装方式在菜单里就没有选项可以让你点了，VNC连接后，在中端里输入
+
+1. chrome -disable-ipv6 &
+
+*复制代码*
+
+就可以启动浏览器了
+
+**6. Q:官方Raspbian默认的自动更新的源连接速度太慢，更新常常失败，如何解决？**
+    A:这里需要修改源的文件sources.list。输入如下命令：
+
+1. sudo cp /etc/apt/sources.list /etc/apt/sources.list\_bk
+
+*复制代码*
+
+备份原来的文件
+
+1. sudo nano /etc/apt/sources.list
+
+*复制代码*
+
+编辑sources文件，将里面的内容替换成
+
+1. deb http://mirror.nus.edu.sg/raspbian/raspbian/ wheezy main contrib non-free rpi
+2. deb-src http://mirror.nus.edu.sg/raspbian/raspbian/ wheezy main contrib non-free rpi
+
+*复制代码*
+
+按ctrl+o保存，按ctrl+x退出，接着输入
+
+1. sudo reboot
+
+*复制代码*
+
+重启系统，完成之后ssh连入，输入
+
+1. sudo apt-get update
+
+*复制代码*
+
+这下速度绝对比之前要快很多了，而且不会出现找不到很多源的情况了
+
+**7. Q:如何使用无线网卡，让树莓派摆脱网线束缚?**
+     A:首先你要确定你的无线网卡驱动是Raspbian的驱动库里包含了的，可以上这个地址查看自己的无线网卡芯片是否是支持列表里面的（http://elinux.org/RaspberryPiBoardVerifiedPeripherals#USB WiFi Adapters）。如果你的无线网卡可以支持，那么进入正题，配置无线上网。首先发一下我的参考配置的链接(http://omer.me/2012/04/setting-up-wireless-networks-under-debian-on-raspberry-pi/),是老外写的，英文不好的朋友可以看我下面的讲解
+     1，首先插上你USB无线网卡，插好SD卡，上电启动系统，通过外接屏幕和键盘或者SSH连接进入命令行。要注意的是，树莓派的USB供电有问题，启动系统以后如果直接插入USB设备会导致系统重启，避免这个问题的办法是用外接有源的USB HUD。进入命令行界面，输入如下命令
+
+1. sudo lsusb
+
+*复制代码*
+
+可以看到命令执行完成后，会显示所有挂载的USB设备，最后一行一般就是你的无线网卡，我自己测试的结果显示的是这样
+
+1. pi@raspberrypi ~ $ sudo lsusb
+2. Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+3. Bus 001 Device 002: ID 0424:9512 Standard Microsystems Corp.
+4. Bus 001 Device 003: ID 0424:ec00 Standard Microsystems Corp.
+5. Bus 001 Device 004: ID 0cf3:1006 Atheros Communications, Inc. TP-Link TL-WN322G v3 / TL-WN422G v2 802.11g [Atheros AR9271]
+
+*复制代码*
+
+最后一行就是我的无线网卡设备号，显然我的无线网卡已经被系统识别出来了。如果还不能确认的话，输入如下命令
+
+1. sudo lsmod
+
+*复制代码*
+
+返回的结果如下
+
+1. pi@raspberrypi ~ $ lsmod
+2. Module                  Size              Used by
+3. snd\_bcm2835      12808          0
+4. snd\_pcm               74834         1 snd\_bcm2835
+5. snd\_seq                 52536         0
+6. snd\_timer              19698         2 snd\_seq,snd\_pcm
+7. snd\_seq\_device     6300           1 snd\_seq
+8. snd                    52489             5                 snd\_seq\_device,snd\_timer,snd\_seq,snd\_pcm,snd\_bcm2835
+9. snd\_page\_alloc      4951           1 snd\_pcm
+10. arc4                       1187           2
+11. ath9k\_htc              54918         0
+12. mac80211             236178       1 ath9k\_htc
+13. ath9k\_common     3181           1 ath9k\_htc
+14. ath9k\_hw              376754       2 ath9k\_common,ath9k\_htc
+15. ath                        16648         3 ath9k\_hw,ath9k\_common,ath9k\_htc
+16. cfg80211              171957       3 ath,mac80211,ath9k\_htc
+
+*复制代码*
+
+可以看到有mac80211，显示无线网卡已经被正确识别.
+
+      2,现在可以测试你周围的无线网络了。输入如下命令
+
+1. sudo iwlist wlan0 scan
+
+*复制代码*
+
+如果搜索到了无线网络，会返回无线网络的MAC地址，SSID等相关信息。
+
+   3,配置无线网络
+     输入如下命令
+
+1. sudo apt-get install wpasupplicant
+
+*复制代码*
+
+安装wpasupplicant的，熟悉安卓的朋友估计看着很眼熟吧，安卓里想要让安卓连上AP热点，就得破解这个文件
+   安装完成之后，创建一个配置文件，输入如下命令
+
+1. $ sudo nano /etc/wpa.conf
+3. network={
+4. ssid="你用的WIFI的SSID"
+5. proto=RSN
+6. key\_mgmt=WPA-PSK
+7. pairwise=CCMP TKIP
+8. group=CCMP TKIP
+9. psk="WIFI的密码"
+10. }
+
+*复制代码*
+
+接下来编辑你的网络配置文件，输入如下命令
+
+1. $ sudo nano /etc/network/interfaces
+
+*复制代码*
+
+以上将无线网卡的配置添加到网络配置中去了，这样启动的时候无线网卡就会按照你前面配置的SSID和密码连上无线网。需要更换无线网的时候只需要在wpa.conf中修改SSID和密码即可。
+
+    4,重启你的树莓派
+
+1. sudo reboot
+
+*复制代码*
+
+记得拔掉网线，将电脑连入无线网络，这样树莓就可以无线上网了
+
+现在你可以使用命令来查看无线网卡的状态了，输入如下命令
+
+1. ifconfig
+
+*复制代码*
+
+会返回有线网络和无线网络的MAC地址和IP地址状态
+
+8.Q:我不想用VNC，想用WINDOWS的远程桌面连接树莓派，如何实现？
+   A:办法已经有了，需要在raspbian下面安装一个服务xdrp,输入如下命令
+
+1. sudo apt-get install xrdp
+
+*复制代码*
+
+然后就可以用win的远程桌面连接了，你的电脑和树莓派在一个局域网的时候没有问题，如果是想外网访问，跟需要做好端口3389的映射，具体见我另外一个帖 子<http://www.eeboard.com/bbs/thread-5526-1-2.html>
+
+
+首先连接
+
+
+![](http://files.note.sdo.com/M5cEN~kiwGTVnM3Vw00ia9) *（外链图片未本地化）*
+
+
+输入pi的用户密码，就是ssh连上去的用户名密码
+
+
+![](http://files.note.sdo.com/M5cEN~kiwGTVnM3Vw00iab) *（外链图片未本地化）*
+
+
+这样就连上去了，跟用VNC效果一样
+
+
+![](http://files.note.sdo.com/M5cEN~kiwGTVnM3Vw00iad) *（外链图片未本地化）*
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

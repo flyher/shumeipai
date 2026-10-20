@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>树莓派配置网络</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E6%A0%91%E8%8E%93%E6%B4%BE%E9%85%8D%E7%BD%AE%E7%BD%91%E7%BB%9C.html)
+# 树莓派配置网络
+
+有些朋友一直在问如果配置网络，就简单写写吧，希望能帮助到大家
+
+
+1.配置ip地址
+
+编辑sudo nano  **/etc/network/interfaces**
+
+自动获取ip的配置：
+
+auto eth0  
+allow-hotplug eth0   
+iface eth0 inet dhcp
+
+手动配置ip：
+
+auto eth0   
+ iface eth0 inet static        
+address 192.168.1.7      
+netmask 255.255.255.0        
+gateway 192.168.0.254
+
+2.配置DNS
+
+编辑 sudo nano /etc/resolv.conf
+
+domain lan
+search lan
+nameserver 192.168.1.1
+nameserver 192.168.99.100
+
+注：nameserver 后面的ip就是dns服务器，根据自己的运营商情况填吧
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

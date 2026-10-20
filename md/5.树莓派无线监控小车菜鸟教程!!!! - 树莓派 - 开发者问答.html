@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>树莓派无线监控小车菜鸟教程!!!! - 树莓派 - 开发者问答</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%97%A0%E7%BA%BF%E7%9B%91%E6%8E%A7%E5%B0%8F%E8%BD%A6%E8%8F%9C%E9%B8%9F%E6%95%99%E7%A8%8B%21%21%21%21%20-%20%E6%A0%91%E8%8E%93%E6%B4%BE%20-%20%E5%BC%80%E5%8F%91%E8%80%85%E9%97%AE%E7%AD%94.html)
+# 树莓派无线监控小车菜鸟教程!!!! - 树莓派 - 开发者问答
+
+前段时间自己diy了一个无线监控坦克,一直没时间写教程,今天开始五一放假了,趁现在有点时间就向送上部分教程,一点一点添加吧,争取五一节全部完成!这个树莓派教程不是针对高手的,所以高手们就不要见怪了…..废话不多说了!
+
+![](http://files.note.sdo.com/2clrz~kvq0_FM718M001Mw) *（外链图片未本地化）*
+
+**准备材料:**
+
+1.树莓派
+
+2.全功能扩展板(可以到论坛的网店一站式购买 http://raspi.taobao.com/ ,也可到我的淘宝店铺taobao.ukonline2000.com单独购买)
+
+扩展板的详细说明在这里：<http://www.shumeipai.net/forum.php?mod=viewthread&tid=612>
+
+注:之前也写过一个简陋的控制程序<http://www.shumeipai.net/forum.php?mod=viewthread&tid=530>
+
+3.小车底盘，x宝上很多，2驱/4驱都可以，2驱便宜，4驱鬼一点，使用4驱的时候将同侧的电机并在一起当成一个用就行了
+
+注：用全功能扩展板的话,可以通过GPIO接电机，不需要驱动板，可以省点钱，呵呵
+
+4.USB摄像头，最好是linux下免驱的并且可以直接插在树莓派上用，不需要外部供电的（有些摄像头电流太大，树莓派的USB拖不起来）
+
+我用的是罗技C110，电流小，带mic，外型小巧又比较好固定
+
+5.usb无线网卡，论坛推荐很多了，找个稳定，信号好的就行
+
+6.双USB接口的移动电源（我用的论坛网店那种：[**点此查看**](http://item.taobao.com/item.htm?spm=a1z10.1.w4004-1610213199.16.ApZNic&id=19995371946)），一个给树莓派供电，一个给扩展板和电机供电
+
+**连接关系：**
+
+![](http://files.note.sdo.com/2clrz~kvq0_FM718M001Mo) *（外链图片未本地化）*
+
+**源程序：**
+将小车的源程序文件夹下载到树莓派上，pc上也保留待用
+小车源程序下载：
+
+[cambot.zip](http://www.shumeipai.net/forum.php?mod=attachment&aid=Mjk4OHwxZjIzNjBlYnwxMzY4OTc4MjA1fDEwMDc1fDE4ODgy)
+
+**教程一（USB摄像头的安装使用）：**
+其实之前写过motion监控软件的文章，这次使用的是mjpg-streamer，相比motion而言，mjpg-streamer功能相对简单，但速度更快，占用cpu更低一些。
+1.将USB摄像头插上，查看是否找到设备，输入：
+
+1. root@raspberrypi:/# lsusb
+
+其中Logitech就是摄像头，说明找到usb设备了，然后再看看设备驱动是否正常：
+
+1. root@raspberrypi:/# ls /dev/vid\*
+2. /dev/video0
+
+看到video0就对啦，如果找不到可能驱动不对，或者工作不正常，看看供电，装装驱动试试
+
+2.安装必要的软件集：
+
+1. sudo apt-get install subversion
+2. sudo apt-get install libv4l-dev
+3. sudo apt-get install libjpeg8-dev
+4. sudo apt-get install imagemagick
+
+3.下载mipg-steamer软件，编译并安装：
+
+1. svn co https://mjpg-streamer.svn.sourceforge.net/svnroot/mjpg-streamer mjpg-streamer
+2. cd mjpg-streamer/mjpg-streamer
+3. make USE\_LIBV4L2=true clean all
+4. make DESTDIR=/usr install
+
+4.运行考入树莓派中的源程序目录中的“stream.sh”文件：
+
+1. pi@raspberrypi:/home/camtank# sudo chmod 777 stream.sh
+2. pi@raspberrypi:/home/camtank# sudo ./stream.sh
+
+![](http://files.note.sdo.com/2clrz~kvq0_FM718M001Mq) *（外链图片未本地化）*
+
+在运行程序时，如果发生错误，可能是之前由于运行过，进程仍然在工作，导致没法再运行，可以先运行ps，查看运行中的进程和进程ID号，再使用“kill -9 ”杀掉进程
+
+![](http://files.note.sdo.com/2clrz~kvq0_FM718M001Mu) *（外链图片未本地化）*
+
+5.在pc上运行源程序目录中的“index.html”文件：
+
+![](http://files.note.sdo.com/2clrz~kvq0_FM718M001Ms) *（外链图片未本地化）*
+
+看到视频了，就说明摄像头工作正常了，到此摄像头的工作就结束了
+
+###### 15个回复
+
+**回复：**
+占位一下
+
+**回复：**
+占位一下
+
+**回复：**
+出 raspberry pi 240 元
+
+http://item.taobao.com/item.htm?spm=686.1000925.1000774.15.JpdER6&id=16714741515
+
+**回复：**
+不错.关注中. 多谢.
+之前看过这个 <http://blog.ianrenton.com/raspberry-tank-build-diary/>
+
+**回复：**
+mark下先，，，
+
+**回复：**
+不行啊，，看不到视频， Init v4L2 failed !! exit fatal i:init\_VideoIn failed
+
+**回复：**
+
+说明没有安装成功V4L2，你再安装试试
+
+**回复：**
+$STREAMER -i "$PLUGINPATH/input\_uvc.so -y -n -d $DEVICE -r $RESOLUTION  加了个参数-y就好了。但是很卡，lz有没有其他好的方法？
+
+**回复：**
+
+为什么我的不卡呢?
+
+**回复：**
+摄像头分辨率能到达多少啊？ 长时间运行稳定吗？
+
+**回复：**
+
+目前试过640×480,由于电池不知道能扛用多久,大概运行3小时左右
+
+**回复：**
+我的一款早期的摄像头，在PI上能识别出来，抓图就是黑屏。用motion就只能看到类似位图效果的影子。该摄像头在unbuntu下使用不用安装其他驱动都没有问题，就是不知道在pi下面为什么这样？
+
+**回复：**
+mark一下，慢慢学
+
+**回复：**
+
+亲，你这个问题解决了吗，我也遇到这个问题了呢
+
+**回复：**
+Unable to set format: 1196444237 res: 320×240
+Init v4L2 failed !! exit fatal
+i: init\_VideoIn failed
+我看了 我驱动都装了，高手请问为什么还有这个问题呀
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

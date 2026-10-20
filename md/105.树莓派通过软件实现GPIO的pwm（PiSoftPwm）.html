@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>树莓派通过软件实现GPIO的pwm（PiSoftPwm）</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E6%A0%91%E8%8E%93%E6%B4%BE%E9%80%9A%E8%BF%87%E8%BD%AF%E4%BB%B6%E5%AE%9E%E7%8E%B0GPIO%E7%9A%84pwm%EF%BC%88PiSoftPwm%EF%BC%89.html)
+# 树莓派通过软件实现GPIO的pwm（PiSoftPwm）
+
+树莓派的GPIO只有一路硬件PWM，但是新版的树莓派又把这个管脚替换了，导致就不再支持硬件的pwm了，所以考虑用软件来实现pwm，也就是softpwm，程序是用老外的python改的，这样就能比较方便那些需要用树莓派控制步进电机或者需要pwm的朋友，希望能对大家有所帮助！！！
+
+
+使用装备
+1.树莓派（512M版本）
+2.树莓派全功能扩展板 （详见<http://www.eeboard.com/bbs/forum.php?mod=viewthread&tid=1372&page=1&extra=#pid4695>）
+3.diy过的流水灯
+
+> 操作步骤：
+
+1.安装RPI.GPIO库，参考帖子 <http://ukonline2000.com/?p=43>
+2.下载PiSoftPwm软件，地址 ![](http://files.note.sdo.com/M5cEN~kf-aT9nM31Y0074I) [PiSoftPwm.zip](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTU5MDN8ZTYzYTc2N2F8MTM1ODc0NDQ4NnwxNTR8NzE3NA%3D%3D) *(2.68 KB, 下载次数: 1)* *（外链图片未本地化）*
+3.拷贝到树莓派中，并运行例程
+
+1. python example.py
+
+*复制代码*
+
+备注：例程是针对512M版本的树莓派，256M版本的树莓派，请打开example.py文件，找到这两行
+
+1. third   = PiSoftPwm(0.01, 100, 27, GPIO.BCM)  #for raspberry pi rev 2.0
+
+*复制代码*
+
+
+改为
+
+1. #third   = PiSoftPwm(0.01, 100, 27, GPIO.BCM)  #for raspberry pi rev 2.0
+2. third   = PiSoftPwm(0.01, 100, 21, GPIO.BCM)  #for raspberry pi rev 1.0
+
+*复制代码*
+
+例程中有部分函数使用的介绍，修改时可以参考
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

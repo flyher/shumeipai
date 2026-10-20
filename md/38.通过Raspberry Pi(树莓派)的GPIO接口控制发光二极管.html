@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>通过Raspberry Pi(树莓派)的GPIO接口控制发光二极管</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E9%80%9A%E8%BF%87Raspberry%20Pi%28%E6%A0%91%E8%8E%93%E6%B4%BE%29%E7%9A%84GPIO%E6%8E%A5%E5%8F%A3%E6%8E%A7%E5%88%B6%E5%8F%91%E5%85%89%E4%BA%8C%E6%9E%81%E7%AE%A1.html)
+# 通过Raspberry Pi(树莓派)的GPIO接口控制发光二极管
+
+Raspberry Pi(树莓派)买回来也有一阵子了，最近心血来潮，参考着网上的教程，自己也亲自实习了通过GPIO接口控制发光二极管。
+
+记录如下。
+
+**硬件部分**
+
+树莓派的3.3V输出口可以提供的最大电流是50mA，并且不应让树莓派的单针脚的输出电流>10mA。
+
+发光二极管的驱动电流一般是5~20mA。因此，驱动发光二极管是不成问题的。在电流为10mA时，可计算得电阻应为3.3V/0.01A=330Ω，考虑到工作状态下的发光二极管的正向电阻一般为几十到几百欧姆，因此我们拿发光二极管串联一个270Ω的电阻就差不多了。我实际是用的一个750Ω的电阻.
+
+树莓派默认只有8个GPIO，从0-7对应的分别是下图中绿色部分，请大家使用这8个GPIO
+
+![attachments/201210/2131691961.jpg](http://files.note.sdo.com/M5cEN~kgezYMLX0dE00Hxq) *（外链图片未本地化）*
+
+我们 使用 1 和 11 接头。
+
+使用了面包板、1P杜邦线、跳线、750Ω电阻、LED。
+
+![attachments/201210/9647192378.jpg](http://files.note.sdo.com/M5cEN~kgezYMLX0dE00Hxo) *（外链图片未本地化）*
+
+**环境安装**
+
+**安装python**
+
+sudo apt-get install python-dev
+
+**安装RPi.GPIO**
+
+官方地址 http://pypi.python.org/pypi/RPi.GPIO/，目前最新版为RPi.GPIO-0.4.1a
+
+wget http://pypi.python.org/packages/source/R/RPi.GPIO/RPi.GPIO-0.4.1a.tar.gz
+
+tar -zxvf RPi.GPIO-0.4.1a.tar.gz
+
+cd RPi.GPIO-0.4.1a/
+
+sudo python setup.py install
+
+安装很顺利，基本就没遇到什么问题
+
+**软件代码**
+
+1. import RPi.GPIO as GPIO
+2. import time
+4. def blink(times, delay):
+5. GPIO.setmode(GPIO.BOARD)
+6. GPIO.setup(11, GPIO.OUT)
+8. while times>0:
+9. if 0==times%2:
+10. GPIO.output(11, GPIO.HIGH) #or output(11, GPIO.True)
+11. else:
+12. GPIO.output(11, GPIO.LOW)
+13. time.sleep(delay)
+14. times-=1
+15. return
+17. if \_\_name\_\_ == '\_\_main\_\_':
+18. blink(20, 1)
+
+python是通过缩进来控制结构的，这个要注意了。不要乱添加缩进的空格，包保证对齐。
+
+页面排版代码可能会不对齐，建议下载附件查看源码。
+
+![下载文件](http://files.note.sdo.com/M5cEN~kgezYwLX0dE00Hxj)[led.zip](http://www.link888.cn/download.php?id=258) (323 Byte ,下载:16次) *（外链图片未本地化）*
+
+命令行执行命令
+
+sudo python led.py
+
+即可看到效果
+
+**控制效果如下图**
+
+![attachments/201210/1558208135.jpg](http://files.note.sdo.com/M5cEN~kgezYMLX0dE00Hxl) *（外链图片未本地化）*
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Weston on Raspberry Pi</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/Weston%20on%20Raspberry%20Pi.html)
+# [Wayland logo](http://wayland.freedesktop.org/)
+
+## Weston on Raspberry Pi
+
+This is a guide for installing Weston into
+[Raspberry Pi](http://www.raspberrypi.org/). All commands and
+compiling are done directly on the Pi.
+
+## Build dependencies
+
+Assuming you are using the Raspbian distribution, install the
+build dependencies:
+
+```
+    $ sudo apt-get install build-essential automake libtool bison flex \
+    xutils-dev libcairo2-dev libffi-dev libmtdev-dev libjpeg-dev \
+    libudev-dev libxcb-xfixes0-dev libxcursor-dev
+```
+
+## Firmware
+
+Make sure you have the latest Raspberry Pi firmware with the
+[rpi-update](https://github.com/Hexxeh/rpi-update) tool. A too
+old firmware may cause rpi-backend to malfunction on Raspberry Pi.
+
+You may want to tweak the following options in
+/boot/config.txt:
+
+gpu\_mem=128
+:   How much memory to reserve for the VideoCore, i.e. framebuffers,
+    GL textures, Dispmanx resources.
+
+dispmanx\_offline=1
+:   This will enable the firmware to fall back to off-line
+    compositing of Dispmanx elements. Normally the compositing
+    is done on-line, during scanout, but cannot handle too many
+    elements. With off-line enabled, an off-screen buffer
+    is allocated for compositing. When scene complexity
+    (number and sizes of elements) is high, compositing will
+    happen off-line into the buffer.
+
+By default, the rpi-backend is configured for the dispmanx\_offline=1
+case. Without this setting, it would be better to run Weston with
+--max-planes=10 command line option.
+
+If you want to use Weston with purely GLESv2 compositing, you can pass
+--max-planes=0 to Weston. In that case it would be preferrable
+to not set dispmanx\_offline=1 to conserve VideoCore memory.
+
+## Setting up the environment
+
+Here we will install to the home directory of the pi user.
+
+> ```
+> export WLD="$HOME/local"
+> export PATH="$WLD/bin:$PATH"
+> export LD_LIBRARY_PATH="$WLD/lib:/opt/vc/lib"
+> export PKG_CONFIG_PATH="$WLD/lib/pkgconfig/:$WLD/share/pkgconfig/"
+> export ACLOCAL="aclocal -I $WLD/share/aclocal"
+> export XDG_RUNTIME_DIR="/run/shm/wayland"
+> export XDG_CONFIG_HOME="$WLD/etc"
+>
+> mkdir -p "$WLD/share/aclocal"
+> mkdir -p "$XDG_RUNTIME_DIR"
+> ```
+
+You may put the above in a script and source it in the terminal
+where you wish to build the packages or run Weston.
+
+## pkg-config files
+
+Some libraries on the Pi do not have appropriate pkg-config files
+installed. We need to install them.
+
+Download the .pc files from
+[git://git.collabora.co.uk/git/user/pq/android-pc-files.git](http://cgit.collabora.com/git/user/pq/android-pc-files.git/tree/pkgconfig?h=raspberrypi)
+and make sure you take the *raspberrypi* branch. The master branch
+contains similar files for Android, and will not work.
+
+Copy the .pc files into $WLD/share/pkgconfig/:
+
+```
+    $ cp bcm_host.pc egl.pc glesv2.pc $WLD/share/pkgconfig/
+```
+
+## Wayland libraries
+
+Libwayland is built and installed the same way as in
+[the generic build guide](http://wayland.freedesktop.org/building.html).
+
+```
+    $ git clone git://anongit.freedesktop.org/wayland/wayland
+    $ cd wayland
+    $ ./autogen.sh --prefix=$WLD
+    $ make
+    $ make install
+```
+
+## libxkbcommon
+
+Libxkbcommon is built and installed the same way as in
+[the generic build guide](http://wayland.freedesktop.org/building.html), too.
+
+```
+    $ git clone git://people.freedesktop.org/xorg/lib/libxkbcommon.git
+    $ cd libxkbcommon/
+    $ ./autogen.sh --prefix=$WLD
+    $ make && make install
+```
+
+## Weston and demo applications
+
+Weston is configured slightly differently compared to the normal build:
+
+```
+    $ git clone git://anongit.freedesktop.org/wayland/weston
+    $ cd weston
+
+    $ ./autogen.sh --prefix=$WLD \
+    --disable-setuid-install --with-cairo-glesv2 \
+    --disable-x11-compositor --disable-drm-compositor \
+    --disable-android-compositor --disable-wayland-compositor \
+    --disable-weston-launch --disable-simple-egl-clients \
+    --disable-fbdev-compositor \
+    WESTON_NATIVE_BACKEND="rpi-backend.so"
+
+    $ make
+    $ make install
+```
+
+When adding --disable-wayland-compositor you can remove the
+dummy wayland-egl.pc pkg-config file, if you installed it before.
+This makes sure, that toytoolkit (Weston demo programs) does not use Cairo
+EGL. EGL does not work for clients due to EGL Wayland platform being
+unimplemented on Raspberry Pi.
+
+Weston should work by running weston. Remember to have the
+environment set up.
+
+## Troubleshooting
+
+### Missing bcm\_host.pc
+
+```
+checking for RPI_BCM_HOST... no
+configure: WARNING: Raspberry Pi BCM host libraries not found, will use stubs instead.
+```
+
+If the right pkg-config files are not installed, building weston can
+fail. If you see the above during Weston's configure step, the
+bcm\_host.pc file was not found, and the rpi-backend will not
+work. The following is what you should see:
+
+```
+checking for RPI_BCM_HOST... yes
+```
+
+### Build error: undefined reference to `wl\_egl\_...
+
+Somehow, cairo-egl is getting used, when it should not. Remove the
+dummy wayland-egl.pc, and make sure
+--disable-wayland-compositor is in the configure line. When
+everything is right, you should see:
+
+```
+checking for CAIRO_EGL... no
+configure: WARNING: clients will use cairo image, cairo-egl not used
+```
+
+### Some or all surfaces (graphics) are corrupted
+
+Too old firmware might cause corrupted graphics. If you don't want to
+update the firmware, a workaround is to add --max-planes=0 to the
+Weston command line. This forces everything to be composited with
+GLESv2.
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

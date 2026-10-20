@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Raspbian apt</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/Raspbian%20apt.html)
+# Raspbian apt
+
+apt-get的速度当然是越快越好了，但是有些时候就是会出现10KB/s甚至更少的速度
+
+究其原因，是因为官方放在Raspbian里的软件源地址，其实只是一个跳转入口。
+这个入口根据负载均衡和地理位置考虑，将用户301送到合适的镜像站
+但是跳转既然是机器做的，就不可能100%合适和可靠。别说慢了，偶尔down都有可能。我昨天早晨还刚撞到一次清华的服务器停机了一会儿……
+
+碰到这种郁闷情况，可以考虑手工指定一个镜像站代替机器选择。
+
+镜像站列表：<http://www.raspbian.org/RaspbianMirrors>
+然后点击试试，或者ping甚至下载测试都行，总之找个快的。推荐清华大学或者新加坡国立大学的服务器
+
+> 清华大学 <http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/>
+> 新加坡国立大学 <http://mirror.nus.edu.sg/raspbian/raspbian>
+> 牛津大学 [http://mirror.ox.ac.uk/sites/arc ... g/archive/raspbian/](http://mirror.ox.ac.uk/sites/archive.raspbian.org/archive/raspbian/)
+> 韩国Neowiz Games (穿越火线公司) <http://ftp.neowiz.com/raspbian/raspbian/>
+> 韩国KAIST大学 <http://ftp.kaist.ac.kr/raspbian/raspbian/>
+
+
+复制下软件源地址，改软件源列表文件：sudo nano /etc/apt/sources.list
+
+1. # 注释掉原来这行
+2. #deb http://mirrordirector.raspbian.org/raspbian/ wheezy main contrib non-free rpi
+4. # 加入新的一行
+5. deb 镜像站地址 wheezy main contrib non-free rpi
+
+*复制代码*
+
+（Ctrl+X退出，答Yes存盘）
+
+修改后务必更新一下软件包列表。
+
+1. apt-get update
+
+*复制代码*
+
+如果不更新，install命令会出莫名其妙的问题。
+另外此时也可以看一眼，系统使用的镜像站网址是否和我们修改的一致。
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

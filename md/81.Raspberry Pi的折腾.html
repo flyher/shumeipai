@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Raspberry Pi的折腾</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/Raspberry%20Pi%E7%9A%84%E6%8A%98%E8%85%BE.html)
+# Raspberry Pi的折腾
+
+*本帖最后由 xinxincaijq 于 2012-12-14 19:44 编辑*
+
+应**@xinxincaijq** 要求分享Raspberry pi的使用过程，并非技术贴。分三篇讲述，您请：
+
+
+**相识篇**
+
+
+话说2012年10月份的某天夜晚，照常在宿舍里收取查看邮件的时候，看到eefocus订阅邮件里“Raspberry pi答题有奖活动”——有奖品拿，那就参加呗。
+
+
+花了一晚上的时间注册、答题（当然所有题目答案都是google出来的，最后一题关于内存频率，实在没找到，就随便选了一个）。之后就淡忘了这件事，一来问题实在太简单，搜索一下基本上都能答出来，对我如此，对别人来说也是如此；二来在人品方面，对自己实在没信心。
+
+
+还是在10月的一个晚上，收到xinxin的来信，说是答题中奖，更新资料……
+
+
+![1](http://files.note.sdo.com/M5cEN~kg7E69nM24s00NDn "1") *（外链图片未本地化）*
+
+2012-12-12 23:47 上传
+
+[**下载附件** (25.82 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5MjB8MDkxMDJhMjB8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "1.pi中奖.png 下载次数:0")
+
+1
+
+
+当然就更新资料、等待U盘的到来。出了个小插曲，在此感谢**[@wangku001wei](http://www.eeboard.com/bbs/home.php?mod=space&uid=336)** 把他得到的U盘给我。
+
+拿人家手短，自然要多加关注了，开始了在版上混迹的日子，也开始了对Raspberry pi深入了解的日子。
+
+
+**缘分篇**
+
+如果知道的我的头像的，大概就能知道我是个正在或潜在叛逃Windows的人。所以我需要装有Linux或者UNIX系统的设备。工作配有两台电脑，都是XP系统：笔记本配置太低，只能满足工作需求；台式机上用虚拟机装了FreeBSD，但是不能联网，只能本地玩玩，而且只有在下班时间才能动动手。
+
+
+- 买个电脑，会出现各种各样的问题，不详述，不是最好的解决方法
+- Windows下的模拟UNIX工具，试用一段时间有很多的命令不支持
+- 最后总结的需求就是，能够运行FreeBSD（毕竟在虚拟机上玩了一段时间了）的设备，但是不要电脑。（不要说我挑，我只是不想手上有好多台电脑，暴殄天物也是罪过啊）
+
+
+日子就这样在不知不觉中度过，直到遇见……（个中情节请见相识篇）
+
+随着对Raspberry pi的了解，感觉像是为我量身订做的。在此要感谢[@tina](http://www.eeboard.com/bbs/home.php?mod=space&uid=2) 的扫盲和解答。
+
+在物价飙升的年代，这么一块板子300块钱，真是不贵，但是要说买，还没有移植FreeBSD。这犹豫可倒好，把e络盟的免邮活动给犹豫没了；那就加30块钱邮费贵点买吧，货没啦。%>\_<%
+
+
+经过这次教训，我想通了，没有移植的FreeBSD又怎么样，总会有的，况且都是类UNIX的系统，对现在的我而言，没有那么大的差别。此时暗下决心，如果上天再给我一次机会，我一定大声说出“我买”。
+此时我已经成功混入版主队伍，在版主交流过程中，得知爱板还有一块Raspberry pi而且是Model B。果断联系，并且成功预订，许偌出差结束回公司后付款购买。谁知出差延期，为避免夜长梦多，果断付款买下（此时周围有人，为避免从四面飞来转头，没有大声喊出）。
+
+出差在外，实在没有起用的条件，只能暂时放在一旁了。就这样Raspberry pi在行李箱中孤独的度过半个多月。虽然还没有用上，关于Raspberry pi的Wiki、FAQ看了不少。在结束出差，回来的路上，仔细的阅读了Raspberry Pi UserGuide，受益匪浅。
+回到公司，第一时间查看身边能用的设备（为避免买错东西），确定需要的配件，之后就是网购之。不多说了，晒图吧
+
+![2.JPG](http://files.note.sdo.com/M5cEN~kg7E6FnM24s00NE0 "2.JPG") *（外链图片未本地化）*
+
+2012-12-12 23:56 上传
+
+[**下载附件** (61.36 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5Mzl8NjcwMWUxNTB8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "2.JPG 下载次数:0")
+
+
+为了能让大家看仔细，特意把外壳拆了，看清楚了吧，为了保护更加脆弱的卡槽，下血本了。
+
+![3.JPG](http://files.note.sdo.com/M5cEN~kg7E6FnM24s00NE4 "3.JPG") *（外链图片未本地化）*
+
+2012-12-12 23:56 上传
+
+[**下载附件** (57.33 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5NDB8ODI4MzlmNjN8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "3.JPG 下载次数:0")
+
+
+卡槽完全拆解比较图
+
+![4.JPG](http://files.note.sdo.com/M5cEN~kg7E69nM24s00NDr "4.JPG") *（外链图片未本地化）*
+
+2012-12-12 23:56 上传
+
+[**下载附件** (22.17 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5NDF8M2YzZjA5YWZ8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "4.JPG 下载次数:0")
+
+
+**相知篇**
+
+万事俱备，不需要东风，燃烧青春吧
+
+插好卡，装好线，通上电，跑起来啦，在21寸的大显示器上，看着小字符不停的走着，万分激动有木有，有木有。输入用户名、密码（默认分别是pi和raspberry）。
+
+1. pi@raspberrypi  startx
+
+*复制代码*
+
+闭住呼吸，见证历史的时刻到
+此处省略若干图，请想象
+
+这只是前期检验，能启动就行了，上班时间还是要干活的。
+
+下了班，回到家，安装原有的步骤，万事俱备了，但是，但是这次“没有网线、没有显示器”。
+
+又过了一天，貌似上班没事，可以自由安排，那就捣鼓一下Raspberry pi，玩也玩了，激动也激动过了，可不能可惜他的本来面目。
+
+借用公司的大好资源，大屏显示器、网络、鼠标键盘套，求同事开了MAC访问网络的权限，又是万事俱备
+启动Raspberry pi
+
+1. <span lang="EN-US" style="font-size: 10.5pt;"><font face="Tahoma">pi@raspberrypi
+2. ifconfig</font></span><o:p></o:p><p></p>
+
+*复制代码*
+
+![5. ifconfig.png](http://files.note.sdo.com/M5cEN~kg7E69nM24s00NDu "5. ifconfig.png") *（外链图片未本地化）*
+
+2012-12-12 23:53 上传
+
+[**下载附件** (25.62 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5MjJ8NGMzMDEwZWF8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "5. ifconfig.png 下载次数:0")
+
+
+找到ip地址（路由有DHCP功能，自动分配ip），也可以在路由器上查看ip，如果由于各种原因，这两种方法都用不上，那就从192.168.1.2~192.168.1.254慢慢试吧，总会找到的。
+
+在笔记本上使用putty（ssh软件）登录
+
+![6. putty.png](http://files.note.sdo.com/M5cEN~kg7E6FnM24s00NE6 "6. putty.png") *（外链图片未本地化）*
+
+2012-12-12 23:53 上传
+
+[**下载附件** (37.55 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5MjN8OTVhYWQzYjd8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "6. putty.png 下载次数:0")
+
+
+Open后到了login界面，输入用户名、密码，下图是已经登录后的界面。
+
+![7. login.png](http://files.note.sdo.com/M5cEN~kg7E6pnM24s00NDz "7. login.png") *（外链图片未本地化）*
+
+2012-12-12 23:53 上传
+
+[**下载附件** (21.85 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5MjR8MTI5Mzc2MjR8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "7. login.png 下载次数:0")
+
+
+当然在此我不直接用Raspberry pi操作，而用别的电脑访问的原因是：方便查看各种文档和在论坛上查找问题解决办法；Raspberry pi本身图形界面下浏览器访问网络比较慢。
+
+开始搭建自己的软件平台，主要有gcc、gdb和Vim三个软件：
+
+
+1.  查看软件是否安装，软件名 –version
+
+1. pi@raspberrypi  gcc –-version
+
+*复制代码*
+
+安装了软件就会如下图所示，显示软件信息，
+
+![8. gcc_v.png](http://files.note.sdo.com/M5cEN~kg7E6pnM24s00NDB "8. gcc_v.png") *（外链图片未本地化）*
+
+2012-12-12 23:53 上传
+
+[**下载附件** (15.05 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5MjV8YTEzNmU1M2J8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "8. gcc_v.png 下载次数:0")
+
+
+没安装软件就会如下图所示，显示命令没找到
+
+![9. emacs.png](http://files.note.sdo.com/M5cEN~kg7E6pnM24s00NDG "9. emacs.png") *（外链图片未本地化）*
+
+2012-12-12 23:53 上传
+
+[**下载附件** (2.09 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5MjZ8ZTAxYjg5YzR8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "9. emacs.png 下载次数:0")
+
+
+2.  安装软件
+
+RaspberryPi User Guide上介绍软件的安装是：
+
+1. pi@raspberrypi  sudo apt-get install vim
+
+*复制代码*
+
+下载是需要时间的，看看新闻什么的度过这难熬的时间。也不知过了多长时间，回来一看，26M的东西，下了1%，右侧显示的速度是200B/s，我们的网络好歹是4Mb/s（注意单位不一样，换算过来最高是512KB/s），这速度你也好意思。
+毅然决然的Ctrl+c（类UNIX下，中断当前操作，回到命令输入的状态）
+
+从google上得知需要更改/etc/apt/source.list的地址信息
+
+1. pi@raspberrypi  cd /etc/apt/
+
+*复制代码*
+
+进入到存放sources.list的目录后，首先是先备份文件，以免出错的时候，没法补救
+
+![10. source1.png](http://files.note.sdo.com/M5cEN~kg7E6FnM24s00NE9 "10. source1.png") *（外链图片未本地化）*
+
+2012-12-12 23:53 上传
+
+[**下载附件** (40.64 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5Mjd8YTM3ZDQxOTd8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "10. source1.png 下载次数:0")
+
+1. pi@raspberrypi  sudo cp ./sources.list ./sources.list.back
+
+*复制代码*
+
+备份完成后，在<http://www.raspbian.org/RaspbianMirrors>上查找离我们最近的镜像点，当然是亚洲的两个点最近啦
+
+
+![11. mirror.png](http://files.note.sdo.com/M5cEN~kg7E6pnM24s00NDK "11. mirror.png") *（外链图片未本地化）*
+
+2012-12-12 23:53 上传
+
+[**下载附件** (15.99 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5Mjh8YTAzMDUyZjJ8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "11. mirror.png 下载次数:0")
+
+
+根据<http://www.raspbian.org/RaspbianRepository>介绍的方法在sources.list添加Asia的两个源地址。
+
+
+![13. repository.png](http://files.note.sdo.com/M5cEN~kg7E6pnM24s00NDM "13. repository.png") *（外链图片未本地化）*
+
+2012-12-12 23:53 上传
+
+[**下载附件** (13.29 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5MzB8ZWJhMmM0OGZ8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "13. repository.png 下载次数:0")
+
+1. pi@raspberrypi  sudo vi sources.list
+
+*复制代码*
+
+多次修改后，面目全非，到最后解决问题的时候，只留下来最终的版本，如图
+
+![12. source2.png](http://files.note.sdo.com/M5cEN~kg7E6pnM24s00NDO "12. source2.png") *（外链图片未本地化）*
+
+2012-12-12 23:53 上传
+
+[**下载附件** (16.03 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5Mjl8YjA3Y2EzYjh8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "12. source2.png 下载次数:0")
+
+
+如果你只想看怎么解决的，请快速下拉找到华丽分割线，之后的内容是你要找的。
+
+…………………………………我是悲催的分界线，不是你要找的………………………………………
+完成源地址的添加，当然开始安装软件，
+
+1. pi@raspberrypi  sudo apt-get install vim
+
+*复制代码*
+
+还是原来的样子，蜗牛般的速度，而且没有从几个添加的源地址下载，而是继续从<http://mirrordirector.raspbian.org/raspbian/wheezy> main contrib non-free rpi
+
+地址下载
+之后就是2小时的各种折腾（沿用windows下的思路，重启一下就好使了）：
+       重启……               不行
+       关机，断电，再开机…… 不行
+       折腾各个地方的地址重复各个过程，还是不行。
+我转变了思路，下载后离线安装，这是FreeBSD下安装软件的思路，下载、解压源程序后：
+./configure
+
+makeinstall
+
+makeinstall clean
+
+过程简单，方便，节省时间。
+
+访问了<http://archive.raspbian.org/raspbian/pool/main/>查看了vim的包
+
+
+![14. vim-sou.png](http://files.note.sdo.com/M5cEN~kg7E6FnM24s00NDQ "14. vim-sou.png") *（外链图片未本地化）*
+
+2012-12-12 23:53 上传
+
+[**下载附件** (21.46 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5MzF8NjA4NDI2YzB8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "14. vim-sou.png 下载次数:0")
+
+
+全部下载放到U盘，搬运到Raspberry pi，用dpkg工具安装；
+这里就涉及到U盘的挂载和卸载的过程,顺带介绍一下：
+
+1. pi@raspberrypi  cd /dev
+
+*复制代码*
+
+为了对比在插上U盘之前
+
+![15. dev1.png](http://files.note.sdo.com/M5cEN~kg7E6FnM24s00NDT "15. dev1.png") *（外链图片未本地化）*
+
+2012-12-12 23:53 上传
+
+[**下载附件** (23.59 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5MzJ8ZDk0MmYxNjl8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "15. dev1.png 下载次数:0")
+
+
+插上U盘后的图片
+
+![16. dev2.png](http://files.note.sdo.com/M5cEN~kg7E6FnM24s00NDZ "16. dev2.png") *（外链图片未本地化）*
+
+2012-12-13 00:09 上传
+
+[**下载附件** (28.37 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5NDN8ZTFhMzkzOTR8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "16. dev2.png 下载次数:0")
+
+
+此时多出来了sda和sda1，不放心的话可以用下面的命令查看一下
+
+1. pi@raspberrypi  <font style="font-size: 10pt">sudo fdisk –l sda</font>
+
+*复制代码*
+
+![17. sda.png](http://files.note.sdo.com/M5cEN~kg7E6FnM24s00NEc "17. sda.png") *（外链图片未本地化）*
+
+2012-12-12 23:53 上传
+
+[**下载附件** (43.24 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5MzN8ZDMwODE2MTl8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "17. sda.png 下载次数:0")
+
+
+从上图对两个sda信息的查看，我就将他们类比成Windows下，硬盘和分区的概念，也就是sda是硬盘，sda1是分区（纯属个人理解）。不管怎么样我们要挂载的是sda1。
+进入/mnt，由于挂载点必须是目录，所以在该目录下，创建一个文件夹，创建了目录后，就要挂载U盘，拷贝数据
+
+1. pi@raspberrypi  sudo mkdir usb
+2. pi@raspberrypi  sudo mount -t vfat /dev/sda1 /mnt/usb/
+3. pi@raspberrypi  sudo cp -r /mnt/usb/vim/ ~/vim
+
+*复制代码*
+
+复制完成后，顺便介绍卸载的方法：
+
+1. pi@raspberrypi  sudo umount /dev/sda1
+
+*复制代码*
+
+![18. cp.png](http://files.note.sdo.com/M5cEN~kg7E6FnM24s00NEg "18. cp.png") *（外链图片未本地化）*
+
+2012-12-12 23:53 上传
+
+[**下载附件** (63.07 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5MzR8YzhmY2NlYWV8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "18. cp.png 下载次数:0")
+
+
+开始安装吧，不用你输这么长的文件名，在你输入“sudodpkg -i vim\_7”后，按Tab键，bash会补全文件名，没有补全时要么错误，要么就是前缀有重复，多输入几个字符再Tab就行了。
+
+1. pi@raspberrypi  sudo dpkg -i vim\_7.3.547-6\_armhf.deb
+
+*复制代码*
+
+这种方法只是理论上可行，这种方法的.deb文件和Windows下的dll文件类似，用到的时候在库文件目录下找不到的时候，会报错，那就耐着性子一个个的帮你找出来呗，总有完的时候，这些lib文件是在<http://www.debian.org/distrib/packages>这个网站上找当然要对应：
+       suite: wheezy
+
+       architecture:armhf
+
+好像是看到成功的彼岸了吧，可惜下班了，没有完成。只能期待回到宿舍完成，当然记得带一根网线回去了。
+晚上茶余饭后，继续一点点搬运着U盘的这些.deb文件，但是当你看到这个场景的时候，╮(╯▽╰)╭
+
+![19. perl.png](http://files.note.sdo.com/M5cEN~kg7E6FnM24s00NEj "19. perl.png") *（外链图片未本地化）*
+
+2012-12-12 23:53 上传
+
+[**下载附件** (52.66 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5MzV8NjJmOTNhOGN8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "19. perl.png 下载次数:0")
+
+
+注意两个dependency，perl需要perl-modules，而perl-modules又需要perl。
+
+Oh,holly shit. 这是个死循环啊。到这个时候已经萌发格盘的冲动，还是强忍着冲动，想看看网络上有没有人和我遇到同样的问题，功夫不负苦心人啊
+
+<http://open.eucalyptus.com/forum/package-libg2c0-not-configured-yet>的3楼有解决方法，如下图
+
+
+![20. problem_solved.png](http://files.note.sdo.com/M5cEN~kg7E6FnM24s00NDX "20. problem_solved.png") *（外链图片未本地化）*
+
+2012-12-12 23:53 上传
+
+[**下载附件** (21.3 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5MzZ8NjNhY2Y5MmZ8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "20. problem_solved.png 下载次数:0")
+
+
+apt-get update这条命令有多少次出现在我的眼帘，我都视而不见。找到方法，那就开始吧。
+
+1. pi@raspberrypi  sudo apt-get update
+
+*复制代码*
+
+生活坎坷不断，那我吐槽持续
+
+![21. 01.png](http://files.note.sdo.com/2clrz~kvs5NOTV03Y003X_ "21. 01.png") *（外链图片未本地化）*
+
+2012-12-12 23:53 上传
+
+[**下载附件** (40.98 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5Mzd8ZDg2MDdlZTZ8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "21. 01.png 下载次数:0")
+
+
+已经0:02分了清华离我不过20km，宿舍100M宽带，这速度，╮(╯▽╰)╭，洗洗睡吧。清晨窗外昏暗，飘着雪，打开关闭显示器的电脑，Failed映入眼帘。
+
+1. pi@raspberrypi  sudo vi /etc/apt/sources.list
+
+*复制代码*
+
+找到tsing的两行—两次dd—:q     （这是一堆vim操作）
+
+1. pi@raspberrypi  sudo poweroff
+
+*复制代码*
+
+收拾收拾，准备让他在上班的时候慢慢的更新。
+谁知山重水复疑无路，柳暗花明又一村，看看这243kB/s的速度，当然是apt-get，功德圆满啊。![](http://files.note.sdo.com/M5cEN~kg7E6FnM24s00NDV) *（外链图片未本地化）*
+
+![22. vim2.png](http://files.note.sdo.com/2clrz~kvs5NOTV03Y003X_ "22. vim2.png") *（外链图片未本地化）*
+
+2012-12-12 23:53 上传
+
+[**下载附件** (52.08 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTI5Mzh8ZWQwMzZkN2R8MTM1OTA3OTQxMXwwfDUwMjU%3D&nothumb=yes "22. vim2.png 下载次数:0")
+
+
+**……………………………………华丽分界线在此………………………………………**
+修改完source.list后，一定要
+
+1. <font color="#ff0000">pi@raspberrypi  sudo apt-get update</font>
+
+*复制代码*
+
+废话连篇，精华在于[**hanchao**](http://www.eeboard.com/bbs/space-uid-3375.html)的帖子<http://www.eeboard.com/bbs/thread-4980-1-1.html>
+
+根据个人经验，不要清华的源来得更好。
+
+
+附件是本人使用的putty软件和source.list文件
+
+[【分享】Raspberry pi](thread-5025-1-1.html)
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

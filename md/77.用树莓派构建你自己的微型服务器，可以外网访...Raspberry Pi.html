@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>用树莓派构建你自己的微型服务器，可以外网访...Raspberry Pi</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE%E6%9E%84%E5%BB%BA%E4%BD%A0%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BE%AE%E5%9E%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%A4%96%E7%BD%91%E8%AE%BF...Raspberry%20Pi.html)
+# 用树莓派构建你自己的微型服务器，可以外网访...Raspberry Pi
+
+*本帖最后由 xinxincaijq 于 2012-12-24 16:23 编辑*
+
+第一，你得有一个路由器，否则下面的内容都无法实现了。
+
+第二，你得申请一个免费的动态域名解析，由于我用的是TP-LINK的路由器，只支持花生壳，所以我申请了花生壳的动态域名解析。
+          申请花生壳很简单，打开[http://www.oray.com](http://www.oray.com/),点击顶部的“注册”，申请一个花生壳护照。
+
+![花生壳护照.jpg](http://files.note.sdo.com/M5cEN~kg7F39nM24s00O3c "花生壳护照.jpg") *（外链图片未本地化）*
+
+2012-12-24 15:19 上传
+
+[**下载附件** (53.61 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTM2OTh8MzdmYjkzZjZ8MTM1OTA3OTU2MXwwfDU1MjY%3D&nothumb=yes "花生壳护照.jpg 下载次数:0")
+
+
+        申请完成后，点击我的控制台-产品管理-域名管理
+
+![激活1.jpg](http://files.note.sdo.com/M5cEN~kg7F39nM24s00O36 "激活1.jpg") *（外链图片未本地化）*
+
+2012-12-24 15:22 上传
+
+[**下载附件** (11.08 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTM2OTl8OGY3YmU2MDJ8MTM1OTA3OTU2MXwwfDU1MjY%3D&nothumb=yes "激活1.jpg 下载次数:0")
+
+
+     选择免费域名标签，选中其中的免费域名，点击激活花生壳，至此你的花生壳免费动态域名解析激活已经完成了。
+     
+
+![激活2.jpg](http://files.note.sdo.com/M5cEN~kg7F39nM24s00O38 "激活2.jpg") *（外链图片未本地化）*
+
+2012-12-24 15:22 上传
+
+[**下载附件** (25.79 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTM3MDB8YjUzN2NiZTd8MTM1OTA3OTU2MXwwfDU1MjY%3D&nothumb=yes "激活2.jpg 下载次数:0")
+
+
+第三，进入路由器，配置你的花生壳动态域名账号和端口重发
+
+![动态DNS.jpg](http://files.note.sdo.com/M5cEN~kg7F3pnM24s00O3f "动态DNS.jpg") *（外链图片未本地化）*
+
+2012-12-24 15:26 上传
+
+[**下载附件** (40.51 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTM3MDJ8ODc2N2E1ODV8MTM1OTA3OTU2MXwwfDU1MjY%3D&nothumb=yes "动态DNS.jpg 下载次数:0")
+
+
+  在路由器的动态DNS里设置好你的花生壳护照账号密码，点击登录
+
+  接下来需要配置端口了。
+  先要确定你的树莓派在局域网内的IP，我这里是给它一个静态的IP：192.168.1.248
+  然后按照下面列表添加端口
+
+![端口.jpg](http://files.note.sdo.com/M5cEN~kg7F3pnM24s00O3h "端口.jpg") *（外链图片未本地化）*
+
+2012-12-24 15:40 上传
+
+[**下载附件** (71.46 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTM3MDN8MTgzMzgyMmZ8MTM1OTA3OTU2MXwwfDU1MjY%3D&nothumb=yes "端口.jpg 下载次数:0")
+
+
+   添加好后，我们就来搭建树莓派的web服务器。
+
+第四，搭建树莓派的WEB服务器
+     由于我不懂如何做网站，所以只好套用U大帖子里的方法<http://www.eeboard.com/bbs/forum.php?mod=viewthread&tid=2053>，建立了一个监控树莓派运行状态的服务器。
+     如果执行git命令找不到的时候，先执行
+
+1. sudo apt-get install git
+
+*复制代码*
+
+安装完成后就可以执行git命令了
+
+    原帖里默认的端口是80，但是我的路由器不运行设置80端口转发，所以我修改了帖子内的启动脚本start.sh的端口配置，具体配置如下
+
+1. cd Raspcontrol
+2. sudo nano ./start.sh
+
+*复制代码*
+
+将其中的Port改为8051，ctrl+o保存，ctrl+x退出。
+  再次执行
+
+1. sudo ./start.sh
+
+*复制代码*
+
+这时候你需要在浏览器输入树莓派的IP:8051才可以访问这个管理页面。
+  因为之前动态域名解析已经激活，而且8051端口的访问可以被路由器转发到树莓派上来，至此大功告成，你可以在浏览器输入：你的域名:8051，来访问你的树莓派，也可以把地址发给大家，
+  让大家来测试测试。
+
+[【分享】](thread-5526-1-1.html)
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

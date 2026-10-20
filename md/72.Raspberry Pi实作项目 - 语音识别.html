@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Raspberry Pi实作项目 - 语音识别</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/Raspberry%20Pi%E5%AE%9E%E4%BD%9C%E9%A1%B9%E7%9B%AE%20-%20%E8%AF%AD%E9%9F%B3%E8%AF%86%E5%88%AB.html)
+# Raspberry Pi实作项目 - 语音识别
+
+最近为大家介绍了不少Raspberry Pi的项目和如何实现它们，例如如何连接Arduino、远端操控Raspberry Pi和Raspberry Pi中如何读取传感器模组DrDAQ的数据等，籍此让大家累积更多使用Raspberry Pi的实际经验，而這一次是透過语音识别控制Maplin USB机械手臂，在Raspberry Pi这种相对便宜的平台下亦能够开发完善的语音识别系统。
+
+![](http://files.note.sdo.com/M5cEN~kg7FJVnM24s00Oed) *（外链图片未本地化）*
+
+
+**项目简介**
+
+在这个Raspberry Pi项目中，会使用Julius 开源库实现语音识别，Julius是一个拥有大量词句的连续性语音解码程式，当中利用了主流的搜寻技术，要让Julius支援特定的语言，便要有语言模型和声学模型。
+
+1. 安装了Debian 的Raspberry Pi，建议连接上互联网;
+
+2. Maplin USB机械手臂;
+
+3. USB 麦克风;
+
+4. 声学模型;
+
+5. HTK工具
+
+6. Julius解码程式
+
+由于这个项目并不需要使用大量图形处理器(GPU)的资源，所以建议大家分配较少的记忆体到图形处理器中。这个项目主要以Debian中的命令行进行，以节省资源。
+
+
+步骤1: 载入声效卡的驱动器
+
+*sudo modprobe snd\_bcm2835*
+
+
+步骤2: 安装项目所需的软件和程式库，建议大家先连接到互联网再运行以下的命令，不然大家便要把封装包放到SD卡中再自行安装。
+
+*sudo apt-get install alsa-tools alsa-oss flex zlib1g-dev libc-bin libc-dev-bin python-pexpect libasound2 libasound2-dev*
+
+
+步骤3: 测试麦克风的运作，我们可以利用'arecord' (aksa-tools)录音大约10秒的时间，再播放并验证。第一行指令中的'-D plughw:1,0' 选项指派特定的录音设备，而Raspberry Pi的内置音效设备是'plughw:0,0' ，所以要留意你实际使用录音的接口。
+
+*arecord -d 10 -D plughw:1,0 test.wav*
+
+*aplay test.wav*
+
+
+步骤4: 安装Julius，最新版本是4.2.1，而这个版本并不会正确地侦测ALSA接口，所以我们要从CVS的源代码中编译并安装Julius。
+
+*cvs -z3 -d:pserver:anonymous@cvs.sourceforge.jp:/cvsroot/julius co julius4*
+
+*cd julius4*
+
+*./configure --with-mictype=alsa*
+
+*make*
+
+*sudo make install*
+
+
+步骤5: 设置系统的环境变数以使用麦克风
+
+*export ALSADEV="plughw:1,0"*
+
+
+步骤6: 把预先准备好的语音和声效模型放到SD卡，并且执行Julius以进行语音识别，如果是依照voxforge网站的指引创建声效和语音模型，请在'voxforge/auto'路径中执行以下命令。
+
+*julius -input mic -C julius.jconf*
+
+
+后记:
+
+要提升语音识别的准确度，可以把HMM 于Raspberry Pi上重新编译，而在Raspberry Pi编译和安装HTK的话可以使用以下的设置和指令
+
+*./configure --without-x --disable-hslab*
+
+*make all*
+
+*make install*
+
+在Raspberry Pi上实现语音识别功能能够让控制应用更多元化，除了机械臂的控制，把语音识别加入家居控制自动化的应用亦是实用性很强的项目，期望以后大家会发展有关的Raspberry Pi项目吧！
+
+[【分享】](thread-5801-1-1.html)
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

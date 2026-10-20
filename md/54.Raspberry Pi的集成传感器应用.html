@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Raspberry Pi的集成传感器应用</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/Raspberry%20Pi%E7%9A%84%E9%9B%86%E6%88%90%E4%BC%A0%E6%84%9F%E5%99%A8%E5%BA%94%E7%94%A8.html)
+# Raspberry Pi的集成传感器应用 - DrDAQ
+
+[![](http://files.note.sdo.com/M5cEN~kg9tjwLX0es01bvY)](http://www.designspark.com/users/view/Ray%20Chiu)Posted by [Ray Chiu](http://www.designspark.com/users/view/Ray%20Chiu) on Fri, Jul 06 2012 17:15:00 *（外链图片未本地化）*
+
+- [Raspberry pi](http://www.designspark.com/nodes/term/slug:raspberry-pi "View content tagged with Raspberry pi")
+- [Test](http://www.designspark.com/nodes/term/slug:test "View content tagged with Test")
+- [Arm](http://www.designspark.com/nodes/term/slug:arm "View content tagged with Arm")
+- [Pic](http://www.designspark.com/nodes/term/slug:pic "View content tagged with Pic")
+- [X86](http://www.designspark.com/nodes/term/slug:x86 "View content tagged with X86")
+
+860 views
+
+谈到Raspbeery Pi的各种应用，传感器方面是一门热门的话题，而测量不同类型的数据会采用不同的模块，今天我会为大家介绍一款适用于Raspberry Pi的集成传感器- DrDAQ，它主要应用于环境数据的测量。
+
+**DrDAQ简介**
+
+[![Image](http://files.note.sdo.com/M5cEN~kg9tjwLX0es01bw0)](http://d4c027c89b30561298bd-484902fe60e1615dc83faa972a248000.r12.cf3.rackcdn.com/imagepicker/54347/DSC_0003.jpg)（外链文件，未本地化） *（外链图片未本地化）*
+
+图. Raspberry Pi和DrDAQ
+
+[DrDAQ](http://www.drdaq.com/)是[Pico Technology](http://chinese.picotech.com/)的产品，采用USB介面，传感器方面包括麦克风、光传感器和温度传感器等，可以外接pH/氧化还原传感器，接口方面有四个数字I/O 端口、三个传感器端口、一个示波器输入和一个信号发生器输出。
+
+**Raspberry Pi使用DrDAQ 的设置**
+
+而最近DrDAQ的生产商推出了测试版本的Linux/Raspberry Pi驱动程式，以Raspberry Pi为例
+，我們只需下载 [压缩的驱动程式文件](http://labs.picotech.com/#raspberrypi) ，然后安装当中2个Debian的封装文件便可。要存取Linux系统的周边设备，通常需要root权限，但我们建议用户建立rules文件，然后指导[udev](http://zh.wikipedia.org/wiki/Udev) 设置DrDAQ的存取权限，该rules文件可以于下载的驱动文件中找到，它命名为95-pico.rules，紧记把用户pi加到pico用户组中。现是下载的rules文件有错误，要依照以下的指令更正:
+
+*SUBSYSTEMS=="usb", ATTRS{idVendor}=="0ce9", MODE="664", GROUP="pico"*
+
+然后把rules文件放到/etc/udev/rules.d 中，再执行以下命令让udev重新载入rules文件，然后重新登入，在重新登入前，要先把DrDAQ从Raspberry Pi中拔出:
+
+*$ sudo udevadm control –reload-rules*
+
+若果要除错存取DrDAQ的程序，可以使用下载文件中的usbtest脚本。
+
+**DrDAQ的範例程序**
+
+[![Image](http://files.note.sdo.com/M5cEN~kg9tjwLX0es01bv_)](http://d4c027c89b30561298bd-484902fe60e1615dc83faa972a248000.r12.cf3.rackcdn.com/imagepicker/54347/ExampleProgram_1.jpg)（外链文件，未本地化） *（外链图片未本地化）*
+
+在下载的驱动程序中附加了DrDAQ的范例程序，它能够测试DrDAQ的功能，要使用它，我们可以输入以下命令编译源代码:
+
+*$ gcc USBDrDAQcon.c -oUSBDrDAQcon -lUSBDrDAQ -lusb\_pico-1.0*
+
+然后执行USBDrDAQcon二进制文件，在选单中选择读取不同的测量数据，例如ADC数据、数位输入的状态、信号发生器输出类型和频率等。
+
+**DrDAQ的编程**
+
+![Image](http://files.note.sdo.com/M5cEN~kg9tjwLX0es01bw2) *（外链图片未本地化）*
+
+USBDrDAQcon程序能够帮助我们编写新的C程序控制DrDAQ，例如透过以下的2个函数改变LED的颜色:
+
+*UsbDrDaqEnableRGBLED(g\_handle, (short)1);*
+
+*UsbDrDaqSetRGBLED(g\_handle, (unsigned short)0, (unsigned short)255, (unsigned short)0);*
+
+第一句指示驱动程序启动LED，第二句改变LED的颜色(红: 0, 绿: 255, 蓝: 0)。
+
+**总结**
+
+Raspberry Pi和DrDAQ的组合提供了低成本的网络数据记录器方案，数据先由Raspberry Pi处理，然后以HTML界面或HTTP API发放到网络。虽然现在并没有DrDAQ的Linux应用程序，但x86和ARM的Linux驱动程序已经有了，相信Linux应用程序的开发亦会紧接其后。
+
+最后，利用[wxPython](http://wxpython.org/)为DrDAQ创建Python库会是一个不错的选择，既可创建夸平台的GUI应用程序，又可达至教育目的，一举两得！
+
+[Share on linkedin](http://www.addthis.com/bookmark.php?v=250&winname=addthis&pub=xa-4f75c9ac5eccb233&source=tbx-250&lng=zh&s=linkedin&url=http%3A%2F%2Fwww.designspark.com%2Fblog%2Fchi-raspberry-pi-drdaq&title=Raspberry%20Pi%E7%9A%84%E9%9B%86%E6%88%90%E4%BC%A0%E6%84%9F%E5%99%A8%E5%BA%94%E7%94%A8%20-%20DrDAQ%20%C2%BB%20DesignSpark&ate=AT-xa-4f75c9ac5eccb233/-/-/51025d681afa3a24/3&frommenu=1&uid=51025d689bb6abba&ct=1&pre=http%3A%2F%2Fkan.weibo.com%2Fcon%2F3502853655057853%3F_from%3Dimage&tt=0&captcha_provider=nucaptcha "LinkedIn")
+[Share on facebook](http://www.designspark.com/blog/chi-raspberry-pi-drdaq# "Facebook")
+[Share on sinaweibo](http://www.addthis.com/bookmark.php?v=250&winname=addthis&pub=xa-4f75c9ac5eccb233&source=tbx-250&lng=zh-CN&s=sinaweibo&url=http%3A%2F%2Fwww.designspark.com%2Fblog%2Fchi-raspberry-pi-drdaq&title=Raspberry%20Pi%E7%9A%84%E9%9B%86%E6%88%90%E4%BC%A0%E6%84%9F%E5%99%A8%E5%BA%94%E7%94%A8%20-%20DrDAQ%20%C2%BB%20DesignSpark&ate=AT-xa-4f75c9ac5eccb233/-/-/51025d681afa3a24/2&frommenu=1&uid=51025d68ada097a1&ct=1&pre=http%3A%2F%2Fkan.weibo.com%2Fcon%2F3502853655057853%3F_from%3Dimage&tt=0&captcha_provider=nucaptcha "Sinaweibo")
+[Share on email](http://www.designspark.com/blog/chi-raspberry-pi-drdaq# "Email")
+[More Sharing Services](http://www.designspark.com/blog/chi-raspberry-pi-drdaq#)
+[0](http://www.designspark.com/blog/chi-raspberry-pi-drdaq# "More...")
+
+[Like this](http://www.designspark.com/likes/add/936)
+[Leave a comment](http://www.designspark.com/discuss/comment.php?mode=post&f=36&title=Raspberry+Pi%E7%9A%84%E9%9B%86%E6%88%90%E4%BC%A0%E6%84%9F%E5%99%A8%E5%BA%94%E7%94%A8+-+DrDAQ&path=&nid=936)
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

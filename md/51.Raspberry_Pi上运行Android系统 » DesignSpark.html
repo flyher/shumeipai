@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Raspberry_Pi上运行Android系统 » DesignSpark</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/Raspberry_Pi%E4%B8%8A%E8%BF%90%E8%A1%8CAndroid%E7%B3%BB%E7%BB%9F%20%C2%BB%20DesignSpark.html)
+# Raspberry\_Pi上运行Android系统
+
+[![](http://files.note.sdo.com/M5cEN~kg9u-gLX0es01bDI)](http://www.designspark.com/users/view/S_CH)Posted by [S\_CH](http://www.designspark.com/users/view/S_CH) on Fri, Sep 14 2012 03:22:13 *（外链图片未本地化）*
+
+534 views
+
+我们很多的DesignSpark的网友们都十分热衷于Raspberry—Pi的开发和折腾，但同时也十分喜欢有关Android智能平台上的点滴进步，无论是从android4.0 还是到android 4.1，都牵动着无数网友的心，那么之前Frank也写过关于Android 4.1 的有关新特征，那么大家有没有想过当Raspberry Pi遇到Android这个小机器人的时候，又会擦出什么火花呢？
+
+**Raspberry-Pi** **强大的硬件平台**
+
+Raspberry Pi，是一款基于Linux系统的个人电脑，配备一枚700MHz的处理器，256内存，支持SD卡和Ethernet，拥有两个USB接口，以及 HDMI和RCA输出支持。有消息称，虽然Raspberry Pi看起来非常的迷你——只有一张信用卡大小，但是它能够运行像《雷神之锤三：竞技场》这样的游戏和进行1080p视频的播放。和最终售价 200 美元的 OLPC 不一样，体积大概是一个火柴盒大小，硬件基础是 ARM，操作系统采用开源的 Linux 系统，比如 Debian、ArchLinux，自带的 Iceweasel、KOffice 等软件能够满足基本的网络浏览，文字处理以及计算机学习的需要。
+
+![Image](http://files.note.sdo.com/M5cEN~kg9u-gLX0es01bDM) *（外链图片未本地化）*
+
+Raspberry Pi(简写为RPi，或者RasPi)是为孩童计算机编程教育而设计，只有信用卡大小的卡片式电脑，其系统基于Linux。它由注册于英国的慈善组织“Raspberry Pi 基金会”开发。这一基金会以提升学校计算机科学及相关学科的教育，让计算机变得有趣为宗旨。基金会期望这一款电脑无论是在发展中国家还是在发达国家，会有更多的其它应用不断被开发出来，并应用到更多领域。
+
+![Image](http://files.note.sdo.com/M5cEN~kg9u-wLX0es01bDR) *（外链图片未本地化）*
+
+“Raspberry Pi 单板电脑采用博通BCM2835处理器，它是ARM11内核，集成了FPU和Videocore4 GPU，该GPU配有open GL ES2.0、硬件加速的OPEN EG和11080P高清H.264解码电路，另外还集成了256MB RAM及包括HDMI、USB2.0在内的多个接口。” RS Components电子市场营销总监Glenn Jarret介绍说。
+
+**Android** **全面的软件平台**
+
+Android是一种以Linux为基础的开放源代码操作系统，主要使用于便携设备。目前尚未有统一中文名称，中国大陆地区较多人使用“安卓”或“安致”。Android操作系统最初由Andy Rubin开发，最初主要支持手机。2005年由Google收购注资，并组建开放手机联盟开发改良，逐渐扩展到平板电脑及其他领域上。Android的主要竞争对手是苹果公司的iOS以及RIM的Blackberry OS。2011年第一季度，Android在全球的市场份额首次超过塞班系统，跃居全球第一。 2012年7月数据，Android占据全球智能手机操作系统市场59%的份额，中国市场占有率为76.7%。
+
+![Image](http://files.note.sdo.com/M5cEN~kg9u-gLX0es01bDK) *（外链图片未本地化）*
+
+Android在正式发行之前，最开始拥有两个内部测试版本，并且以著名的机器人名称来对其进行命名，它们分别是：阿童木（Android Beta），发条机器人（Android 1.0）。后来由于涉及到版权问题，谷歌将其命名规则变更为用甜点作为它们系统版本的代号的命名方法。甜点命名法开始于 Android 1.5 发布的时候。作为每个版本代表的甜点的尺寸越变越大，然后按照26个字母数序：纸杯蛋糕（Android 1.5），甜甜圈（Android 1.6），松饼（Android 2.0/2.1），冻酸奶（Android 2.2），姜饼（Android 2.3），蜂巢（Android 3.0），冰激凌三明治（Android 4.0），而最新一代Android版本名为果冻豆（Jelly Bean，Android4.1）。
+
+![Image](http://files.note.sdo.com/M5cEN~kg9u-wLX0es01bDO) *（外链图片未本地化）*
+
+Android 4.0版本主要更新如下：
+
+全新的UI；全新的Chrome Lite浏览器，有离线阅读，16标签页，隐身浏览模式等；截图功能；更强大的图片编辑功能；自带照片应用堪比Instagram，可以加滤镜、加相框，进行360度全景拍摄，照片还能根据地点来排序；Gmail加入手势、离线搜索功能，UI更强大；新功能People：以联系人照片为核心，界面偏重滑动而非点击，集成了Twitter、Linkedin、Google+等通讯工具。有望支持用户自定义添加第三方服务；新增流量管理工具，可具体查看每个应用产生的流量，限制使用流量，到达设置标准后自动断开网络。
+
+![Image](http://files.note.sdo.com/M5cEN~kg9u-wLX0es01bDT) *（外链图片未本地化）*
+
+**当Raspberry Pi****遇到Android 4.0**
+
+看了下树莓派官方网站的文章，发现今天单独发布一则为“Android 4.0 is coming!”的文章。
+
+明确了Raspberry Pi 可以安装并运行Android 4.0，这的确是一个鼓舞人心的好消息。
+
+玩友们，又多了一个玩Raspberry Pi的给力理由。
+
+![Image](http://files.note.sdo.com/M5cEN~kg9u-wLX0es01bDV) *（外链图片未本地化）*
+
+CyanogenMOD 9  image （android 4.0）：<http://ref.so/dyt0o>
+
+至少需要2G的SD卡容量，提出镜像到SD卡，就像DEBIAN镜像
+
+CyanogenMOD 7.2 image  ：<http://ref.so/irjkg>
+
+CyanogenMOD 7.2 image (with Ethernet Menu): <http://ref.so/o2k09>
+
+Raspberry Pi的官网通知消息
+
+<http://www.raspberrypi.org/archives/1700>
+
+Razdorid的官网镜像更新
+
+<http://androidpi.wikia.com/wiki/Android_Pi_Wiki>
+
+Raspberry Pi遇到Android 4.0的视频
+
+<http://v.youku.com/v_show/id_XNDM0NTYxMDEy.html>
+
+[Share on linkedin](http://www.addthis.com/bookmark.php?v=250&winname=addthis&pub=xa-4f75c9ac5eccb233&source=tbx-250&lng=zh&s=linkedin&url=http%3A%2F%2Fwww.designspark.com%2Fblog%2Fraspberrypiandroid&title=Raspberry_Pi%E4%B8%8A%E8%BF%90%E8%A1%8CAndroid%E7%B3%BB%E7%BB%9F%20%C2%BB%20DesignSpark&ate=AT-xa-4f75c9ac5eccb233/-/-/51025e5fa84812cc/3/50a23f5a819cd255&frommenu=1&uid=50a23f5a819cd255&ct=1&pre=http%3A%2F%2Fwww.designspark.com%2Fsearch%2Fpage%3A7%2Fq%3Araspberry%2Ftab%3Ablog&tt=0&captcha_provider=nucaptcha "LinkedIn")
+[Share on facebook](http://www.designspark.com/blog/raspberrypiandroid# "Facebook")
+[Share on sinaweibo](http://www.addthis.com/bookmark.php?v=250&winname=addthis&pub=xa-4f75c9ac5eccb233&source=tbx-250&lng=zh-CN&s=sinaweibo&url=http%3A%2F%2Fwww.designspark.com%2Fblog%2Fraspberrypiandroid&title=Raspberry_Pi%E4%B8%8A%E8%BF%90%E8%A1%8CAndroid%E7%B3%BB%E7%BB%9F%20%C2%BB%20DesignSpark&ate=AT-xa-4f75c9ac5eccb233/-/-/51025e5fa84812cc/2&frommenu=1&uid=51025e5f04b59048&ct=1&pre=http%3A%2F%2Fwww.designspark.com%2Fsearch%2Fpage%3A7%2Fq%3Araspberry%2Ftab%3Ablog&tt=0&captcha_provider=nucaptcha "Sinaweibo")
+[Share on email](http://www.designspark.com/blog/raspberrypiandroid# "Email")
+[More Sharing Services](http://www.designspark.com/blog/raspberrypiandroid#)
+[0](http://www.designspark.com/blog/raspberrypiandroid# "More...")
+
+[Like this](http://www.designspark.com/likes/add/6673)
+[Leave a comment](http://www.designspark.com/discuss/comment.php?mode=post&f=36&title=Raspberry_Pi%E4%B8%8A%E8%BF%90%E8%A1%8CAndroid%E7%B3%BB%E7%BB%9F&path=&nid=6673)
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Raspberry Pi 入手安装配置 （有图有真相）</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/Raspberry%20Pi%20%E5%85%A5%E6%89%8B%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%20%EF%BC%88%E6%9C%89%E5%9B%BE%E6%9C%89%E7%9C%9F%E7%9B%B8%EF%BC%89.html)
+#####
+
+托rock的福，跟风败了个Raspberry Pi，（破手机照的，还可以吧 ^\_^），安装配置如下：
+[![](http://files.note.sdo.com/M5cEN~kg9gtwLX0es0195d)](http://www.blogjava.net/images/blogjava_net/baicker/Raspberry%20Pi/IMG_20120805_203910.jpg "点击右下角或按ESC关闭<BR>或者点击图片浏览相邻一张图片") （外链文件，未本地化） *（外链图片未本地化）*
+
+
+**第一步：灌操作系统**
+准备个SD大卡，至少2G，下载对应的系统镜像（我下的[2012-07-15-wheezy-raspbian.zip](http://downloads.raspberrypi.org/images/raspbian/2012-07-15-wheezy-raspbian/2012-07-15-wheezy-raspbian.zip "http://downloads.raspberrypi.org/images/raspbian/2012-07-15-wheezy-raspbian/2012-07-15-wheezy-raspbian.zip")） *（外链文件未本地化）*
+
+# Raspbian “wheezy”
+
+If you’re just starting out, **this is the image we recommend you use**. It’s a reference root filesystem from Alex and Dom, based on the [Raspbian](http://www.raspbian.org/) optimised version of Debian, and containing LXDE, Midori, development tools and example source code for multimedia functions.
+
+<table style="display: table; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 84px; margin: 0px; padding: 0px; text-decoration: initial; width: 366px;">
+<tbody style="border: 0px none rgb(163, 182, 124); display: table-row-group; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 84px; margin: 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 366px;">
+<tr style="border: 0px none rgb(163, 182, 124); display: table-row; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 21px; margin: 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 366px;">
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 92px;"><span style="font-size: 13px; display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; padding: 0px; text-decoration: initial;">Torrent</span></td>
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 268px;"><a href="http://downloads.raspberrypi.org/images/raspbian/2012-07-15-wheezy-raspbian/2012-07-15-wheezy-raspbian.zip.torrent" style="border: 0px none rgb(0, 111, 247); color: rgb(0, 111, 247); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; margin: 0px; outline: rgb(0, 111, 247) none 0px; padding: 0px; text-decoration: initial;" title="http://downloads.raspberrypi.org/images/raspbian/2012-07-15-wheezy-raspbian/2012-07-15-wheezy-raspbian.zip.torrent"><span style="font-size: 13px; border: 0px none rgb(0, 111, 247); color: rgb(0, 111, 247); display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; outline: rgb(0, 111, 247) none 0px; padding: 0px; text-decoration: initial;">2012-07-15-wheezy-raspbian.zip.torrent</span></a></td> *（外链文件未本地化）*
+</tr>
+<tr style="border: 0px none rgb(163, 182, 124); display: table-row; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 21px; margin: 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 366px;">
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 92px;"><span style="font-size: 13px; display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; padding: 0px; text-decoration: initial;">Direct download</span></td>
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 268px;"><a href="http://downloads.raspberrypi.org/images/raspbian/2012-07-15-wheezy-raspbian/2012-07-15-wheezy-raspbian.zip" style="border: 0px none rgb(0, 111, 247); color: rgb(0, 111, 247); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; margin: 0px; outline: rgb(0, 111, 247) none 0px; padding: 0px; text-decoration: initial;" title="http://downloads.raspberrypi.org/images/raspbian/2012-07-15-wheezy-raspbian/2012-07-15-wheezy-raspbian.zip"><span style="font-size: 13px; border: 0px none rgb(0, 111, 247); color: rgb(0, 111, 247); display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; outline: rgb(0, 111, 247) none 0px; padding: 0px; text-decoration: initial;">2012-07-15-wheezy-raspbian.zip</span></a></td> *（外链文件未本地化）*
+</tr>
+<tr style="border: 0px none rgb(163, 182, 124); display: table-row; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 21px; margin: 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 366px;">
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 92px;"><span style="font-size: 13px; display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; padding: 0px; text-decoration: initial;">SHA-1</span></td>
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 268px;"><span style="font-size: 13px; display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; padding: 0px; text-decoration: initial;">3947412babbf63f9f022f1b0b22ea6a308bb630c</span></td>
+</tr>
+<tr style="border: 0px none rgb(163, 182, 124); display: table-row; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 21px; margin: 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 366px;">
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 92px;"><span style="font-size: 13px; display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; padding: 0px; text-decoration: initial;">Default login</span></td>
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 268px;"><span style="font-size: 13px; display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; padding: 0px; text-decoration: initial;">Username: pi Password: raspberry</span></td>
+</tr>
+</tbody>
+</table>
+
+# Arch Linux ARM
+
+Arch Linux ARM is based on Arch Linux, which aims for simplicity and full control to the end user. Note that this distribution may not be suitable for beginners.
+
+<table style="display: table; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 84px; margin: 0px; padding: 0px; text-decoration: initial; width: 372px;">
+<tbody style="border: 0px none rgb(163, 182, 124); display: table-row-group; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 84px; margin: 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 372px;">
+<tr style="border: 0px none rgb(163, 182, 124); display: table-row; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 21px; margin: 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 372px;">
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 92px;"><span style="font-size: 13px; display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; padding: 0px; text-decoration: initial;">Torrent</span></td>
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 274px;"><a href="http://downloads.raspberrypi.org/images/archlinuxarm/archlinuxarm-13-06-2012/archlinuxarm-13-06-2012.zip.torrent" style="border: 0px none rgb(0, 111, 247); color: rgb(0, 111, 247); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; margin: 0px; outline: rgb(0, 111, 247) none 0px; padding: 0px; text-decoration: initial;" title="http://downloads.raspberrypi.org/images/archlinuxarm/archlinuxarm-13-06-2012/archlinuxarm-13-06-2012.zip.torrent"><span style="font-size: 13px; border: 0px none rgb(0, 111, 247); color: rgb(0, 111, 247); display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; outline: rgb(0, 111, 247) none 0px; padding: 0px; text-decoration: initial;">archlinuxarm-13-06-2012.zip.torrent</span></a></td> *（外链文件未本地化）*
+</tr>
+<tr style="border: 0px none rgb(163, 182, 124); display: table-row; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 21px; margin: 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 372px;">
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 92px;"><span style="font-size: 13px; display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; padding: 0px; text-decoration: initial;">Direct download</span></td>
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 274px;"><a href="http://downloads.raspberrypi.org/images/archlinuxarm/archlinuxarm-13-06-2012/archlinuxarm-13-06-2012.zip" style="border: 0px none rgb(0, 111, 247); color: rgb(0, 111, 247); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; margin: 0px; outline: rgb(0, 111, 247) none 0px; padding: 0px; text-decoration: initial;" title="http://downloads.raspberrypi.org/images/archlinuxarm/archlinuxarm-13-06-2012/archlinuxarm-13-06-2012.zip"><span style="font-size: 13px; border: 0px none rgb(0, 111, 247); color: rgb(0, 111, 247); display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; outline: rgb(0, 111, 247) none 0px; padding: 0px; text-decoration: initial;">archlinuxarm-13-06-2012.zip</span></a></td> *（外链文件未本地化）*
+</tr>
+<tr style="border: 0px none rgb(163, 182, 124); display: table-row; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 21px; margin: 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 372px;">
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 92px;"><span style="font-size: 13px; display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; padding: 0px; text-decoration: initial;">SHA-1</span></td>
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 274px;"><span style="font-size: 13px; display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; padding: 0px; text-decoration: initial;">8ca812dfb7f68156869a59a2c511d3eccd118da0</span></td>
+</tr>
+<tr style="border: 0px none rgb(163, 182, 124); display: table-row; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 21px; margin: 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 372px;">
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 92px;"><span style="font-size: 13px; display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; padding: 0px; text-decoration: initial;">Default login</span></td>
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 274px;"><span style="font-size: 13px; display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; padding: 0px; text-decoration: initial;">Username: root Password: root</span></td>
+</tr>
+</tbody>
+</table>
+
+# QtonPi
+
+QtonPi is an Embedded Linux platform plus SDK optimized for developing and running Qt 5 Apps on Raspberry Pi. More information is available [here](http://wiki.qt-project.org/QtonPi).
+
+<table style="display: table; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 84px; margin: 0px; padding: 0px; text-decoration: initial; width: 372px;">
+<tbody style="border: 0px none rgb(163, 182, 124); display: table-row-group; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 84px; margin: 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 372px;">
+<tr style="border: 0px none rgb(163, 182, 124); display: table-row; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 21px; margin: 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 372px;">
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 92px;"><span style="font-size: 13px; display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; padding: 0px; text-decoration: initial;">Torrent</span></td>
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 274px;"><a href="http://downloads.raspberrypi.org/images/qtonpi/qtonpi-0.02/qtonpi-0.2.tar.bz2.torrent" style="border: 0px none rgb(0, 111, 247); color: rgb(0, 111, 247); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; margin: 0px; outline: rgb(0, 111, 247) none 0px; padding: 0px; text-decoration: initial;" title="http://downloads.raspberrypi.org/images/qtonpi/qtonpi-0.02/qtonpi-0.2.tar.bz2.torrent"><span style="font-size: 13px; border: 0px none rgb(0, 111, 247); color: rgb(0, 111, 247); display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; outline: rgb(0, 111, 247) none 0px; padding: 0px; text-decoration: initial;">qtonpi-0.2.tar.bz2.torrent</span></a></td> *（外链文件未本地化）*
+</tr>
+<tr style="border: 0px none rgb(163, 182, 124); display: table-row; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 21px; margin: 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 372px;">
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 92px;"><span style="font-size: 13px; display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; padding: 0px; text-decoration: initial;">Direct download</span></td>
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 274px;"><a href="http://downloads.raspberrypi.org/images/qtonpi/qtonpi-0.02/qtonpi-0.2.tar.bz2" style="border: 0px none rgb(0, 111, 247); color: rgb(0, 111, 247); display: inline; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; margin: 0px; outline: rgb(0, 111, 247) none 0px; padding: 0px; text-decoration: initial;" title="http://downloads.raspberrypi.org/images/qtonpi/qtonpi-0.02/qtonpi-0.2.tar.bz2"><span style="font-size: 13px; border: 0px none rgb(0, 111, 247); color: rgb(0, 111, 247); display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; outline: rgb(0, 111, 247) none 0px; padding: 0px; text-decoration: initial;">qtonpi-0.2.tar.bz2</span></a></td> *（外链文件未本地化）*
+</tr>
+<tr style="border: 0px none rgb(163, 182, 124); display: table-row; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 21px; margin: 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 372px;">
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 92px;"><span style="font-size: 13px; display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; padding: 0px; text-decoration: initial;">SHA-1</span></td>
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 274px;"><span style="font-size: 13px; display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; padding: 0px; text-decoration: initial;">665b6ccf59ccbd4c38827f5554aa823302730a04</span></td>
+</tr>
+<tr style="border: 0px none rgb(163, 182, 124); display: table-row; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 21px; margin: 0px; padding: 0px; text-decoration: initial; vertical-align: middle; width: 372px;">
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 92px;"><span style="font-size: 13px; display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; padding: 0px; text-decoration: initial;">Default login</span></td>
+<td style="display: table-cell; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: 18px; font-family: arial; height: 18px; margin: 0px; padding: 1px; text-decoration: initial; vertical-align: middle; width: 274px;"><span style="font-size: 13px; display: inline; font-style: normal; font-variant: normal; font-weight: normal; line-height: 18px; font-family: arial; margin: 0px; padding: 0px; text-decoration: initial;">Username: root Password: rootme</span></td>
+</tr>
+</tbody>
+</table>
+
+
+Windows下使用 [Win32DiskImager](http://www.softpedia.com/get/CD-DVD-Tools/Data-CD-DVD-Burning/Win32-Disk-Imager.shtml) 把解压缩后的img文件烧录到SD卡，记得别选错分区。
+
+**第二步：连接硬件**
+    连上USB键盘，使用HDMI连接显示器，家里没显示器，没电视，公司的显示器没有HDMI接口，只有悲催的DisplayPort接口，85大洋买了个转接头，依然没点亮，悲剧悲剧。。。回家翻出山寨投影仪，接上HDMI，使用输出5V/1A的miniUSB当电源（不要用电脑口输出当电源），上电，成功点亮。（后来才知道用串口可以不用接显示器，详见下文）
+
+[![](http://files.note.sdo.com/M5cEN~kg9gtwLX0es0194-)](http://www.blogjava.net/images/blogjava_net/baicker/Raspberry%20Pi/IMG_20120809_201107.jpg "点击右下角或按ESC关闭<BR>或者点击图片浏览相邻一张图片") （外链文件，未本地化） *（外链图片未本地化）*
+
+[![](http://files.note.sdo.com/M5cEN~kg9gtwLX0es01955)](http://www.blogjava.net/images/blogjava_net/baicker/Raspberry%20Pi/IMG_20120809_201153.jpg "点击右下角或按ESC关闭<BR>或者点击图片浏览相邻一张图片") （外链文件，未本地化） *（外链图片未本地化）*
+
+[![](http://files.note.sdo.com/M5cEN~kg9gtwLX0es01953)](http://www.blogjava.net/images/blogjava_net/baicker/Raspberry%20Pi/IMG_20120809_202247.jpg "点击右下角或按ESC关闭<BR>或者点击图片浏览相邻一张图片") （外链文件，未本地化） *（外链图片未本地化）*
+
+
+**串口连接Raspberry Pi**
+先看一下接口定义
+
+http://elinux.org/RPi\_Low-level\_peripherals
+
+[![](http://files.note.sdo.com/M5cEN~kg9gtwLX0es01951)](http://www.blogjava.net/images/blogjava_net/baicker/Raspberry%20Pi/raspberry-pi-serial_sm.jpg "点击右下角或按ESC关闭<BR>或者点击图片浏览相邻一张图片") （外链文件，未本地化） *（外链图片未本地化）*
+
+找个USB转TTL的小板子，GND接地，R接T，T接R，USB接电脑，
+[![](http://files.note.sdo.com/M5cEN~kg9gtwLX0es01959)](http://www.blogjava.net/images/blogjava_net/baicker/Raspberry%20Pi/IMG_20120810_150311.jpg "点击右下角或按ESC关闭<BR>或者点击图片浏览相邻一张图片") （外链文件，未本地化） *（外链图片未本地化）*
+
+打开串口调试软件，或者使用新版的PUTTY，设置波特率等参数：
+
+• **Speed:** 115200
+• **Bits**: 8
+• **Parity:** None
+• **Stop Bits:** 1
+• **Flow Control:** None
+
+
+[![](http://files.note.sdo.com/M5cEN~kg9gtwLX0es01957)](http://www.blogjava.net/images/blogjava_net/baicker/Raspberry%20Pi/boot.jpg "点击右下角或按ESC关闭<BR>或者点击图片浏览相邻一张图片") （外链文件，未本地化） *（外链图片未本地化）*
+
+[![](http://files.note.sdo.com/M5cEN~kg9gtwLX0es0195b)](http://www.blogjava.net/images/blogjava_net/baicker/Raspberry%20Pi/boot2.jpg "点击右下角或按ESC关闭<BR>或者点击图片浏览相邻一张图片") （外链文件，未本地化） *（外链图片未本地化）*
+
+
+另：如果忘了密码，使用串口连上后，直接root就能登录。
+
+posted on 2012-08-10 16:21 [009](http://www.blogjava.net/baicker/) 阅读(2353) [评论(2)](http://www.blogjava.net/baicker/archive/2012/08/10/385239.html#Post)  [编辑](http://www.blogjava.net/baicker/admin/EditPosts.aspx?postid=385239)  [收藏](http://www.blogjava.net/baicker/AddToFavorite.aspx?id=385239) 所属分类: [黑客技术](http://www.blogjava.net/baicker/category/17624.html)
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Raspberry Pi-教你用树莓派通过usb摄像头实现网络监控功能！！！ - 电子工程师学习交流园地</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/Raspberry%20Pi-%E6%95%99%E4%BD%A0%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE%E9%80%9A%E8%BF%87usb%E6%91%84%E5%83%8F%E5%A4%B4%E5%AE%9E%E7%8E%B0%E7%BD%91%E7%BB%9C%E7%9B%91%E6%8E%A7%E5%8A%9F%E8%83%BD%EF%BC%81%EF%BC%81%EF%BC%81%20-%20%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B%E5%B8%88%E5%AD%A6%E4%B9%A0%E4%BA%A4%E6%B5%81%E5%9B%AD%E5%9C%B0.html)
+# Raspberry Pi-教你用树莓派通过usb摄像头实现网络监控功能！！！ - 电子工程师学习交流园地
+
+1.安装usb摄像头，<http://www.eeboard.com/bbs/thread-1510-1-1.html>
+2.安装强大的网络监控软件motion，输入
+sudo apt-get install motion （如果安装不了的，可以先sudo apt-get update 一下）
+3.配置motion，编辑motion.conf文件
+sudo vi /etc/motion/motion.conf （或者运行sudo xedit /etc/motion/motion.conf）
+
+4.找到”control\_localhost on “和”webcam\_localhost on“这两行，改为以下两行后，保存退出
+control\_localhost off
+webcam\_localhost off
+5.运行motion软件，输入
+motion -n
+6.在pc上用IE浏览器打开，192.168.99.53是我的树莓派ip，换成你们自己的
+配置网页：http://192.168.99.53:8080
+
+![6.jpg](http://files.note.sdo.com/2clrz~kvq0XFM718M001Mi "6.jpg") *（外链图片未本地化）*
+
+2012-9-11 14:27 上传
+
+[**下载附件** (21.63 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=NDMwNnw5OThmZTQyOHwxMzY5NzI4NTI4fDB8MTUxMQ%3D%3D&nothumb=yes "6.jpg 下载次数:3")
+
+
+监控网页：http://192.168.99.53:8081
+
+![7.jpg](http://files.note.sdo.com/2clrz~kvq0XFM718M001Mk "7.jpg") *（外链图片未本地化）*
+
+2012-9-11 14:27 上传
+
+[**下载附件** (23.4 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=NDMwN3w4NDJkMjdiNnwxMzY5NzI4NTI4fDB8MTUxMQ%3D%3D&nothumb=yes "7.jpg 下载次数:1")
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

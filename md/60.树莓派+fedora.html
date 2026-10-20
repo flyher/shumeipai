@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>树莓派+fedora</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E6%A0%91%E8%8E%93%E6%B4%BE%2Bfedora.html)
+# 树莓派+fedora
+
+今天购得一个树莓派，玩了一下，大致遇到如下困难：
+
+1）SD卡无系统情况下，加电，结果只有红灯，神马也没有。
+
+2）下载一个Fedora 17
+，下载地址：http://scotland.proximity.on.ca/raspberrypi/f17-releases/v5/latest/rpfr-17-xfce-r2.zip
+
+3) 解压得到一个img文件
+
+4）win32diskimager
+将这个img文件写入SD卡
+
+5）加电，linux操作系统的完成安装
+
+6）发现没有vim
+
+7）更新yum源:
+cd ./etc/yum.repos.d/ wget
+http://mirrors.sohu.com/help/fedora-sohu.repo
+
+8）生成缓存： yum
+makecache
+
+9）安装基础开发环境：yum
+groupinstall "Development Tools" "Development Libraries"
+
+10）貌似安装gcc不成功，又执行：yum install
+gcc-c++.armv5tel
+
+11）写了个简单程序，ok
+
+目前我有两个树莓派，一个美国版，一个英国版，游戏刚刚开始，下一个游戏是。。。
+
+今天潘越博士发了个关于树莓派的微博，大家可以关注：<http://weibo.com/1497035431/z8XtLBIsh>
+
+然后鄙人把thuird跑在了树莓派上，还是比较给力的。
+
+[![树莓派](http://files.note.sdo.com/M5cEN~kg8p9pnM24s00XBJ "树莓派")](http://s3.sinaimg.cn/orignal/593af2a7jw1dznmllbmg2j.jpg)（外链文件，未本地化） *（外链图片未本地化）*
+
+
+每秒差不多6000次吧，个人使用应该够了。
+
+我有2个树莓派，即日起提供
+树莓派+thuirdb的租借服务，每天20元（学生），产业界50元。押金500
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

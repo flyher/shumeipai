@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>树莓派+USB摄像头+Yeelink</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E6%A0%91%E8%8E%93%E6%B4%BE%2BUSB%E6%91%84%E5%83%8F%E5%A4%B4%2BYeelink.html)
+# 树莓派+USB摄像头+Yeelink
+
+5分钟一点也不夸张, 在你熟悉Yeelink使用的情况下, 你真的只需几分钟就可以搭建一套在线图像监控, 神马入室小偷啥的, 还能逃过你的千里眼 当然, 要是使用motion来获取图像, 还能做到画面动作检测, 有兴趣的同学可以继续发挥哦. 废话少说, 来看看几分钟怎么做到的吧.
+
+1. 将USB摄像头接到Pi上, 安装驱动, 我所使用的版本(2012-10-28-wheezy-raspbian.img)已经包含了V4L2驱动, 略去xxx字. 有问题的话Google一下
+pi@raspberrypi ~ $ ls -l /dev/video0
+crw-rw---T 1 root video 81, 0 Jan  1  1970 /dev/video0
+
+2. 安装抓图软件fswebcam
+pi@raspberrypi ~ $ sudo apt-get install fswebcam
+
+3. 登录Yeelink, 在用户中心增加一个设备, 再为之增加一个图像传感器.
+
+4. 在/home/pi下准备脚本yeelink.sh, 内容为以下两行命令, 其中的ApiKey和URL请改为自己设备对应的信息.
+sudo fswebcam -d /dev/video0 -r 320x240 --bottom-banner --title "RaspberryPi @ Yeelink" --no-timestamp /home/pi/yeelink.jpg
+curl --request POST --data-binary @"/home/pi/yeelink.jpg" --header "U-ApiKey: xxxxxxxxxxxxxxxxxxxx" <http://api.yeelink.net/v1.0/device/1022/sensor/1294/photos>
+
+注：上面的命令中，1022和1294分别是设备号和传感器好，U-ApiKey是yeelink账号的APIKEY，如果你使用的话，可以根据自己的情况进行修改
+
+
+为脚本增加可执行权限
+pi@raspberrypi ~ $ chmod +x yeelink.sh
+
+5. 将脚本加入cronjob
+pi@raspberrypi ~ $ crontab -e
+
+加入下面一行, 让脚本每分钟运行一次, 保存退出.
+\*/1 \* \* \* \* /home/pi/yeelink.sh
+
+
+搞定, 至此我们的监控就开始运行了, 上网页上看看效果吧
+<http://www.yeelink.net/devices/1022>
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

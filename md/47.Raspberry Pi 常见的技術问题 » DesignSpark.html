@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Raspberry Pi 常见的技術问题 » DesignSpark</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/Raspberry%20Pi%20%E5%B8%B8%E8%A7%81%E7%9A%84%E6%8A%80%E8%A1%93%E9%97%AE%E9%A2%98%20%C2%BB%20DesignSpark.html)
+# Raspberry Pi 常见的技術问题
+
+[![](http://files.note.sdo.com/M5cEN~kg9vkgLX0es01bFK)](http://www.designspark.com/users/view/Ray%20Chiu)Posted by [Ray Chiu](http://www.designspark.com/users/view/Ray%20Chiu) on Thu, Jun 14 2012 04:33:00 *（外链图片未本地化）*
+
+- [Raspberry pi](http://www.designspark.com/nodes/term/slug:raspberry-pi "View content tagged with Raspberry pi")
+- [Arm](http://www.designspark.com/nodes/term/slug:arm "View content tagged with Arm")
+- [Pic](http://www.designspark.com/nodes/term/slug:pic "View content tagged with Pic")
+
+2176 views
+
+当大家热烈期待的Raspberry Pi终于到手后，当然是把ARM Linux影像放到SD Card，再进行一系列的设置步骤，一开始使用Raspberry Pi时难免会遇到一些难题，本文会讨论数个有关Raspberry Pi的常见问题。
+
+**SD卡的选择与设置**
+
+在现阶段，由于市面上的周边硬件品牌众多，Raspberry Pi并不能完全兼容所有硬件的驱动程式，例如SD卡，建议使用级别4的SD卡(传输速率最低为4MB/秒)，如果要参考一些已经测试的SD卡型号，可以前往[这个网址](http://elinux.org/RPi_VerifiedPeripherals#Working_SD_Cards)。而在安装ARM Linux影像到SD卡时，由于Rasipberry Pi发放的Linux影像大小都是2GB，如果你使用大于2GB的SD卡，会造成余下空间的浪费，所以这个清况下我们要把Linux影像扩展，以下的步骤会解释如何善用SD卡的余下空间，这个过程需要把swap分割区移至SD卡的最尾部份，然后把Linux系统分割区增大。
+
+步骤1: 下载[GParted live影像](http://gparted.sourceforge.net/download.php)，燒錄至CD或DVD。
+
+步骤2: 把带有GParted的CD/DVD放入电脑，然后重新开机。在开机菜单中选择"GParted Live"，再选择"Don't touch keymap"，选择适当的键盘输入语言，选择"o"。然后电脑便会载入GParted。
+
+[![Image](http://files.note.sdo.com/M5cEN~kg9vkgLX0es01bFQ)](http://d4c027c89b30561298bd-484902fe60e1615dc83faa972a248000.r12.cf3.rackcdn.com/imagepicker/54347/gparted01.jpg)（外链文件，未本地化） *（外链图片未本地化）*
+
+图. GParted介面
+
+步骤3: 选择你的SD卡，然后你会看到以上的图片。
+
+[![Image](http://files.note.sdo.com/M5cEN~kg9vkgLX0es01bFM)](http://d4c027c89b30561298bd-484902fe60e1615dc83faa972a248000.r12.cf3.rackcdn.com/imagepicker/54347/gparted03.jpg)（外链文件，未本地化） *（外链图片未本地化）*
+
+[![Image](http://files.note.sdo.com/M5cEN~kg9vkgLX0es01bFO)](http://d4c027c89b30561298bd-484902fe60e1615dc83faa972a248000.r12.cf3.rackcdn.com/imagepicker/54347/gparted04.jpg)（外链文件，未本地化） *（外链图片未本地化）*
+
+图. 把swap分割区从最左移至最右部份
+
+步骤4: 选择swap分割区，按"Resize/Move"，把指标移至最尾部份(最右)，swap的分割区不用更改，再按"Resize/Move"完成。这样swap分割区便会移至SD卡的最尾部份，如上图所示。
+
+[![Image](http://files.note.sdo.com/M5cEN~kg9vkgLX0es01bFS)](http://d4c027c89b30561298bd-484902fe60e1615dc83faa972a248000.r12.cf3.rackcdn.com/imagepicker/54347/gparted05.jpg)（外链文件，未本地化） *（外链图片未本地化）*
+
+[![Image](http://files.note.sdo.com/M5cEN~kg9vkgLX0es01bFU)](http://d4c027c89b30561298bd-484902fe60e1615dc83faa972a248000.r12.cf3.rackcdn.com/imagepicker/54347/gparted06.jpg)（外链文件，未本地化） *（外链图片未本地化）*
+
+图. 把Linux系统分割区增大
+
+步骤5: 选择档案系统为ext4的，按"Resize/Move"，如上图所示，把分割区的指标拉至最右，这样余下空间便会设置为零，再按"Resize/Move"完成设置。
+
+![Image](http://files.note.sdo.com/M5cEN~kg9vkgLX0es01bFX) *（外链图片未本地化）*
+
+图. 变更SD卡设置后的分割情况
+
+步骤6: 回到GParted主介面后，按"Apply"进行更改，完成操作后便可以看到该档案系统的增大，最后便可以重新开机离开GParted。
+
+上述方法只是其中一个调整SD卡分割区的设置，比较简单的可以使用余下空间新增一个ext3/ext4的档案系统，然后把它挂载于/home或/opt中。
+
+**控制Raspberry Pi上的GPIO**
+
+**[![Image](http://files.note.sdo.com/M5cEN~kg9vkgLX0es01bF-)](http://d4c027c89b30561298bd-484902fe60e1615dc83faa972a248000.r12.cf3.rackcdn.com/imagepicker/54347/RaspberryPi-GPIO-Layout.png)（外链文件，未本地化）** *（外链图片未本地化）*
+
+图. Raspberry Pi的26脚位图
+
+这是不少Raspberry Pi初学者会遇到的问题，可以透過[RPi.GPIO Python库](http://pypi.python.org/pypi/RPi.GPIO) 实现控制GPIO，这个库以Python脚本设置/读写GPIO，以Debian Squeeze影像为例，我们要自行安装这款套件，步骤如下:
+
+步骤1: 输入以下命令下载RPi.GPIO Python库
+
+wget http://pypi.python.org/packages/source/R/RPi.GPIO/RPi.GPIO-0.2.0.tar.gz
+
+步骤2: 解压安装档案到指定的资料夹
+
+tar zxf RPi.GPIO-0.2.0.tar.gz
+
+步骤3: 安装RPi.GPIO Python库
+
+cd RPi.GPIO-0.2.0
+
+sudo python setup.py install
+
+[![Image](http://files.note.sdo.com/M5cEN~kg9vkgLX0es01bFZ)](http://d4c027c89b30561298bd-484902fe60e1615dc83faa972a248000.r12.cf3.rackcdn.com/imagepicker/54347/ff.png)（外链文件，未本地化） *（外链图片未本地化）*
+
+图. 设置GPIO的Python程式
+
+安装了RPi.GPIO Python库后便可以尝试控制GPIO了，上图的Pyhton程式设置了GPIO17(11)和GPIO18(12)为输入和输出。
+
+**在Raspberry Pi开启Secure Shell(SSH)功能**
+
+[SSH功能](http://baike.baidu.com/view/16184.htm)是一种网络协定，能够让用家透过网络从个人电脑传送命令到Raspberry Pi，这样便可以减少Raspberry Pi的周边设备。手动开启SSH功能，只要于命令视窗(LXTerminal)输入"sudo /etc/init.d/ssh start"便可。若果要于Raspberry Pi启动时使用SSH功能，可以跟随以下步骤设置:
+
+步骤1: 准备带有Debian Sequeeze影像的SD卡，把SD卡放进个人电脑中。
+
+步骤2: 把SD卡中的"boot\_enable\_ssh.rc"命名为"boot.rc"，然后把SD卡放回Raspberry Pi。
+
+这样Raspberry Pi在启动时便会开启SSH功能，然后你可以在个人电脑中以[PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html)或其他SSH程式输入指令到Raspberry Pi。
+
+Raspberry Pi的应用广泛，大家在开发时少不免会遇到技术上的问题，[R-Pi Hub](http://elinux.org/CH:R-Pi_Hub)是一个提供丰富Raspberry Pi资源的网站，大家可以在里头找到不少有关的技术解决方案。
+
+[Share on linkedin](http://www.addthis.com/bookmark.php?v=250&winname=addthis&pub=xa-4f75c9ac5eccb233&source=tbx-250&lng=zh&s=linkedin&url=http%3A%2F%2Fwww.designspark.com%2Fblog%2Fchi-raspberry-pi-faq&title=Raspberry%20Pi%20%E5%B8%B8%E8%A7%81%E7%9A%84%E6%8A%80%E8%A1%93%E9%97%AE%E9%A2%98%20%C2%BB%20DesignSpark&ate=AT-xa-4f75c9ac5eccb233/-/-/51025ee0d35a01f7/3/50a23f5a819cd255&frommenu=1&uid=50a23f5a819cd255&ct=1&pre=http%3A%2F%2Fwww.designspark.com%2Fsearch%2Fpage%3A17%2Fq%3Araspberry%2Ftab%3Ablog%2Flocale%3Achn&tt=0&captcha_provider=nucaptcha "LinkedIn")
+[Share on facebook](http://www.designspark.com/blog/chi-raspberry-pi-faq# "Facebook")
+[Share on sinaweibo](http://www.addthis.com/bookmark.php?v=250&winname=addthis&pub=xa-4f75c9ac5eccb233&source=tbx-250&lng=zh-CN&s=sinaweibo&url=http%3A%2F%2Fwww.designspark.com%2Fblog%2Fchi-raspberry-pi-faq&title=Raspberry%20Pi%20%E5%B8%B8%E8%A7%81%E7%9A%84%E6%8A%80%E8%A1%93%E9%97%AE%E9%A2%98%20%C2%BB%20DesignSpark&ate=AT-xa-4f75c9ac5eccb233/-/-/51025ee0d35a01f7/2&frommenu=1&uid=51025ee04fa7d70d&ct=1&pre=http%3A%2F%2Fwww.designspark.com%2Fsearch%2Fpage%3A17%2Fq%3Araspberry%2Ftab%3Ablog%2Flocale%3Achn&tt=0&captcha_provider=nucaptcha "Sinaweibo")
+[Share on email](http://www.designspark.com/blog/chi-raspberry-pi-faq# "Email")
+[More Sharing Services](http://www.designspark.com/blog/chi-raspberry-pi-faq#)
+[0](http://www.designspark.com/blog/chi-raspberry-pi-faq# "More...")
+
+[Like this](http://www.designspark.com/likes/add/890)
+[Leave a comment](http://www.designspark.com/discuss/comment.php?mode=post&f=36&title=Raspberry+Pi+%E5%B8%B8%E8%A7%81%E7%9A%84%E6%8A%80%E8%A1%93%E9%97%AE%E9%A2%98&path=&nid=890)
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

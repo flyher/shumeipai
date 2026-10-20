@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>给树莓派安装红外接收管并控制XBMC</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E7%BB%99%E6%A0%91%E8%8E%93%E6%B4%BE%E5%AE%89%E8%A3%85%E7%BA%A2%E5%A4%96%E6%8E%A5%E6%94%B6%E7%AE%A1%E5%B9%B6%E6%8E%A7%E5%88%B6XBMC.html)
+# 给树莓派安装红外接收管并控制XBMC
+
+*本帖最后由 flashsoft 于 2013-1-18 14:58 编辑*
+
+[连载]给树莓派安装红外接收管并控制XBMC（连载二）
+
+**目标：**
+        1、给树莓派给安装个红外接收管并遥控它
+
+**本文中的材料：**
+1、安装了Xbian系统的树莓派一个
+2、SSH客户端一个
+3、支持HDMI的显示器一台（可选）
+4、电脑一台（本文以Mac系统为例）
+5、红外遥控器一只（本文以Apple Remote为例并且演示用学习遥控器学习Apple Remote）
+        全家福：
+![全家福](http://files.note.sdo.com/M5cEN~kjwE7gLX0hI000yn "全家福") *（外链图片未本地化）*
+
+2013-1-18 14:44 上传
+
+[**下载附件**(328.18 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTU3MTJ8MTQ3MjM5Y2V8MTM2MjYzNDU0NHwwfDY5NDA%3D&nothumb=yes "IMG_0510_meitu_1.jpg 下载次数:0")
+全家福
+
+
+**具体步骤：**
+        1、首先需要一个红外接收管以及三根连接线，我买的是HS0038B的红外接收管和3根连接线
+                当然你买到其他型号的红外接收管也是OK的，只是针脚定义你需要单独找其他文档，本文就以HS0038B为例了
+
+        2、连接红外接收管
+                把红外接收管通过连接线接到树莓的GPIO上
+                根据文末的资料得知，HS0038B（突起面向自己）的引脚定义自左到右分别是OUT、GND、VCC：
+![红外管定义](http://files.note.sdo.com/M5cEN~kjwE7gLX0hI000yj "红外管定义") *（外链图片未本地化）*
+
+2013-1-18 14:49 上传
+
+[**下载附件**(60.77 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTU3MTR8ODUyZDhmMmN8MTM2MjYzNDU0NHwwfDY5NDA%3D&nothumb=yes "屏幕快照 2013-01-18 下午1.56.24.png 下载次数:0")
+红外管定义
+
+
+                我的树莓派是新版的，然根据U大的资料资料得知具体GPIO的定义为：
+
+![GPIO](http://files.note.sdo.com/M5cEN~kjwE7gLX0hI000yl "GPIO") *（外链图片未本地化）*
+
+2013-1-18 14:50 上传
+
+[**下载附件**(75.3 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTU3MTV8MDgzZWQ2MjN8MTM2MjYzNDU0NHwwfDY5NDA%3D&nothumb=yes "Raspberry-Pi-GPIO-Layout-Revision-2.png 下载次数:0")
+GPIO
+
+
+                我们按照这样的方法去接线：
+                VCC -> GPIO针脚 pin1
+                GND -> GPIO针脚 pin6
+                OUT -> GPIO针脚 pin12
+
+
+                接好后如图：
+![连接后](http://files.note.sdo.com/M5cEN~kjwE7gLX0hI000yp "连接后") *（外链图片未本地化）*
+
+2013-1-18 14:47 上传
+
+[**下载附件**(408.92 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTU3MTN8NzBmYzc0YjV8MTM2MjYzNDU0NHwwfDY5NDA%3D&nothumb=yes "IMG_0511_meitu_2.jpg 下载次数:0")
+连接后
+
+
+                请开机启动Xbian
+
+        3、检查lirc服务是否正确启动
+                xbian默认是开启lirc服务的，我们需要验证下启动时有没有找到你的红外接收管
+                开启终端以root连接到你的Xbian，然后执行
+
+1. dmesg | grep -i lirc
+
+*复制代码*
+
+如果没有任何结果，请执行（本文命令以root账户登陆为例，所以命令未加sudo），如果有内容请跳到步骤4
+
+1. modprobe lirc\_rpi
+
+*复制代码*
+
+然后执行
+
+1. mode2
+
+*复制代码*
+
+然后按你的遥控器，看看终端是否有类似下面的输出，如果没有请跳到步骤2
+
+1. space 4960669
+2. pulse 2697
+3. ……
+4. pulse 2697
+
+*复制代码*
+
+4、设置你的红外遥控器
+                首先你可以根据你自己的遥控器型号去http://lirc.sourceforge.net/remotes/ 看看是否有你的遥控器，如果有请执行
+                        备份原有配置
+
+1. cp /etc/lirc/lircd.conf /etc/lirc/lircd.conf.default
+
+*复制代码*
+
+下载指定遥控器配置成为默认配置
+
+1. wget <a  target="\_blank">http://lirc.sourceforge.net/remotes/</a>你的遥控器型号 /etc/lirc/lircd.conf
+
+*复制代码*
+
+启动lirc服务
+
+1. /etc/init.d/lirc restart
+
+*复制代码*
+
+启动irw验证你的遥控器键位是否都OK
+
+1. irw
+
+*复制代码*
+
+我这会看到类似这样的输出
+
+1. 0000000077e1500d 00 KEY\_UP Apple
+2. 0000000077e1300d 00 KEY\_DOWN Apple
+
+*复制代码*
+
+如果正确那么恭喜你，你可以跳转到步骤6了
+
+        5、手动设置你的红外遥控器的键位
+                在手动设置你的遥控器键位之前我们需要了解下有哪些键名可用，输入
+
+1. irrecord --list-namespace
+
+*复制代码*
+
+会列出一堆的可用备选按键名，你基本上看名字能猜出都是干嘛的，也可输入
+
+1. irrecord --list-namespace | grep -i key\_
+
+*复制代码*
+
+来找到都有哪些键，我推荐的几个键名是（全大写）
+
+1. KEY\_ESC
+2. KEY\_LEFT
+3. KEY\_RIGHT
+4. KEY\_UP
+5. KEY\_DOWN
+6. KEY\_ENTER
+7. KEY\_INFO
+8. KEY\_OK
+9. KEY\_POWER
+
+*复制代码*
+
+自己记录下这些名字，后面用的上
+
+                如果在步骤4里，你没找到自己的遥控器，比如我的Apple Remote使用官方带的配置是不行的，我得重新录制
+                停止lirc服务先
+
+1. /etc/init.d/lirc stop
+
+*复制代码*
+
+录制遥控器键位（录制失败后请删除/etc/lirc/lircd.conf保证下次录制能成功）
+
+1. irrecord /etc/lirc/lircd.conf
+
+*复制代码*
+
+回车，直到看到“Press RETURN now to start recording.”你再回车一次，然后请细心的按你的遥控器上的每一个按键，一个按键只按一次，保证屏幕上会多一个‘.’
+                如果所有按键都按完后，屏幕上还未提示“Please enter the name for the next button (press <ENTER> to finish recording)”，请一直不断的按最后你按的那个按键
+                直到出现“Please enter the name for the next button (press <ENTER> to finish recording)”
+                然后输入（举例，根据你自己的情况实际输入）
+
+1. KEY\_LEFT
+
+*复制代码*
+
+将提示“Now hold down button "KEY\_LEFT".”
+                你按下你遥控器的对应键，继续上面的步骤，直到你设置完毕你所有要的键位后直接回车，这样配置文件就保存好了
+
+                启动lirc服务
+
+1. /etc/init.d/lirc restart
+
+*复制代码*
+
+6、启动XBMC验证键位是否对（记住，每次更改lirc服务必须重新启动XBMC
+                输入
+
+1. /etc/init.d/xbmc restart
+
+*复制代码*
+
+7、把lirc\_rpi加到系统启动里
+
+1. echo 'lirc\_rpi' >> /etc/modules
+
+*复制代码*
+
+到此，你们都应该完美设置了你的红外遥控器了，本文该结束了
+
+        附送两个小信息
+                1、开启XBMC开启HTTP控制，可用XBMCRemote等工具控制XBMC
+
+                开启XBMC，在系统设置->服务->Web服务器中勾选允许通过HTTP控制XBMC
+
+
+                2、我用ipassport的红外遥控器学习Apple Remote后，可完全替代Apple Remote所有功能，这个爽
+
+
+**参考资料：**
+
+        HS0038B红外接收管资料：http://www.arm9board.net/download/OK6410/docs/HS0038B.pdf
+        树莓派GPIO定义（感谢U大）：http://ukonline2000.com/?p=1
+        老外的简单教程：http://druss.pp.ua/2012/08/raspbmc-lirc-gpio-xbmc-en/
+                                        http://forum.stmlabs.com/showthread.php?tid=1954
+        红外的遥控器匹配列表：http://lirc.sourceforge.net/remotes/
+        Xbian官方的Remote设置：http://wiki.xbian.org/index.php? ... onfiguring\_a\_remote
+
+**关联文章：**
+[【分享】配置Xbian，并用NodeJS搭建一个Hexo的极简BLOG(连载)](http://www.eeboard.com/bbs/thread-6709-1-1.html)
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

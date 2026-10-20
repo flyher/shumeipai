@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>用树莓派做个街机</title>
+</head>
+<body>
+<xmp theme="united" style="display:none;">
+#### [[返回文档目录]](../index.html)    [[查看原始页]](../content/%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE%E5%81%9A%E4%B8%AA%E8%A1%97%E6%9C%BA.html)
+# 用树莓派做个街机
+
+*本帖最后由 longbow78 于 2013-2-18 22:22 编辑*
+
+看到有人用树莓派做街机，正好之前我也将捡来的街机摇杆配好了控制板。
+
+之前有人发过类似的帖子，按图索骥，发现了人家已经整合出来镜像，下载，刷卡。
+
+启动后会直接进入mame的图形界面
+另外pimame 还 建立了个 web站点。
+访问IP地址后，可以通过网络上传roms。
+
+
+镜像地址：http://blog.sheasilverman.com/pimame-raspberry-pi-os-download/
+
+如果不想刷镜像。
+可以下载安装    http://sheasilverman.com/rpi/raspbian/debs/advancemame-raspberrypi\_1-1\_armhf.deb
+
+安装方法：
+
+To install:
+
+- sudo dpkg -i advancemame-raspberrypi\_1-1\_armhf.deb
+- 安装完成后，输入advmame，它会创建一个配置文件。
+- mame 的游戏Roms 在 ~/.advance/rom/ 这个目录
+- Edit your advmame.rc for your display:
+  - For HDMI try:
+    - device\_video\_clock 5 – 50 / 15.62 / 50 ; 5 – 50 / 15.73 / 60
+  - For NTSC TVs try:
+    - device\_video\_clock 5 – 50 / 15.73 / 60
+- 运行游戏: advmame gamename (ie advmame sf2)
+
+用我的7寸小屏先试试
+
+![image.jpg](http://files.note.sdo.com/M5cEN~kihNPgLX0F0003FN "image.jpg") *（外链图片未本地化）*
+
+前天 22:13 上传
+
+[**下载附件** (80.83 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTY5MTR8MzFkNzExZDN8MTM2MTM0MjcxMnwwfDgzNDQ%3D&nothumb=yes "image.jpg 下载次数:0")
+
+
+装了一些上世纪80年代末90年代初的经典街机，怀旧，容量小，运行流畅。
+
+![image.jpg](http://files.note.sdo.com/M5cEN~kihNPgLX0F0003FP "image.jpg") *（外链图片未本地化）*
+
+前天 22:13 上传
+
+[**下载附件** (82.13 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTY5MTV8MGVmYjViNDV8MTM2MTM0MjcxMnwwfDgzNDQ%3D&nothumb=yes "image.jpg 下载次数:0")
+
+
+为什么玩这个就卡呢？pimame还需努力哇。
+
+![image.jpg](http://files.note.sdo.com/M5cEN~kihNPgLX0F0003FR "image.jpg") *（外链图片未本地化）*
+
+前天 22:13 上传
+
+[**下载附件** (68.94 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTY5MTd8NGM0NGIzNGV8MTM2MTM0MjcxMnwwfDgzNDQ%3D&nothumb=yes "image.jpg 下载次数:0")
+
+
+街机刚出现时的经典游戏（列车大盗）游戏还有个bug，使用拳头在关底可以搓死敌人 （记忆深刻哇）
+
+![image.jpg](http://files.note.sdo.com/M5cEN~kihNPgLX0F0003FT "image.jpg") *（外链图片未本地化）*
+
+前天 22:13 上传
+
+[**下载附件** (74.74 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTY5MTl8NGFkMWVlM2N8MTM2MTM0MjcxMnwwfDgzNDQ%3D&nothumb=yes "image.jpg 下载次数:0")
+
+
+哇咔哇卡。。这个也是经典哟！
+
+![image.jpg](http://files.note.sdo.com/M5cEN~kihNPgLX0F0003FV "image.jpg") *（外链图片未本地化）*
+
+前天 22:13 上传
+
+[**下载附件** (73.64 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTY5MTh8ZjJkZTlkYmZ8MTM2MTM0MjcxMnwwfDgzNDQ%3D&nothumb=yes "image.jpg 下载次数:0")
+
+
+![image.jpg](http://files.note.sdo.com/M5cEN~kihNPgLX0F0003FL "image.jpg") *（外链图片未本地化）*
+
+前天 22:13 上传
+
+[**下载附件** (61.03 KB)](http://www.eeboard.com/bbs/forum.php?mod=attachment&aid=MTY5MTZ8Y2RhODE3NDZ8MTM2MTM0MjcxMnwwfDgzNDQ%3D&nothumb=yes "image.jpg 下载次数:0")
+
+
+缺点：
+目前pimame 现在的版本是 0.5,一些大容量的游戏运行起来还是很卡。不流畅。
+其他的如果想很好的用摇杆，还需要费些心思编辑配置文件。
+
+
+The files to edit are located in **/home/pi/.advance/**
+
+游戏设置文件
+
+For AdvanceMAME edit **/home/pi/.advance/advmame.rc**
+
+界面程序配置文件
+
+For AdvanceMENU edit **/home/pi/.advance/advmenu.rc**
+
+
+详细参阅此处：http://blog.sheasilverman.com/2013/02/pimame-advancemame-and-advancemenu-tankstick-configuration/
+</xmp>
+<script src="../js/jquery-1.11.1.js"></script>
+<script src="../js/strapdown.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>
